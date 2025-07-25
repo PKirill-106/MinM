@@ -1,17 +1,16 @@
-# Этап 1: сборка
 FROM node:22-alpine AS builder
 
-# Рабочая директория в контейнере
+# Working directory in container
 WORKDIR /app
 
-# Устанавливаем зависимости
+# Establish dependencies
 COPY package*.json ./
 RUN npm install
 
-# Копируем проект
+# Copy project
 COPY . .
 
-# Собираем проект
+# Build project
 ENV NODE_ENV=production
 RUN npm run build
 
