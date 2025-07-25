@@ -2,13 +2,9 @@
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
-// if (process.env.NODE_ENV === 'development') {
-// 	process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
-// }
-
 export async function getAllProductsFromWishList(token: string) {
 	const res = await fetch(
-		`${API_URL}/api/WhisList/GetAllProductsFromWishList`,
+		`${API_URL}/WhisList/GetAllProductsFromWishList`,
 		{
 			method: 'GET',
 			credentials: 'include',
@@ -26,7 +22,7 @@ export async function getAllProductsFromWishList(token: string) {
 
 export async function getProductFromWishList(token: string) {
 	const res = await fetch(
-		`${API_URL}/api/WhisList/GetProductFromWishList?productId=${token}`,
+		`${API_URL}/WhisList/GetProductFromWishList?productId=${token}`,
 		{
 			method: 'GET',
 			credentials: 'include',
@@ -41,7 +37,7 @@ export async function getProductFromWishList(token: string) {
 
 export async function addProductToWishList(productId: string, token: string) {
 	const res = await fetch(
-		`${API_URL}/api/WhisList/AddProductToWishList?productId=${productId}`,
+		`${API_URL}/WhisList/AddProductToWishList?productId=${productId}`,
 		{
 			method: 'POST',
 			credentials: 'include',
@@ -59,7 +55,7 @@ export async function addProductToWishList(productId: string, token: string) {
 }
 
 export async function updateWishList(wishlistItemId: string[], token: string) {
-	const res = await fetch(`${API_URL}/api/WhisList/UpdateWishList`, {
+	const res = await fetch(`${API_URL}/WhisList/UpdateWishList`, {
 		method: 'PUT',
 		credentials: 'include',
 		headers: {
@@ -81,7 +77,7 @@ export async function removeProductFromWishList(
 	token: string
 ) {
 	const res = await fetch(
-		`${API_URL}/api/WhisList/RemoveWishList?whishListItemId=${wishlistItemId}`,
+		`${API_URL}/WhisList/RemoveWishList?whishListItemId=${wishlistItemId}`,
 		{
 			method: 'DELETE',
 			credentials: 'include',

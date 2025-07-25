@@ -1,13 +1,11 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL
+'use server'
 
-// if (process.env.NODE_ENV === 'development') {
-// 	process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
-// }
+const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 export async function codeRequest(email: string) {
 	try {
 		const res = await fetch(
-			`${API_URL}/api/EmailSender/request-confirmation-code`,
+			`${API_URL}/EmailSender/request-confirmation-code`,
 			{
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
@@ -30,7 +28,7 @@ export async function codeRequest(email: string) {
 
 export async function confirmEmail(email: string, code: string, token: string) {
 	try {
-		const res = await fetch(`${API_URL}/api/EmailSender/confirm-email`, {
+		const res = await fetch(`${API_URL}/EmailSender/confirm-email`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ email, code, token }),

@@ -5,16 +5,12 @@ import { revalidatePath } from 'next/cache'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
-// if (process.env.NODE_ENV === 'development') {
-// 	process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
-// }
-
 export async function getAllCategories() {
-	const res = await fetch(`${API_URL}/api/Category/GetAll`, {
+	const res = await fetch(`${API_URL}/Category/GetAll`, {
 		method: 'GET',
 	})
 
-	if (!res.ok) {
+	if (!res.ok && res.status !== 404) {
 		throw new Error(`Failed to fetch categories: ${res.status}`)
 	}
 
@@ -24,7 +20,7 @@ export async function getAllCategories() {
 }
 
 export async function createCategory(formData: FormData, token: string) {
-	const res = await fetch(`${API_URL}/api/Category/Create`, {
+	const res = await fetch(`${API_URL}/Category/Create`, {
 		method: 'POST',
 		headers: { Authorization: `Bearer ${token}` },
 		body: formData,
@@ -39,7 +35,7 @@ export async function createCategory(formData: FormData, token: string) {
 }
 
 export async function updateCategory(formData: FormData, token: string) {
-	const res = await fetch(`${API_URL}/api/Category/Update`, {
+	const res = await fetch(`${API_URL}/Category/Update`, {
 		method: 'PUT',
 		headers: { Authorization: `Bearer ${token}` },
 		body: formData,
@@ -56,7 +52,7 @@ export async function deleteCategory(
 	categoryData: IDeleteCategory,
 	token: string
 ) {
-	const res = await fetch(`${API_URL}/api/Category/Delete`, {
+	const res = await fetch(`${API_URL}/Category/Delete`, {
 		method: 'DELETE',
 		headers: {
 			Authorization: `Bearer ${token}`,

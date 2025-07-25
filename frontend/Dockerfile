@@ -1,5 +1,5 @@
 # Этап 1: сборка
-FROM node:alpine AS builder
+FROM node:22-alpine AS builder
 
 # Рабочая директория в контейнере
 WORKDIR /app
@@ -12,10 +12,9 @@ RUN npm install
 COPY . .
 
 # Собираем проект
+ENV NODE_ENV=production
 RUN npm run build
 
 EXPOSE 3000
-
-ENV NODE_ENV=production
 
 CMD ["npm", "start"]

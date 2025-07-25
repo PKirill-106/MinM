@@ -5,12 +5,8 @@ import { revalidatePath } from 'next/cache'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
-// if (process.env.NODE_ENV === 'development') {
-// 	process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
-// }
-
 export async function getAllDiscounts() {
-	const res = await fetch(`${API_URL}/api/Discount/GetAll`)
+	const res = await fetch(`${API_URL}/Discount/GetAll`)
 
 	if (!res.ok && res.status !== 404)
 		throw new Error(`Discount GET ALL failed: ${res.status}`)
@@ -21,7 +17,7 @@ export async function getAllDiscounts() {
 }
 
 export async function getDiscountById(id: string) {
-	const res = await fetch(`${API_URL}/api/Discount/${id}`)
+	const res = await fetch(`${API_URL}/Discount/${id}`)
 	if (!res.ok) throw new Error(`Discount GET BY ID failed: ${res.status}`)
 
 	const { data } = await res.json()
@@ -33,7 +29,7 @@ export async function createDiscount(
 	discountDate: ICreateDiscount,
 	token: string
 ) {
-	const res = await fetch(`${API_URL}/api/Discount/Create`, {
+	const res = await fetch(`${API_URL}/Discount/Create`, {
 		method: 'POST',
 		credentials: 'include',
 		headers: {
@@ -54,7 +50,7 @@ export async function updateDiscount(
 	discountDate: IUpdateDiscount,
 	token: string
 ) {
-	const res = await fetch(`${API_URL}/api/Discount/Update`, {
+	const res = await fetch(`${API_URL}/Discount/Update`, {
 		method: 'PUT',
 		credentials: 'include',
 		headers: {
