@@ -5,10 +5,8 @@ import { revalidatePath } from 'next/cache'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
-// process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
-
 export async function signUpUser(userData: ISignUpUser) {
-	const res = await fetch(`${API_URL}/api/User/Register`, {
+	const res = await fetch(`${API_URL}/User/Register`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -55,7 +53,7 @@ export async function signInUser(credentials: {
 	email: string
 	password: string
 }) {
-	const res = await fetch(`${API_URL}/api/User/Login`, {
+	const res = await fetch(`${API_URL}/User/Login`, {
 		method: 'POST',
 		credentials: 'include',
 		headers: {
@@ -86,7 +84,7 @@ export async function signInUser(credentials: {
 
 export async function logout(accessToken: string, refreshToken: string) {
 	try {
-		const res = await fetch(`${API_URL}/api/User/Logout`, {
+		const res = await fetch(`${API_URL}/User/Logout`, {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
@@ -120,7 +118,7 @@ export async function logout(accessToken: string, refreshToken: string) {
 }
 
 export async function getUserInfo(token: string) {
-	const res = await fetch(`${API_URL}/api/User/UserInfo`, {
+	const res = await fetch(`${API_URL}/User/UserInfo`, {
 		method: 'GET',
 		credentials: 'include',
 		headers: {
@@ -139,7 +137,7 @@ export async function getUserInfo(token: string) {
 }
 
 export async function updateUserInfo(userData: IUpdateUserInfo, token: string) {
-	const res = await fetch(`${API_URL}/api/User/UpdateInfo`, {
+	const res = await fetch(`${API_URL}/User/UpdateInfo`, {
 		method: 'PUT',
 		credentials: 'include',
 		headers: {
@@ -160,7 +158,7 @@ export async function updateUserInfo(userData: IUpdateUserInfo, token: string) {
 
 export async function refreshTokens(accessToken: string, refreshToken: string) {
 	try {
-		const res = await fetch(`${API_URL}/api/User/RefreshToken`, {
+		const res = await fetch(`${API_URL}/User/RefreshToken`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ accessToken, refreshToken }),

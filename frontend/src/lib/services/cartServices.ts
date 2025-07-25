@@ -4,12 +4,8 @@ import { ICartItem, IUpdateCartItem } from '@/types/Interfaces'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
-// if (process.env.NODE_ENV === 'development') {
-// 	process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
-// }
-
 export async function getAllProductsFromCart(token: string) {
-	const res = await fetch(`${API_URL}/api/CartItem/GetAllCartProducts`, {
+	const res = await fetch(`${API_URL}/CartItem/GetAllCartProducts`, {
 		method: 'GET',
 		credentials: 'include',
 		headers: {
@@ -24,7 +20,7 @@ export async function getAllProductsFromCart(token: string) {
 }
 
 export async function addProductToCart(productData: ICartItem, token: string) {
-	const res = await fetch(`${API_URL}/api/CartItem/AddProductToCart`, {
+	const res = await fetch(`${API_URL}/CartItem/AddProductToCart`, {
 		method: 'POST',
 		credentials: 'include',
 		headers: {
@@ -46,7 +42,7 @@ export async function updateProductInCart(
 	productData: IUpdateCartItem,
 	token: string
 ) {
-	const res = await fetch(`${API_URL}/api/CartItem/UpdateCartItem`, {
+	const res = await fetch(`${API_URL}/CartItem/UpdateCartItem`, {
 		method: 'PUT',
 		credentials: 'include',
 		headers: {
@@ -68,7 +64,7 @@ export async function migrateProductToCart(cartItems: ICartItem[], token: string
 	const das = JSON.stringify(cartItems)
 	console.log(das)
 
-	const res = await fetch(`${API_URL}/api/CartItem/ActualizeCart`, {
+	const res = await fetch(`${API_URL}/CartItem/ActualizeCart`, {
 		method: 'PUT',
 		credentials: 'include',
 		headers: {
@@ -92,7 +88,7 @@ export async function removeProductFromCart(
 ) {
 
 	const res = await fetch(
-		`${API_URL}/api/CartItem/DeleteProductFromCart?itemId=${itemId}`,
+		`${API_URL}/CartItem/DeleteProductFromCart?itemId=${itemId}`,
 		{
 			method: 'DELETE',
 			credentials: 'include',

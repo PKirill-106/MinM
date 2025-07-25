@@ -70,6 +70,8 @@ export const viewport: Viewport = {
 	colorScheme: 'light',
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function RootLayout({
 	children,
 }: Readonly<{
