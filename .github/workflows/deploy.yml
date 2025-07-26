@@ -1,4 +1,4 @@
-name: Deploy to Server
+name: CI/CD Pipeline
 
 on:
   push:
@@ -9,12 +9,33 @@ on:
       - main
 
 jobs:
-  deploy:
-    runs-on: self-hosted
+  ci:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [22.13.0]
 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Run tests
+        run: npm test
+
+  cd:
+    runs-on: self-hosted
+    needs: ci
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
