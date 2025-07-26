@@ -31,11 +31,7 @@ export function useCategoryManagement() {
 	}
 
 	const handleSubmitCategory = useCallback(
-		async (formData: FormData, token: string) => {
-			if (!token) {
-				console.error('[CategoryManagement] No access token')
-				return
-			}
+		async (formData: FormData) => {
 			try {
 				if (modalType === 'create') {
 					await apiFetch(token => createCategory(formData, token))
@@ -54,7 +50,7 @@ export function useCategoryManagement() {
 		[modalType, apiFetch]
 	)
 
-	const handleDeleteCategory = async (categoryId: string, token: string) => {
+	const handleDeleteCategory = async (categoryId: string) => {
 		try {
 			const payload = {
 				categoryId,

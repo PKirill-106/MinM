@@ -46,7 +46,7 @@ export default function DiscountPageClient({
 						))}
 					</ul>
 				) : (
-					<h3>Не створено жодного сезону</h3>
+					<h3>Не створено жодної знижки</h3>
 				)}
 				<Button className='mt-4 w-full rounded-md' onClick={openCreateDiscount}>
 					+
