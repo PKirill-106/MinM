@@ -28,12 +28,7 @@ export function useProductManagement(activeCategorySlug?: string) {
 	}
 
 	const handleSubmitProduct = useCallback(
-		async (formData: FormData, token: string) => {
-			if (!token) {
-				console.error('[ProductManagement] No access token')
-				return
-			}
-
+		async (formData: FormData) => {
 			try {
 				if (modalType === 'create') {
 					await apiFetch(token =>

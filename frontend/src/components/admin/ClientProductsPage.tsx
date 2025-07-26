@@ -53,7 +53,7 @@ export default function ClientProductsPage({ categories }: Props) {
 										<Pencil size={18} />
 									</Button>
 									<AlertOnDelete
-										onClick={() => handleDeleteCategory(cat.id, accessToken)}
+										onClick={() => handleDeleteCategory(cat.id)}
 										name={cat.name}
 										setDeleteOption={setDeleteOption}
 									/>
