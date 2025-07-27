@@ -22,7 +22,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           source: "."
-          target: "/var/www/minm"
+          target: "/var/www/MinM"
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.0
@@ -31,7 +31,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            cd /var/www/minm
+            cd /var/www/MinM
             docker compose down
             docker compose up -d --build
 
