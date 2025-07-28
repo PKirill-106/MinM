@@ -45,7 +45,7 @@ services:
       test:
         [
           'CMD-SHELL',
-          'wget -qO- http://localhost:${BACKEND_PORT}/health || exit 1',
+          'curl -f http://localhost:${BACKEND_PORT}/health || exit 1',
         ]
       interval: 5s
       timeout: 5s
@@ -69,12 +69,6 @@ services:
       - backend
     networks:
       - production
-    healthcheck:
-      test: ['CMD-SHELL', 'curl -f http://localhost:${FRONTEND_PORT} || exit 1']
-      interval: 5s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
 
   nginx:
     image: nginx:alpine
@@ -82,27 +76,17 @@ services:
     ports:
       - '${NGINX_PORT}:${NGINX_PORT}'
     volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx:/etc/nginx/conf.d
     depends_on:
-      frontend:
-        condition: service_healthy
       backend:
         condition: service_healthy
     restart: unless-stopped
+    environment:
+      SERVER_NAME: ${SERVER_NAME}
     env_file:
       - .env
     networks:
       - production
-    healthcheck:
-      test:
-        [
-          'CMD-SHELL',
-          'curl -f http://localhost:${NGINX_PORT}/health-check || exit 1',
-        ]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
 
 volumes:
   pgdata:
