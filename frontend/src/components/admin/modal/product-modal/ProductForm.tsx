@@ -33,7 +33,7 @@ export default function ProductForm({
 	setSelectedColors,
 }: IProductForm) {
 	const addVariant = () =>
-		setVariants([...variants, { name: '', price: 0, unitsInStock: 0 }])
+		setVariants([...variants, { name: 0, price: 0, unitsInStock: 0 }])
 
 	return (
 		<div className='flex flex-col gap-4'>

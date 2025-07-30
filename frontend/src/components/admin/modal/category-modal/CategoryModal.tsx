@@ -36,27 +36,29 @@ export default function CategoryModal({
 	const fileInputRef = useRef<HTMLInputElement>(null)
 
 	useEffect(() => {
-		if (isUpdate && categoryData) {
-			setName(categoryData.name)
-			setDescription(categoryData.description || 'Опис')
-			setParentCategoryId(categoryData.parentCategoryId || '')
-			setImageFile(null)
-			setImagePreview(categoryData.imageURL || '')
-		} else {
-			setName('')
-			setDescription('Опис')
-			if (activeCategory?.id) {
-				setParentCategoryId(activeCategory.id)
+		if (isOpen) {
+			if (isUpdate && categoryData) {
+				setName(categoryData.name)
+				setDescription(categoryData.description || 'Опис')
+				setParentCategoryId(categoryData.parentCategoryId || '')
+				setImageFile(null)
+				setImagePreview(categoryData.imageURL || '')
 			} else {
-				setParentCategoryId('')
-			}
-			setImageFile(null)
-			setImagePreview('')
-			if (fileInputRef.current) {
-				fileInputRef.current.value = ''
+				setName('')
+				setDescription('Опис')
+				if (activeCategory?.id) {
+					setParentCategoryId(activeCategory.id)
+				} else {
+					setParentCategoryId('')
+				}
+				setImageFile(null)
+				setImagePreview('')
+				if (fileInputRef.current) {
+					fileInputRef.current.value = ''
+				}
 			}
 		}
-	}, [isUpdate, categoryData, isOpen, onClose, onSubmit])
+	}, [isUpdate, isOpen])
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0]

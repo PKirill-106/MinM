@@ -242,7 +242,7 @@ export interface IUpdateSeason {
 // Product
 export interface IProductVariant {
 	id: string
-	name: string
+	name: number
 	price: number
 	discountPrice: number
 	unitsInStock: number
@@ -275,7 +275,7 @@ export interface IProduct {
 }
 
 export interface ICreateProductVariant {
-	name: string
+	name: number
 	price: number
 	unitsInStock: number
 }

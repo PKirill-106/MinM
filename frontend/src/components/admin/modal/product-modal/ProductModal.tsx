@@ -43,7 +43,7 @@ export default function ProductModal({
 	const [parentCatId, setParentCatId] = useState('')
 	const [categoryId, setCategoryId] = useState('')
 	const [variants, setVariants] = useState<ICreateProductVariant[]>([
-		{ name: '', price: 0, unitsInStock: 0 },
+		{ name: 0, price: 0, unitsInStock: 0 },
 	])
 	const [images, setImages] = useState<IProductImage[]>([])
 	const [selectedColors, setSelectedColors] = useState<IProductColor[]>([])
@@ -53,33 +53,35 @@ export default function ProductModal({
 		c => c.parentCategoryId === parentCatId
 	)
 	useEffect(() => {
-		if (isUpdate && productData) {
-			setName(productData.name)
-			try {
-				const parsed = JSON.parse(productData.description)
-				setDescriptionDelta(parsed)
-			} catch {
-				setDescriptionDelta(productData.description)
+		if (isOpen) {
+			if (isUpdate && productData) {
+				setName(productData.name)
+				try {
+					const parsed = JSON.parse(productData.description)
+					setDescriptionDelta(parsed)
+				} catch {
+					setDescriptionDelta(productData.description)
+				}
+
+				setSku(productData.sku)
+
+				setVariants(productData.productVariants as ICreateProductVariant[])
+				setImages(productData.productImages)
+				setSelectedColors(productData.colors || [])
+			} else {
+				setName('')
+				setDescriptionDelta('')
+				setSku('')
+				setVariants([{ name: 0, price: 0, unitsInStock: 0 }])
+				setImages([])
+				setSelectedColors([])
 			}
-
-			setSku(productData.sku)
-
-			setVariants(productData.productVariants as ICreateProductVariant[])
-			setImages(productData.productImages)
-			setSelectedColors(productData.colors || [])
-		} else {
-			setName('')
-			setDescriptionDelta('')
-			setSku('')
-			setVariants([{ name: '', price: 0, unitsInStock: 0 }])
-			setImages([])
-			setSelectedColors([])
+			setCategoryId(activeCategory.id)
+			if (activeCategory.parentCategoryId) {
+				setParentCatId(activeCategory.parentCategoryId)
+			}
 		}
-		setCategoryId(activeCategory.id)
-		if (activeCategory.parentCategoryId) {
-			setParentCatId(activeCategory.parentCategoryId)
-		}
-	}, [isUpdate, productData, isOpen, onClose, activeCategory])
+	}, [isUpdate, isOpen])
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files) {
@@ -171,7 +173,23 @@ export default function ProductModal({
 		[]
 	)
 
-	const isValid = name && sku && categoryId && variants.length > 0
+	const isValidDescription =
+		typeof descriptionDelta === 'string'
+			? descriptionDelta.trim().length > 0
+			: !!descriptionDelta?.ops?.some((op: any) => op.insert?.trim?.())
+
+	const isValidVariants = variants.every(
+		v => v.name > 0 && v.price > 0 && v.unitsInStock > 0
+	)
+
+	const isValid =
+		name.trim().length > 0 &&
+		sku.trim().length > 0 &&
+		categoryId.trim().length > 0 &&
+		isValidDescription &&
+		isValidVariants &&
+		images.length > 0
+
 
 	return (
 		<Modal isOpen={isOpen} onClose={onClose} isInput={true}>
