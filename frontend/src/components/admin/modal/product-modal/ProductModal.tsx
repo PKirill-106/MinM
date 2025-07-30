@@ -33,6 +33,7 @@ export default function ProductModal({
 	categories,
 	accessToken,
 	colors,
+	isLoading,
 }: IProductModal) {
 	const isUpdate = type === 'update'
 
@@ -209,10 +210,19 @@ export default function ProductModal({
 				/>
 
 				<div className='flex justify-end gap-2 pt-4'>
-					<Button variant='outline' type='button' onClick={onClose}>
+					<Button
+						disabled={isLoading}
+						variant='outline'
+						type='button'
+						onClick={onClose}
+					>
 						Скасувати
 					</Button>
-					<Button type='button' disabled={!isValid} onClick={handleSubmit}>
+					<Button
+						type='button'
+						disabled={!isValid || isLoading}
+						onClick={handleSubmit}
+					>
 						{isUpdate ? 'Зберегти' : 'Створити'}
 					</Button>
 				</div>

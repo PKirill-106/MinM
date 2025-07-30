@@ -14,6 +14,7 @@ export function useProductManagement(activeCategorySlug?: string) {
 	const [isProductModalOpen, setProductModalOpen] = useState(false)
 	const [modalType, setModalType] = useState<'create' | 'update'>('create')
 	const [editingProduct, setEditingProduct] = useState<IProduct | null>(null)
+	const [isProductLoading, setIsProductLoading] = useState(false)
 
 	const openCreateProduct = () => {
 		setModalType('create')
@@ -29,6 +30,7 @@ export function useProductManagement(activeCategorySlug?: string) {
 
 	const handleSubmitProduct = useCallback(
 		async (formData: FormData) => {
+			setIsProductLoading(true)
 			try {
 				if (modalType === 'create') {
 					await apiFetch(token =>
@@ -46,6 +48,8 @@ export function useProductManagement(activeCategorySlug?: string) {
 			} catch (err) {
 				toast.error('Сталася помилка')
 				console.error('[ProductManagement] Submit failed:', err)
+			} finally {
+				setIsProductLoading(false)
 			}
 		},
 		[modalType, activeCategorySlug]
@@ -67,6 +71,7 @@ export function useProductManagement(activeCategorySlug?: string) {
 		isProductModalOpen,
 		modalType,
 		editingProduct,
+		isProductLoading,
 		openCreateProduct,
 		openEditProduct,
 		handleSubmitProduct,

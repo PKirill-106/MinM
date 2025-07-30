@@ -20,6 +20,7 @@ export interface IProductModal {
 	categories: ICategory[]
 	accessToken: string
 	colors: IProductColor[]
+	isLoading: boolean
 }
 export interface IColorSelector {
 	colors: IProductColor[]
@@ -74,6 +75,7 @@ export interface ICategoryModal {
 	categoryData?: ICategory
 	activeCategory?: ICategory
 	categories: ICategory[]
+	isLoading: boolean
 }
 export interface IAlertOnDelete {
 	onClick: () => void
