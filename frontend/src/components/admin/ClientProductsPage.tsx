@@ -17,6 +17,7 @@ export default function ClientProductsPage({ categories }: Props) {
 		isCategoryModalOpen,
 		modalType,
 		editingCategory,
+		isCategoryLoading,
 		openCreateCategory,
 		openEditCategory,
 		handleSubmitCategory,
@@ -78,6 +79,7 @@ export default function ClientProductsPage({ categories }: Props) {
 				accessToken={accessToken}
 				categoryData={editingCategory || undefined}
 				categories={categories}
+				isLoading={isCategoryLoading}
 			/>
 		</div>
 	)

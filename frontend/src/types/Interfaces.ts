@@ -158,8 +158,13 @@ export interface ICreateCategory {
 	image: File | string
 }
 
-export interface IUpdateCategory extends ICreateCategory {
+export interface IUpdateCategory {
 	id: string
+	name: string
+	description: string
+	parentCategoryId?: string
+	existingImageURL?: string
+	newImage: File | string
 }
 
 export interface IDeleteCategory {
@@ -279,8 +284,10 @@ export interface ICreateProduct {
 	description: string
 	productVariantsJson: string
 	categoryId: string
+	productColorsJson: string
 	sku: string
 	images: (File | string)[]
+	imageSequenceNumbers: number[]
 }
 
 export interface IUpdateProduct extends ICreateProduct {

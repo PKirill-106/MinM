@@ -35,6 +35,7 @@ export async function createCategory(formData: FormData, token: string) {
 }
 
 export async function updateCategory(formData: FormData, token: string) {
+	console.log(formData)
 	const res = await fetch(`${API_URL}/Category/Update`, {
 		method: 'PUT',
 		headers: { Authorization: `Bearer ${token}` },

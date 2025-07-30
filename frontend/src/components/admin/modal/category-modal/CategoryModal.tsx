@@ -7,8 +7,13 @@ import { Textarea } from '@/components/UI/textarea'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { ICategoryModal } from '../../interface'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/UI/select'
-
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/UI/select'
 
 export default function CategoryModal({
 	type,
@@ -19,6 +24,7 @@ export default function CategoryModal({
 	categoryData,
 	activeCategory,
 	categories,
+	isLoading,
 }: ICategoryModal) {
 	const isUpdate = type === 'update'
 
@@ -82,7 +88,11 @@ export default function CategoryModal({
 		}
 
 		if (imageFile) {
-			formData.append('image', imageFile)
+			if (isUpdate) {
+				formData.append('newImage', imageFile)
+			} else {
+				formData.append('image', imageFile)
+			}
 		}
 
 		onSubmit(formData, accessToken)
@@ -176,10 +186,19 @@ export default function CategoryModal({
 				</div>
 
 				<div className='flex justify-end gap-2 pt-4'>
-					<Button variant='outline' type='button' onClick={onClose}>
+					<Button
+						disabled={isLoading}
+						variant='outline'
+						type='button'
+						onClick={onClose}
+					>
 						Скасувати
 					</Button>
-					<Button type='button' disabled={!isValid} onClick={handleSubmit}>
+					<Button
+						type='button'
+						disabled={!isValid || isLoading}
+						onClick={handleSubmit}
+					>
 						{isUpdate ? 'Зберегти' : 'Створити'}
 					</Button>
 				</div>

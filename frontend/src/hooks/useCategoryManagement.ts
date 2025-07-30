@@ -17,6 +17,7 @@ export function useCategoryManagement() {
 	const [deleteOption, setDeleteOption] = useState<
 		'CascadeDelete' | 'ReassignToParent' | 'Orphan' | null
 	>(null)
+	const [isCategoryLoading, setCategoryIsLoading] = useState(false)
 
 	const openCreateCategory = () => {
 		setModalType('create')
@@ -32,6 +33,7 @@ export function useCategoryManagement() {
 
 	const handleSubmitCategory = useCallback(
 		async (formData: FormData) => {
+			setCategoryIsLoading(true)
 			try {
 				if (modalType === 'create') {
 					await apiFetch(token => createCategory(formData, token))
@@ -45,6 +47,8 @@ export function useCategoryManagement() {
 			} catch (err) {
 				toast.error('Сталася помилка')
 				console.error('[CategoryManagement] Submit failed:', err)
+			} finally {
+				setCategoryIsLoading(false)
 			}
 		},
 		[modalType, apiFetch]
@@ -69,6 +73,7 @@ export function useCategoryManagement() {
 		modalType,
 		editingCategory,
 		deleteOption,
+		isCategoryLoading,
 		openCreateCategory,
 		openEditCategory,
 		handleSubmitCategory,

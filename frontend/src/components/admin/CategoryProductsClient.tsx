@@ -49,6 +49,7 @@ export default function CategoryProductsClient({
 		isProductModalOpen,
 		modalType: productModalType,
 		editingProduct,
+		isProductLoading,
 		openCreateProduct,
 		openEditProduct,
 		handleSubmitProduct,
@@ -60,6 +61,7 @@ export default function CategoryProductsClient({
 		isCategoryModalOpen,
 		modalType: categoryModalType,
 		editingCategory,
+		isCategoryLoading,
 		openCreateCategory,
 		openEditCategory,
 		handleSubmitCategory,
@@ -134,6 +136,7 @@ export default function CategoryProductsClient({
 				categories={categories}
 				accessToken={accessToken}
 				colors={colors}
+				isLoading={isProductLoading}
 			/>
 			<CategoryModal
 				type={categoryModalType}
@@ -144,6 +147,7 @@ export default function CategoryProductsClient({
 				categoryData={editingCategory || undefined}
 				activeCategory={activeCategory}
 				categories={categories}
+				isLoading={isCategoryLoading}
 			/>
 		</div>
 	)
