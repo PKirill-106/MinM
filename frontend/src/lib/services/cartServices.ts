@@ -60,11 +60,7 @@ export async function updateProductInCart(
 	return data
 }
 
-export async function migrateProductToCart(cartItems: ICartItem[], token: string) {
-	const das = JSON.stringify(cartItems)
-	console.log(das)
-
-	const res = await fetch(`${API_URL}/CartItem/ActualizeCart`, {
+export async function migrateProductToCart(cartItems: ICartItem[], token: string) {const res = await fetch(`${API_URL}/CartItem/ActualizeCart`, {
 		method: 'PUT',
 		credentials: 'include',
 		headers: {

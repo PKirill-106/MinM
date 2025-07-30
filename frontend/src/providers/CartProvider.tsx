@@ -77,8 +77,6 @@ export default function CartProvider({
 			)
 
 			if (toMigrate.length > 0) {
-				console.log('localCart: ', localCart)
-				console.log('toMigrate: ', toMigrate)
 				await apiFetch(token => migrateProductToCart(toMigrate, token))
 			}
 
