@@ -60,7 +60,11 @@ export async function updateProductInCart(
 	return data
 }
 
-export async function migrateProductToCart(cartItems: ICartItem[], token: string) {const res = await fetch(`${API_URL}/CartItem/ActualizeCart`, {
+export async function migrateProductToCart(
+	cartItems: ICartItem[],
+	token: string
+) {
+	const res = await fetch(`${API_URL}/CartItem/ActualizeCart`, {
 		method: 'PUT',
 		credentials: 'include',
 		headers: {
@@ -78,11 +82,7 @@ export async function migrateProductToCart(cartItems: ICartItem[], token: string
 	return data
 }
 
-export async function removeProductFromCart(
-	itemId: string,
-	token: string
-) {
-
+export async function removeProductFromCart(itemId: string, token: string) {
 	const res = await fetch(
 		`${API_URL}/CartItem/DeleteProductFromCart?itemId=${itemId}`,
 		{
