@@ -100,7 +100,10 @@ export default function CategoryModal({
 		onSubmit(formData, accessToken)
 	}
 
-	const isValid = name.trim().length > 0
+	const isValid =
+		name.trim().length > 0 &&
+		description.trim().length > 0 &&
+		(imageFile !== null || imagePreview.length > 0)
 
 	return (
 		<Modal isOpen={isOpen} onClose={onClose} isInput>

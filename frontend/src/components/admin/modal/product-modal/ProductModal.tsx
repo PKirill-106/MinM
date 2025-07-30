@@ -176,7 +176,9 @@ export default function ProductModal({
 	const isValidDescription =
 		typeof descriptionDelta === 'string'
 			? descriptionDelta.trim().length > 0
-			: !!descriptionDelta?.ops?.some((op: any) => op.insert?.trim?.())
+			: descriptionDelta?.ops?.some(
+					(op: any) => op.insert && op.insert.trim?.().length > 0
+			  ) || false
 
 	const isValidVariants = variants.every(
 		v => v.name > 0 && v.price > 0 && v.unitsInStock > 0
