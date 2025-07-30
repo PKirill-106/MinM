@@ -11,10 +11,9 @@ interface IFormInput {
 
 export default function FormInput(props: IFormInput) {
 	return (
-		<div className='' >
+		<div>
 			<span className='mb-2'>{props.title}</span>
 			<Input
-				type={typeof props.value === 'number' ? 'number' : 'text' }
 				value={props.value}
 				onChange={props.onChange}
 				placeholder={props.placeholder}
