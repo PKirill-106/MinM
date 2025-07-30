@@ -55,7 +55,7 @@ export default function CategoryProductsClient({
 		handleSubmitProduct,
 		handleDeleteProduct,
 		setProductModalOpen,
-	} = useProductManagement(activeCategory?.slug)
+	} = useProductManagement(activeCategory?.slug, products)
 
 	const {
 		isCategoryModalOpen,
@@ -68,7 +68,7 @@ export default function CategoryProductsClient({
 		handleDeleteCategory,
 		setCategoryModalOpen,
 		setDeleteOption,
-	} = useCategoryManagement()
+	} = useCategoryManagement(categories)
 
 	return (
 		<div>

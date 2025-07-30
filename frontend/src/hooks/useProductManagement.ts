@@ -1,14 +1,17 @@
-import { useState, useCallback } from 'react'
-import { IProduct, IDeleteProduct } from '@/types/Interfaces'
 import {
 	createProduct,
-	updateProduct,
 	deleteProduct,
+	updateProduct,
 } from '@/lib/services/productServices'
+import { IDeleteProduct, IProduct } from '@/types/Interfaces'
+import { useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useApi } from './useApi'
 
-export function useProductManagement(activeCategorySlug?: string) {
+export function useProductManagement(
+	activeCategorySlug?: string,
+	products?: IProduct[]
+) {
 	const { apiFetch } = useApi()
 
 	const [isProductModalOpen, setProductModalOpen] = useState(false)
@@ -31,6 +34,18 @@ export function useProductManagement(activeCategorySlug?: string) {
 	const handleSubmitProduct = useCallback(
 		async (formData: FormData) => {
 			setIsProductLoading(true)
+			const name = formData.get('Name')?.toString().trim().toLowerCase()
+
+			const nameAlreadyExists = products!.some(
+				product => product.name.toLowerCase() === name
+			)
+			
+			if (nameAlreadyExists && modalType === 'create') {
+				toast.error('Продукт з такою назвою вже існує')
+				setIsProductLoading(false)
+				return
+			}
+
 			try {
 				if (modalType === 'create') {
 					await apiFetch(token =>

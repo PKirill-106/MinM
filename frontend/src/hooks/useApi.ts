@@ -45,7 +45,7 @@ export function useApi() {
 						const refreshed = await refreshPromise
 						token = refreshed.accessToken
 
-						return await request(token) // Повторяем запрос с новым токеном
+						return await request(token)
 					} catch (refreshError) {
 						console.error('[useApi] Token refresh failed:', refreshError)
 						await signOut({ redirect: true })

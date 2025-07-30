@@ -8,7 +8,7 @@ import {
 import toast from 'react-hot-toast'
 import { useApi } from './useApi'
 
-export function useCategoryManagement() {
+export function useCategoryManagement(categories?: ICategory[]) {
 	const { apiFetch } = useApi()
 
 	const [isCategoryModalOpen, setCategoryModalOpen] = useState(false)
@@ -34,6 +34,19 @@ export function useCategoryManagement() {
 	const handleSubmitCategory = useCallback(
 		async (formData: FormData) => {
 			setCategoryIsLoading(true)
+
+			const name = formData.get('name')?.toString().trim().toLowerCase()
+
+			const nameAlreadyExists = categories!.some(
+				category => category.name.toLowerCase() === name
+			)
+
+			if (nameAlreadyExists && modalType === 'create') {
+				toast.error('Категорія з такою назвою вже існує')
+				setCategoryIsLoading(false)
+				return
+			}
+
 			try {
 				if (modalType === 'create') {
 					await apiFetch(token => createCategory(formData, token))

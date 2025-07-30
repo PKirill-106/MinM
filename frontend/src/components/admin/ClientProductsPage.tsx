@@ -24,7 +24,7 @@ export default function ClientProductsPage({ categories }: Props) {
 		handleDeleteCategory,
 		setCategoryModalOpen,
 		setDeleteOption,
-	} = useCategoryManagement()
+	} = useCategoryManagement(categories)
 
 	const { data: session } = useSession()
 	const accessToken = (session as any)?.accessToken as string
