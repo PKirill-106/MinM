@@ -1,6 +1,13 @@
 'use client'
 
-import { createContext, useContext, useEffect, useRef, useState } from 'react'
+import {
+	createContext,
+	useCallback,
+	useContext,
+	useEffect,
+	useRef,
+	useState,
+} from 'react'
 import { useSession } from 'next-auth/react'
 import { getLocalFavorites, saveLocalFavorites } from '@/lib/localFavorites'
 import { IFavoritesContext, IProduct } from '@/types/Interfaces'
@@ -27,7 +34,7 @@ export const FavoritesProvider = ({
 
 	const isAuthenticated = !!session?.user
 
-	const loadFavorites = async () => {
+	const loadFavorites = useCallback(async () => {
 		if (isAuthenticated) {
 			try {
 				const serverFavorites = await apiFetch(token =>
@@ -41,9 +48,9 @@ export const FavoritesProvider = ({
 		} else {
 			setFavorites(getLocalFavorites())
 		}
-	}
+	}, [favorites, favCount, session, status, isAuthenticated, hasMigrated])
 
-	const migrateFavorites = async () => {
+	const migrateFavorites = useCallback(async () => {
 		if (status !== 'authenticated' || hasMigrated.current) return
 
 		const localFavorites = getLocalFavorites()
@@ -83,7 +90,7 @@ export const FavoritesProvider = ({
 		} catch (err) {
 			console.error('Migration failed:', err)
 		}
-	}
+	}, [session, status, isAuthenticated, hasMigrated])
 
 	useEffect(() => {
 		loadFavorites()

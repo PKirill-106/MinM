@@ -18,6 +18,7 @@ import {
 import { useSession } from 'next-auth/react'
 import React, {
 	createContext,
+	useCallback,
 	useContext,
 	useEffect,
 	useRef,
@@ -40,7 +41,7 @@ export default function CartProvider({
 	const { apiFetch } = useApi()
 	const isAuthenticated = !!session?.user
 
-	const loadCart = async () => {
+	const loadCart = useCallback(async () => {
 		if (isAuthenticated) {
 			try {
 				const serverCart: IGetCartItem[] = await apiFetch(token =>
@@ -53,9 +54,9 @@ export default function CartProvider({
 		} else {
 			setCartProducts(getLocalCart())
 		}
-	}
+	}, [cartProducts, cartCount, session, status, isAuthenticated, hasMigrated])
 
-	const migrateCart = async () => {
+	const migrateCart = useCallback(async () => {
 		if (status !== 'authenticated' || hasMigrated.current) return
 
 		const localCart = getLocalCart()
@@ -87,7 +88,7 @@ export default function CartProvider({
 		} catch (err) {
 			console.error('Cart migration failed:', err)
 		}
-	}
+	}, [session, status, isAuthenticated, hasMigrated])
 
 	useEffect(() => {
 		loadCart()
