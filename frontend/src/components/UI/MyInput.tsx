@@ -20,7 +20,7 @@ export default function Input({ text }: IInputProps) {
 		} else {
 			params.set(id, 'true')
 		}
-		params.delete('page') // reset page to 1 on filter change
+		params.delete('page')
 		router.push(`${pathname}?${params.toString()}`)
 	}, [id, isChecked, pathname, router, searchParams])
 

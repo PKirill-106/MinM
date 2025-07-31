@@ -367,6 +367,7 @@ export interface ISelectProps {
 	onSelect?: (id: string) => void
 	activeSlug?: string
 	activeId?: string
+	createColorSlug?: (colorName: string) => string
 }
 
 export interface ITooltipProps {

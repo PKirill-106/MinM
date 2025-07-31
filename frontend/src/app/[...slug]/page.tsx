@@ -5,6 +5,7 @@ import { ICategory, IProduct } from '@/types/Interfaces'
 import { Metadata } from 'next'
 import ProductFilters from '../../components/filters/ProductFilters'
 import PaginationControls from '../../components/PaginationControls'
+import { slugify, transliterate } from 'transliteration'
 
 type PageProps = {
 	params: Promise<{ slug?: string[] }>
@@ -14,6 +15,7 @@ type PageProps = {
 		akciya?: string
 		novinki?: string
 		page?: string
+		color?: string
 	}>
 }
 
@@ -65,7 +67,13 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
 	const page = parseInt((await searchParams).page || '1', 10)
 
 	const { slug = [] } = await params
-	const { sort = 'suggested', sezon, akciya, novinki } = await searchParams
+	const {
+		sort = 'suggested',
+		sezon,
+		akciya,
+		novinki,
+		color,
+	} = await searchParams
 
 	const categorySlug = slug[1] ?? null
 	const subcategorySlug = slug[2] ?? null
@@ -103,6 +111,12 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
 
 	if (novinki) {
 		filteredProducts = filteredProducts.filter(p => p.isNew)
+	}
+
+	if (color) {
+		filteredProducts = filteredProducts.filter(p =>
+			p.colors.some(c => slugify(transliterate(c.name)) === color)
+		)
 	}
 
 	const sortProducts = (products: IProduct[], sort: string): IProduct[] => {

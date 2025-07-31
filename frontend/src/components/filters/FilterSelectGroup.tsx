@@ -3,7 +3,7 @@ import Select from '@/components/UI/MySelect'
 import { IFilterSelectGroup } from '@/types/Interfaces'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { slugify } from 'transliteration'
+import { slugify, transliterate } from 'transliteration'
 
 export default function FilterSelectGroup({
 	categories,
@@ -14,6 +14,22 @@ export default function FilterSelectGroup({
 	const router = useRouter()
 	const searchParams = useSearchParams()
 	const currentSort = searchParams.get('sort') || 'suggested'
+	const currentColor = searchParams.get('color') || ''
+
+	const createColorSlug = (colorName: string): string => {
+		const transliterated = transliterate(colorName)
+		return slugify(transliterated)
+	}
+
+	const handleColorSelect = useCallback(
+		(colorSlug: string) => {
+			const currentPath = window.location.pathname
+			const url = new URLSearchParams(window.location.search)
+			url.set('color', colorSlug)
+			router.push(`${currentPath}?${url.toString()}`)
+		},
+		[router]
+	)
 
 	const handleSortSelect = useCallback(
 		(sortId: string) => {
@@ -102,8 +118,9 @@ export default function FilterSelectGroup({
 				variant='color'
 				options={colors}
 				defaultValue='Колір'
-				onSelect={handleSortSelect}
-				activeId={currentSort}
+				onSelect={handleColorSelect}
+				activeId={currentColor}
+				createColorSlug={createColorSlug}
 			/>
 			<div className='md:ml-auto'>
 				<Select

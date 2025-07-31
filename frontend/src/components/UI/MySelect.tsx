@@ -1,6 +1,7 @@
 'use client'
 import { ICategory, ISelectProps } from '@/types/Interfaces'
 import { ChevronRight } from 'lucide-react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 type SelectOption = {
@@ -17,10 +18,14 @@ export default function Select({
 	onSelect,
 	activeSlug,
 	activeId,
+	createColorSlug,
 }: ISelectProps) {
 	const [selected, setSelected] = useState<string | null>(null)
 	const [isOpen, setIsOpen] = useState<boolean>(false)
 	const selectRef = useRef<HTMLDivElement>(null)
+	const searchParams = useSearchParams()
+	const router = useRouter()
+	const pathname = usePathname()
 
 	const handleClickOutside = useCallback((event: MouseEvent) => {
 		if (
@@ -58,6 +63,13 @@ export default function Select({
 			if (match) {
 				setSelected(match.name)
 			}
+		} else if (activeId && variant === 'color') {
+			const match = options.find(opt => createColorSlug!(opt.name) === activeId)
+			if (match) {
+				setSelected(match.name)
+			}
+		} else if (variant === 'color') {
+			setSelected(null)
 		}
 	}, [activeSlug, activeId, options, variant])
 
@@ -81,10 +93,20 @@ export default function Select({
 					{ id: 'popular', name: 'Популярні' },
 				]
 			case 'color':
-				return options.map(opt => ({
+				const baseOptions = options.map(opt => ({
+					id: createColorSlug!(opt.name),
 					name: opt.name,
 					colorHex: 'colorHex' in opt ? opt.colorHex : undefined,
 				}))
+
+				if (activeId) {
+					return [
+						{ id: '', name: 'Очистити фільтр', colorHex: undefined },
+						...baseOptions,
+					]
+				}
+				return baseOptions
+
 			default:
 				return []
 		}
@@ -100,13 +122,32 @@ export default function Select({
 		(option: SelectOption) => {
 			setIsOpen(false)
 			setSelected(option.name)
+
+			const params = new URLSearchParams(searchParams.toString())
+			params.delete('page')
+
+			if (variant === 'color') {
+				if (option.name === 'Очистити фільтр') {
+					params.delete('color')
+				} else {
+					const colorSlug = createColorSlug!(option.name)
+					params.set('color', colorSlug)
+					onSelect?.(colorSlug)
+				}
+				const newUrl = params.toString()
+					? `${pathname}?${params.toString()}`
+					: pathname
+
+				router.push(newUrl)
+				return
+			}
+
 			if (option.id) {
 				onSelect?.(option.id)
 			}
 		},
-		[onSelect]
+		[onSelect, variant, searchParams, router, pathname, createColorSlug]
 	)
-
 
 	return (
 		<div
