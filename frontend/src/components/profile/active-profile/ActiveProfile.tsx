@@ -44,15 +44,19 @@ export default function ActiveProfile({
 
 	const handleSave = async () => {
 		if (!formData) return
-		const safeData: IUpdateUserInfo = {
-			...formData,
-			addressDto: {
-				...formData.addressDto,
-				country: formData.addressDto.country?.trim()
-					? formData.addressDto.country
-					: 'Україна',
-			},
+		if (formData.phoneNumber.length === 0) {
+			toast.error('Впишіть номер телефону')
+			return
 		}
+			const safeData: IUpdateUserInfo = {
+				...formData,
+				addressDto: {
+					...formData.addressDto,
+					country: formData.addressDto.country?.trim()
+						? formData.addressDto.country
+						: 'Україна',
+				},
+			}
 
 		await apiFetch(token => updateUserInfo(safeData, token))
 		toast.success('Інформацію збережено')
