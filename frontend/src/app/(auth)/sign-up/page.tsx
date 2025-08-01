@@ -7,6 +7,7 @@ import { Input } from '@/components/UI/input'
 import { Label } from '@/components/UI/label'
 import { codeRequest } from '@/lib/services/emailServices'
 import { signUpUser } from '@/lib/services/userServices'
+import { Eye, EyeOff } from 'lucide-react'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -25,6 +26,9 @@ export default function SignUpPage() {
 	const [passwordError, setPasswordError] = useState<string | null>(null)
 	const [showEmailConfirm, setShowEmailConfirm] = useState<boolean>(false)
 	const [emailToken, setEmailToken] = useState<string | null>(null)
+	const [showPassword, setShowPassword] = useState<boolean>(false)
+	const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false)
+	const [isClicked, setIsClicked] = useState<boolean>(false)
 
 	const {
 		register,
@@ -35,12 +39,14 @@ export default function SignUpPage() {
 	} = useForm<SignUpForm>()
 
 	const onSubmit = async (data: SignUpForm) => {
+		setIsClicked(true)
 		setPasswordError(null)
 		if (data.password !== data.confirmPassword) {
 			setError('confirmPassword', {
 				type: 'manual',
 				message: 'Паролі не збігаються',
 			})
+			setIsClicked(false)
 			return
 		}
 
@@ -71,6 +77,8 @@ export default function SignUpPage() {
 					message: msg,
 				})
 			}
+		} finally {
+			setIsClicked(false)
 		}
 	}
 
@@ -108,6 +116,7 @@ export default function SignUpPage() {
 					</CardHeader>
 					<CardContent>
 						<form
+							noValidate
 							onSubmit={handleSubmit(onSubmit)}
 							className='space-y-4 text-foreground'
 						>
@@ -126,7 +135,7 @@ export default function SignUpPage() {
 										},
 									})}
 								/>
-								{errors.email && (
+								{errors.email && isClicked && (
 									<p className='text-sm text-accent mt-1'>
 										{errors.email.message}
 									</p>
@@ -134,24 +143,41 @@ export default function SignUpPage() {
 							</div>
 							<div>
 								<Label htmlFor='password'>Пароль</Label>
-								<Input
-									id='password'
-									type='password'
-									placeholder='Введіть пароль...'
-									autoComplete='current-password'
-									{...register('password', {
-										required: 'Ви забули ввести пароль',
-										minLength: {
-											value: 8,
-											message:
-												'Має містити: мінімум 8 символів, 1 цифру, 1 велику літеру, 1 спецсимвол',
-										},
-										onChange: () => setPasswordError(null),
-									})}
-								/>
+								<div className='relative'>
+									<Input
+										id='password'
+										type={showPassword ? 'text' : 'password'}
+										placeholder='Введіть пароль...'
+										autoComplete='current-password'
+										{...register('password', {
+											required: 'Ви забули ввести пароль',
+											minLength: {
+												value: 8,
+												message:
+													'Має містити: мінімум 8 символів, 1 цифру, 1 велику літеру, 1 спецсимвол',
+											},
+											onChange: () => setPasswordError(null),
+										})}
+									/>
+									<Button
+										variant='link'
+										type='button'
+										className='absolute right-0 top-1/2 -translate-y-1/2'
+										onClick={e => {
+											e.preventDefault()
+											setShowPassword(!showPassword)
+										}}
+									>
+										{showPassword ? (
+											<EyeOff className='h-4 w-4' />
+										) : (
+											<Eye className='h-4 w-4' />
+										)}
+									</Button>
+								</div>
 								<p
 									className={`text-xs mt-1 ${
-										errors.password && !passwordError
+										errors.password && isClicked && !passwordError
 											? 'text-accent'
 											: 'text-transparent-text'
 									}`}
@@ -162,17 +188,34 @@ export default function SignUpPage() {
 							</div>
 							<div>
 								<Label htmlFor='confirmPassword'>Підтвердіть пароль</Label>
-								<Input
-									id='confirmPassword'
-									type='password'
-									placeholder='Введіть пароль ще раз)'
-									{...register('confirmPassword', {
-										required: 'Будь ласка, підтвердіть пароль',
-										validate: value =>
-											value === watch('password') || 'Паролі не збігаються',
-									})}
-								/>
-								{errors.confirmPassword && (
+								<div className='relative'>
+									<Input
+										id='confirmPassword'
+										type={showConfirmPassword ? 'text' : 'password'}
+										placeholder='Введіть пароль ще раз)'
+										{...register('confirmPassword', {
+											required: 'Будь ласка, підтвердіть пароль',
+											validate: value =>
+												value === watch('password') || 'Паролі не збігаються',
+										})}
+									/>
+									<Button
+										variant='link'
+										type='button'
+										className='absolute right-0 top-1/2 -translate-y-1/2'
+										onClick={e => {
+											e.preventDefault()
+											setShowConfirmPassword(!showConfirmPassword)
+										}}
+									>
+										{showConfirmPassword ? (
+											<EyeOff className='h-4 w-4' />
+										) : (
+											<Eye className='h-4 w-4' />
+										)}
+									</Button>
+								</div>
+								{errors.confirmPassword && isClicked && (
 									<p className='text-sm text-accent mt-1'>
 										{errors.confirmPassword.message}
 									</p>

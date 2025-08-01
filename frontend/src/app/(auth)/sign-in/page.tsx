@@ -4,10 +4,11 @@ import { Button } from '@/components/UI/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/UI/card'
 import { Input } from '@/components/UI/input'
 import { Label } from '@/components/UI/label'
+import { Eye, EyeOff } from 'lucide-react'
 import { signIn, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
@@ -19,6 +20,7 @@ type SignInForm = {
 export default function SignInPage() {
 	const router = useRouter()
 	const { data: session, status } = useSession()
+	const [showPassword, setShowPassword] = useState<boolean>(false)
 
 	const {
 		register,
@@ -62,6 +64,7 @@ export default function SignInPage() {
 				</CardHeader>
 				<CardContent>
 					<form
+						noValidate
 						onSubmit={handleSubmit(onSubmit)}
 						className='space-y-4 text-foreground'
 					>
@@ -82,19 +85,36 @@ export default function SignInPage() {
 						</div>
 						<div>
 							<Label htmlFor='password'>Пароль</Label>
-							<Input
-								id='password'
-								type='password'
-								placeholder='Введіть пароль...'
-								autoComplete='current-password'
-								{...register('password', {
-									required: 'Ви забули ввести пароль',
-									minLength: {
-										value: 8,
-										message: 'Мінімум 8 знаків',
-									},
-								})}
-							/>
+							<div className='relative'>
+								<Input
+									id='password'
+									type={showPassword ? 'text' : 'password'}
+									placeholder='Введіть пароль...'
+									autoComplete='current-password'
+									{...register('password', {
+										required: 'Ви забули ввести пароль',
+										minLength: {
+											value: 8,
+											message: 'Мінімум 8 знаків',
+										},
+									})}
+								/>
+								<Button
+									variant='link'
+									type='button'
+									className='absolute right-0 top-1/2 -translate-y-1/2'
+									onClick={e => {
+										e.preventDefault()
+										setShowPassword(!showPassword)
+									}}
+								>
+									{showPassword ? (
+										<EyeOff className='h-4 w-4' />
+									) : (
+										<Eye className='h-4 w-4' />
+									)}
+								</Button>
+							</div>
 							{errors.password && (
 								<p className='text-sm text-accent mt-1'>
 									{errors.password.message}
