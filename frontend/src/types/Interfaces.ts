@@ -290,8 +290,17 @@ export interface ICreateProduct {
 	imageSequenceNumbers: number[]
 }
 
-export interface IUpdateProduct extends ICreateProduct {
+export interface IUpdateProduct {
 	id: string
+	name: string
+	description: string
+	productVariantsJson: string
+	categoryId: string
+	productColorsJson: string
+	sku: string
+	existingImages: string
+	newImages: (File | string)[]
+	imageSequenceNumbers: number[]
 }
 export interface IDeleteProduct {
 	id: string

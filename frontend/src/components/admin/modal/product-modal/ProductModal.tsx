@@ -147,16 +147,34 @@ export default function ProductModal({
 
 		if (isUpdate && productData?.id) {
 			formData.append('Id', productData.id)
+			const existingImages = images
+				.filter(img => !img.file) // Existing images lack a file property
+				.map(img => ({
+					filePath: img.filePath,
+					sequenceNumber: img.sequenceNumber,
+				}))
+			formData.append('ExistingImages', JSON.stringify(existingImages))
+			const newImages = images.filter(img => img.file) // New images have a file property
+			newImages.forEach(img => {
+				if (img.file) {
+					formData.append('NewImages', img.file)
+					formData.append(
+						'ImageSequenceNumbers',
+						JSON.stringify(img.sequenceNumber)
+					)
+				}
+			})
+		} else {
+			images.forEach(img => {
+				if (img.file) {
+					formData.append('Images', img.file)
+					formData.append(
+						'ImageSequenceNumbers',
+						JSON.stringify(img.sequenceNumber)
+					)
+				}
+			})
 		}
-
-		images.forEach(img => {
-			if ('file' in img && img.file instanceof File) {
-				formData.append('Images', img.file)
-			} else {
-				formData.append('ExistingImageUrls', img.filePath)
-			}
-			formData.append('ImageSequenceNumbers', img.sequenceNumber.toString())
-		})
 
 		onSubmit(formData, accessToken)
 	}
@@ -191,7 +209,6 @@ export default function ProductModal({
 		isValidDescription &&
 		isValidVariants &&
 		images.length > 0
-
 
 	return (
 		<Modal isOpen={isOpen} onClose={onClose} isInput={true}>
