@@ -13,7 +13,16 @@ export async function getAllProductsFromWishList(token: string) {
 			},
 		}
 	)
-	if (!res.ok && res.status !== 404) throw new Error('Failed to fetch wishlist')
+
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
+
+	if (!res.ok && res.status !== 404 && res.status !== 401)
+		throw new Error('Failed to fetch wishlist')
 
 	const { data } = await res.json()
 
@@ -31,7 +40,16 @@ export async function getProductFromWishList(token: string) {
 			},
 		}
 	)
-	if (!res.ok) throw new Error('Product is not in wishlist')
+
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
+
+	if (!res.ok && res.status !== 401)
+		throw new Error('Product is not in wishlist')
 	return res.json()
 }
 
@@ -47,7 +65,15 @@ export async function addProductToWishList(productId: string, token: string) {
 		}
 	)
 
-	if (!res.ok) throw new Error(`Add to wishlist failed: ${res.status}`)
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
+
+	if (!res.ok && res.status !== 401)
+		throw new Error(`Add to wishlist failed: ${res.status}`)
 
 	const { data } = await res.json()
 
@@ -65,7 +91,15 @@ export async function updateWishList(wishlistItemId: string[], token: string) {
 		body: JSON.stringify(wishlistItemId),
 	})
 
-	if (!res.ok) throw new Error(`Update wishlist failed: ${res.status}`)
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
+
+	if (!res.ok && res.status !== 401)
+		throw new Error(`Update wishlist failed: ${res.status}`)
 
 	const { data } = await res.json()
 
@@ -87,8 +121,16 @@ export async function removeProductFromWishList(
 			},
 		}
 	)
+
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
 	
-	if (!res.ok) throw new Error(`Remove from wishlist failed: ${res.status}`)
+	if (!res.ok && res.status !== 401)
+		throw new Error(`Remove from wishlist failed: ${res.status}`)
 
 	const { data } = await res.json()
 

@@ -97,7 +97,14 @@ export async function logout(accessToken: string, refreshToken: string) {
 			}),
 		})
 
-		if (!res.ok) {
+		if (res.status === 401) {
+			const error = new Error('Unauthorized (401)')
+			;(error as any).status = 401
+			;(error as any).digest = 'UNAUTHORIZED_ERROR'
+			throw error
+		}
+
+		if (!res.ok && res.status !== 401) {
 			const errorData = await res.json().catch(() => ({}))
 			throw new Error(errorData.message || 'Logout failed')
 		}
@@ -127,7 +134,14 @@ export async function getUserInfo(token: string) {
 		},
 	})
 
-	if (!res.ok) {
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
+
+	if (!res.ok && res.status !== 401) {
 		throw new Error(`Failed to fetch user info: ${res.status}`)
 	}
 
@@ -147,7 +161,14 @@ export async function updateUserInfo(userData: IUpdateUserInfo, token: string) {
 		body: JSON.stringify(userData),
 	})
 
-	if (!res.ok) {
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
+
+	if (!res.ok && res.status !== 401) {
 		throw new Error(`Failed to update user info: ${res.status}`)
 	}
 
@@ -160,7 +181,10 @@ export async function refreshTokens(accessToken: string, refreshToken: string) {
 	try {
 		const res = await fetch(`${API_URL}/User/RefreshToken`, {
 			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
+			headers: {
+				Authorization: `Bearer ${accessToken}`,
+				'Content-Type': 'application/json',
+			},
 			body: JSON.stringify({ accessToken, refreshToken }),
 		})
 

@@ -38,7 +38,16 @@ export async function createDiscount(
 		},
 		body: JSON.stringify(discountDate),
 	})
-	if (!res.ok) throw new Error(`Discount CREATE failed: ${res.status}`)
+
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
+
+	if (!res.ok && res.status !== 401)
+		throw new Error(`Discount CREATE failed: ${res.status}`)
 
 	revalidatePath(`/admin/discounts`)
 	const { data } = await res.json()
@@ -59,7 +68,16 @@ export async function updateDiscount(
 		},
 		body: JSON.stringify(discountDate),
 	})
-	if (!res.ok) throw new Error(`Discount UPDATE failed: ${res.status}`)
+
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
+
+	if (!res.ok && res.status !== 401)
+		throw new Error(`Discount UPDATE failed: ${res.status}`)
 
 	revalidatePath(`/admin/discounts`)
 	const { data } = await res.json()

@@ -26,11 +26,18 @@ export async function createCategory(formData: FormData, token: string) {
 		body: formData,
 	})
 
-	if (!res.ok) throw new Error(`Category CREATE failed: ${res.status}`)
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
+
+	if (!res.ok && res.status !== 401)
+		throw new Error(`Category CREATE failed: ${res.status}`)
 
 	revalidatePath(`/admin/products`)
 	const { data } = await res.json()
-
 	return data
 }
 
@@ -40,11 +47,19 @@ export async function updateCategory(formData: FormData, token: string) {
 		headers: { Authorization: `Bearer ${token}` },
 		body: formData,
 	})
-	if (!res.ok) throw new Error(`Category UPDATE failed: ${res.status}`)
+
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
+
+	if (!res.ok && res.status !== 401)
+		throw new Error(`Category UPDATE failed: ${res.status}`)
 
 	revalidatePath(`/admin/products`)
 	const { data } = await res.json()
-
 	return data
 }
 
@@ -61,7 +76,15 @@ export async function deleteCategory(
 		body: JSON.stringify(categoryData),
 	})
 
-	if (!res.ok) throw new Error(`Category DELETE failed: ${res.status}`)
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
+
+	if (!res.ok && res.status !== 401)
+		throw new Error(`Category DELETE failed: ${res.status}`)
 
 	revalidatePath(`/admin/products`)
 	return true

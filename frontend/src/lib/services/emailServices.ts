@@ -40,7 +40,6 @@ export async function confirmEmail(email: string, code: string, token: string) {
 			throw new Error(data)
 		}
 
-		console.log('[confirmEmail] success:', data)
 		return data
 	} catch (error) {
 		console.error('[confirmEmail] Error:', error)

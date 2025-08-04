@@ -1,6 +1,5 @@
 'use client'
 import { IProductCard } from '@/types/Interfaces'
-import { ShoppingBag } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import FavoriteButton from '../FavoriteButton'

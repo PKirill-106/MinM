@@ -12,7 +12,15 @@ export async function getAllProductsFromCart(token: string) {
 			Authorization: `Bearer ${token}`,
 		},
 	})
-	if (!res.ok && res.status !== 404) throw new Error('Failed to fetch Cart')
+
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
+
+	if (!res.ok && res.status !== 404 && res.status !== 401) throw new Error('Failed to fetch Cart')
 
 	const { data } = await res.json()
 
@@ -30,7 +38,14 @@ export async function addProductToCart(productData: ICartItem, token: string) {
 		body: JSON.stringify(productData),
 	})
 
-	if (!res.ok && res.status !== 404)
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
+
+	if (!res.ok && res.status !== 404 && res.status !== 401)
 		throw new Error(`Failed to add Cart: ${res.status}`)
 
 	const { data } = await res.json()
@@ -52,7 +67,14 @@ export async function updateProductInCart(
 		body: JSON.stringify(productData),
 	})
 
-	if (!res.ok && res.status !== 404)
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
+
+	if (!res.ok && res.status !== 404 && res.status !== 401)
 		throw new Error(`Failed to update Cart: ${res.status}`)
 
 	const { data } = await res.json()
@@ -74,7 +96,14 @@ export async function migrateProductToCart(
 		body: JSON.stringify(cartItems),
 	})
 
-	if (!res.ok && res.status !== 404)
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
+
+	if (!res.ok && res.status !== 404 && res.status !== 401)
 		throw new Error(`Failed to migrate cart: ${res.status}`)
 
 	const { data } = await res.json()
@@ -95,7 +124,14 @@ export async function removeProductFromCart(itemId: string, token: string) {
 		}
 	)
 
-	if (!res.ok && res.status !== 404)
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
+
+	if (!res.ok && res.status !== 404 && res.status !== 401)
 		throw new Error(`Remove from Cart failed: ${res.status}`)
 
 	const { data } = await res.json()

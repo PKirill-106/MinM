@@ -45,7 +45,15 @@ export async function createProduct(
 		},
 		body: formData,
 	})
-	if (!res.ok) {
+
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
+
+	if (!res.ok && res.status !== 401) {
 		const errorText = await res.text()
 		console.error('Server response:', errorText)
 		throw new Error(`Product CREATE failed: ${res.status} - ${errorText}`)
@@ -69,7 +77,16 @@ export async function updateProduct(
 		},
 		body: formData,
 	})
-	if (!res.ok) throw new Error(`Product UPDATE failed: ${res.status}`)
+
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
+
+	if (!res.ok && res.status !== 401)
+		throw new Error(`Product UPDATE failed: ${res.status}`)
 
 	revalidatePath(`/admin/products/${slug}`)
 	const { data } = await res.json()
@@ -87,7 +104,16 @@ export async function deleteProduct(
 		headers: { Authorization: `Bearer ${token}` },
 		body: JSON.stringify(productId),
 	})
-	if (!res.ok) throw new Error(`Product DELETE failed: ${res.status}`)
+
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
+
+	if (!res.ok && res.status !== 401)
+		throw new Error(`Product DELETE failed: ${res.status}`)
 
 	revalidatePath(`/admin/products/${slug}`)
 	return true
