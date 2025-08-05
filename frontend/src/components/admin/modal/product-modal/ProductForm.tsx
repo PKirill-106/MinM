@@ -7,10 +7,19 @@ import ColorSelector from './ColorSelector'
 import FormInput from './FormInput'
 import Variant from './Variant'
 
-const ReactQuill = dynamic(() => import('react-quill-new'), {
-	ssr: false,
-	loading: () => <p>Loading editor...</p>,
-})
+const ReactQuill = dynamic(
+	() =>
+		import('react-quill-new').then(mod => {
+			if (typeof window !== 'undefined') {
+				require('quill/dist/quill.snow.css')
+			}
+			return mod.default
+		}),
+	{
+		ssr: false,
+		loading: () => <p>Загрузка редактора...</p>,
+	}
+)
 
 export default function ProductForm({
 	name,
@@ -48,6 +57,7 @@ export default function ProductForm({
 			<div>
 				<span className='mb-2'>Опис продукту</span>
 				<ReactQuill
+					key={name}
 					theme='snow'
 					value={descriptionDelta}
 					onChange={setDescriptionDelta}

@@ -12,6 +12,8 @@ import Product from './modal/category-modal/Product'
 import ProductModal from './modal/product-modal/ProductModal'
 import CategoryModal from './modal/category-modal/CategoryModal'
 import Subcategory from './modal/category-modal/Subcategory'
+import { useBatchProductManagement } from '@/hooks/useBatchProductManagement'
+import BatchProductModal from './modal/product-batch-modal/BatchProductModal'
 
 interface Props {
 	activeCategory: ICategory
@@ -58,6 +60,14 @@ export default function CategoryProductsClient({
 	} = useProductManagement(activeCategory?.slug, products)
 
 	const {
+		isBatchModalOpen,
+		isBatchLoading,
+		openBatchCreate,
+		handleBatchSubmit,
+		setBatchModalOpen,
+	} = useBatchProductManagement(activeCategory?.slug)
+
+	const {
 		isCategoryModalOpen,
 		modalType: categoryModalType,
 		editingCategory,
@@ -98,10 +108,16 @@ export default function CategoryProductsClient({
 								Створити підкатегорію
 							</Button>
 							<Button onClick={openCreateProduct}>Створити продукт</Button>
+							<Button onClick={openBatchCreate}>
+								Створити групу продуктів
+							</Button>
 						</div>
 					) : (
 						<div className='flex items-center gap-4 mb-8'>
 							<Button onClick={openCreateProduct}>Створити продукт</Button>
+							<Button onClick={openBatchCreate}>
+								Створити групу продуктів
+							</Button>
 						</div>
 					)}
 
@@ -137,6 +153,16 @@ export default function CategoryProductsClient({
 				accessToken={accessToken}
 				colors={colors}
 				isLoading={isProductLoading}
+			/>
+			<BatchProductModal
+				isOpen={isBatchModalOpen}
+				onClose={() => setBatchModalOpen(false)}
+				onSubmit={handleBatchSubmit}
+				activeCategory={activeCategory}
+				categories={categories}
+				accessToken={accessToken}
+				colors={colors}
+				isLoading={isBatchLoading}
 			/>
 			<CategoryModal
 				type={categoryModalType}

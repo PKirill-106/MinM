@@ -47,6 +47,28 @@ export interface IProductForm {
 	selectedColors: IProductColor[]
 	setSelectedColors: (colors: IProductColor[]) => void
 }
+
+export interface IBatchProductForm {
+	nameTemplate: string
+	setNameTemplate: (value: string) => void
+	skuTemplate: string
+	setSkuTemplate: (value: string) => void
+	descriptionDelta: string | any
+	setDescriptionDelta: (val: string | any) => void
+	variantValues: string
+	setVariantValues: (value: string) => void
+	parentCatId: string
+	setParentCatId: (id: string) => void
+	categoryId: string
+	setCategoryId: (id: string) => void
+	categories: ICategory[]
+	variants: ICreateProductVariant[]
+	setVariants: (variants: ICreateProductVariant[]) => void
+	modules: any
+	colors: IProductColor[]
+	selectedColors: IProductColor[]
+	setSelectedColors: (colors: IProductColor[]) => void
+}
 export interface IVariant {
 	v: ICreateProductVariant
 	idx: number

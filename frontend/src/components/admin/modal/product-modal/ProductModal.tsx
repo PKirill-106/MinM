@@ -14,12 +14,12 @@ import {
 	useSensors,
 } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import 'react-quill-new/dist/quill.snow.css'
-import ImageUploader from './ImageUploader'
-import ProductForm from './ProductForm'
 import { IProductModal } from '../../interface'
 import ModalHeader from '../ModalHeader'
+import ImageUploader from './ImageUploader'
+import ProductForm from './ProductForm'
 
 type Delta = any
 
@@ -48,6 +48,7 @@ export default function ProductModal({
 	const [images, setImages] = useState<IProductImage[]>([])
 	const [selectedColors, setSelectedColors] = useState<IProductColor[]>([])
 	const fileInputRef = useRef<HTMLInputElement>(null)
+	const quillRef = useRef<HTMLDivElement>(null)
 
 	const subcategories = categories.filter(
 		c => c.parentCategoryId === parentCatId
@@ -179,17 +180,17 @@ export default function ProductModal({
 		onSubmit(formData, accessToken)
 	}
 
-	const modules = useMemo(
-		() => ({
-			toolbar: [
-				[{ header: [1, 2, false] }],
-				['bold', 'italic', 'underline'],
-				[{ list: 'ordered' }, { list: 'bullet' }],
-				['link', 'image'],
-			],
-		}),
-		[]
-	)
+	const modules = () => ({
+		toolbar: [
+			[{ header: [1, 2, false] }],
+			['bold', 'italic', 'underline'],
+			[{ list: 'ordered' }, { list: 'bullet' }],
+			['link', 'image'],
+		],
+		clipboard: {
+			matchVisual: false,
+		},
+	})
 
 	const isValidDescription =
 		typeof descriptionDelta === 'string'
