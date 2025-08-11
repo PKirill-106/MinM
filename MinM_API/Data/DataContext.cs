@@ -220,11 +220,21 @@ namespace MinM_API.Data
                 entity.Property(b => b.SequenceNumber)
                     .IsRequired();
 
-                entity.Property(b => b.URL)
+                entity.Property(b => b.ImageURL)
                     .IsRequired()
                     .HasMaxLength(2048);
+
+                entity.Property(b => b.PageURL)
+                    .IsRequired()
+                    .HasMaxLength(2048);
+
+                entity.Property(b => b.ButtonText)
+                    .HasMaxLength(248);
+
+                entity.Property(b => b.Text)
+                    .HasMaxLength(248);
             });
-            
+
         }
     }
 }
