@@ -24,6 +24,15 @@ export default function ProductCard({ product, categories }: IProductCard) {
 	const productUrl = `/product/${product.slug}`
 
 	const firstVariant = product.productVariants[0]
+	if (!firstVariant) {
+		return (
+			<div>
+				<p>
+					Продукт <strong>{product.name}</strong> недоступний
+				</p>
+			</div>
+		)
+	}
 
 	return (
 		<div className='relative flex flex-col bg-white max-w-90 overflow-hidden rounded-lg shadow-sm hover:scale-105 hover:shadow-lg transition-all duration-300'>
@@ -48,7 +57,7 @@ export default function ProductCard({ product, categories }: IProductCard) {
 
 				<div
 					className={`flex justify-between  pt-2 md:pt-3 lg:pt-4 xl:pt-6 ${
-						firstVariant.discountPrice ? 'items-end' : 'items-center'
+						product.isDiscounted ? 'items-end' : 'items-center'
 					}`}
 				>
 					{product.isDiscounted ? (
