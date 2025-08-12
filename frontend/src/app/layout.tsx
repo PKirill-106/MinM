@@ -15,6 +15,7 @@ import AuthSessionProvider from '@/providers/SessionProvider'
 import { FavoritesProvider } from '@/providers/FavoritesProvider'
 import SessionHandler from '@/components/SessionHandler'
 import CartProvider from '@/providers/CartProvider'
+import '@/styles/quill.css'
 
 const montserrat = Montserrat({
 	variable: '--font-montserrat',

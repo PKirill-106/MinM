@@ -15,7 +15,6 @@ import {
 } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
 import { useEffect, useRef, useState } from 'react'
-import 'react-quill-new/dist/quill.snow.css'
 import { IProductModal } from '../../interface'
 import ModalHeader from '../ModalHeader'
 import ImageUploader from './ImageUploader'
