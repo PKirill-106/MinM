@@ -26,7 +26,9 @@ export default function CartItem({ product, cartItem }: ICartItemProps) {
 			? imgSrc
 			: '/prod/product-image-unavailable.png'
 
-	const displayPrice = product.isDiscounted ? variant.discountPrice : variant.price
+	const displayPrice = product.isDiscounted
+		? variant.discountPrice
+		: variant.price
 
 	const totalPrice = displayPrice * cartItem.quantity
 
@@ -64,10 +66,11 @@ export default function CartItem({ product, cartItem }: ICartItemProps) {
 									amount={variant.unitsInStock}
 									onChange={newQuantity =>
 										updateCartItem(
-											cartItem.id!,
+											cartItem.id,
+											product.id,
+											cartItem.productVariantId,
 											variant.id,
-											newQuantity,
-											variant.unitsInStock
+											newQuantity
 										)
 									}
 								/>
@@ -98,10 +101,11 @@ export default function CartItem({ product, cartItem }: ICartItemProps) {
 						amount={variant.unitsInStock}
 						onChange={newQuantity =>
 							updateCartItem(
-								cartItem.id!,
+								cartItem.id,
+								product.id,
+								cartItem.productVariantId,
 								variant.id,
-								newQuantity,
-								variant.unitsInStock
+								newQuantity
 							)
 						}
 					/>

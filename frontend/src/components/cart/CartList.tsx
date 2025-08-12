@@ -15,20 +15,18 @@ export default function CartList({ products }: ICartList) {
 	}
 
 	return (
-		<div>
-			<div className='flex flex-col gap-6'>
-				{cartProducts.map(cartItem => {
-					const product = products.find(p => p.id === cartItem.productId)
-					if (!product) return null
-					return (
-						<CartItem
-							key={`${cartItem.productId}-${cartItem.productVariantId}`}
-							product={product}
-							cartItem={cartItem}
-						/>
-					)
-				})}
-			</div>
+		<div className='flex flex-col gap-6'>
+			{cartProducts.map(cartItem => {
+				const product = products.find(p => p.id === cartItem.productId)
+				if (!product) return null
+				return (
+					<CartItem
+						key={`${cartItem.productId}-${cartItem.productVariantId}`}
+						product={product}
+						cartItem={cartItem}
+					/>
+				)
+			})}
 		</div>
 	)
 }

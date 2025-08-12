@@ -33,6 +33,8 @@ export default function SelectVariant({
 
 		updateCartItem(
 			cartItem.id!,
+			product.id,
+			cartItem.productVariantId,
 			newId,
 			cartItem.quantity,
 			newVariant.unitsInStock

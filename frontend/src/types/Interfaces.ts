@@ -114,7 +114,9 @@ export interface ICartContext {
 		variantId: string
 	) => Promise<void>
 	updateCartItem: (
-		itemId: string,
+		itemId: string | undefined,
+		productId: string,
+		oldVariantId: string,
 		productVariantId: string,
 		quantity: number,
 		unitsInStock?: number

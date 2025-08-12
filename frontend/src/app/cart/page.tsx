@@ -3,7 +3,7 @@ import { getAllProducts } from '@/lib/services/productServices'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-	title: 'Кошик  | M in M',
+	title: 'Кошик | M in M',
 	icons: {
 		icon: '/favicon.svg',
 	},

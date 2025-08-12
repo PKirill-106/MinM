@@ -173,74 +173,74 @@ export default function CartProvider({
 	}
 
 	const removeFromCart = async (
-		itemId: string,
+		itemId: string | undefined,
 		productId: string,
 		variantId: string
 	) => {
-		const updated = cartProducts.filter(
-			item =>
-				!(item.productId === productId && item.productVariantId === variantId)
-		)
-
-		setCartProducts(updated)
-
-		if (isAuthenticated) {
-			try {
-				await apiFetch(token => removeProductFromCart(itemId, token))
-			} catch (err) {
-				console.error('Failed to remove from cart:', err)
-			}
-		} else {
-			saveLocalCart(updated)
+		if (!isAuthenticated) {
+			const filtered = cartProducts.filter(
+				item =>
+					!(item.productId === productId && item.productVariantId === variantId)
+			)
+			setCartProducts(filtered)
+			saveLocalCart(filtered)
+			triggerAnimation()
+			return
 		}
 
-		await loadCart()
-		triggerAnimation()
+		try {
+			await apiFetch(token => removeProductFromCart(itemId!, token))
+			const filtered = cartProducts.filter(item => item.id !== itemId)
+			setCartProducts(filtered)
+			triggerAnimation()
+		} catch (err) {
+			console.error('Failed to remove cart item on server:', err)
+		}
 	}
 
 	const updateCartItem = async (
-		itemId: string,
+		itemId: string | undefined,
+		productId: string,
+		oldVariantId: string,
 		newVariantId: string,
 		newQuantity: number
 	) => {
 		if (newQuantity <= 0) {
-			await apiFetch(token => removeProductFromCart(itemId, token))
-			const filtered = cartProducts.filter(item => item.id !== itemId)
-			setCartProducts(filtered)
-			if (!isAuthenticated) saveLocalCart(filtered)
+			return removeFromCart(itemId, productId, oldVariantId)
+		}
+
+		if (!isAuthenticated) {
+			const updated = cartProducts.map(item =>
+				item.productId === productId && item.productVariantId === oldVariantId
+					? { ...item, productVariantId: newVariantId, quantity: newQuantity }
+					: item
+			)
+			setCartProducts(updated)
+			saveLocalCart(updated)
 			triggerAnimation()
 			return
 		}
 
 		const updated = cartProducts.map(item =>
 			item.id === itemId
-				? {
-						...item,
-						productVariantId: newVariantId,
-						quantity: newQuantity,
-				  }
+				? { ...item, productVariantId: newVariantId, quantity: newQuantity }
 				: item
 		)
-
 		setCartProducts(updated)
 
-		if (isAuthenticated) {
-			try {
-				await apiFetch(token =>
-					updateProductInCart(
-						{
-							id: itemId,
-							productVariantId: newVariantId,
-							quantity: newQuantity,
-						},
-						token
-					)
+		try {
+			await apiFetch(token =>
+				updateProductInCart(
+					{
+						id: itemId!,
+						productVariantId: newVariantId,
+						quantity: newQuantity,
+					},
+					token
 				)
-			} catch (err) {
-				console.error('Failed to update cart item on server:', err)
-			}
-		} else {
-			saveLocalCart(updated)
+			)
+		} catch (err) {
+			console.error('Failed to update cart item on server:', err)
 		}
 
 		await loadCart()
