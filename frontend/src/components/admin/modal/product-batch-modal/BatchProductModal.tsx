@@ -104,9 +104,14 @@ export default function BatchProductModal({
 
 		try {
 			const formDataList: FormData[] = await Promise.all(
-				variantList.map(async variant => {
+				variantList.map(async (variant, index) => {
 					const name = nameTemplate.replace('[VARIANT]', variant)
-					const sku = skuTemplate.replace('[VARIANT]', variant)
+
+					const skuParts = skuTemplate.split('-')
+					skuParts.splice(1, 0, `${index + 1}`)
+					const indexedSkuTemplate = skuParts.join('-')
+
+					const sku = indexedSkuTemplate.replace('[VARIANT]', variant)
 
 					let description: string
 
