@@ -6,6 +6,8 @@ import CategorySelector from '../product-modal/CategorySelector'
 import ColorSelector from '../product-modal/ColorSelector'
 import FormInput from '../product-modal/FormInput'
 import Variant from '../product-modal/Variant'
+import { useCallback } from 'react'
+import toast from 'react-hot-toast'
 
 const ReactQuill = dynamic(() => import('react-quill-new'), {
 	ssr: false,
@@ -42,10 +44,32 @@ export default function BatchProductForm(props: IBatchProductForm) {
 	const addVariant = () =>
 		setVariants([...variants, { name: 0, price: 0, unitsInStock: 0 }])
 
+	const copyVariantPlaceholder = useCallback(() => {
+		navigator.clipboard.writeText('[VARIANT]').then(() => {
+			toast.success('Скопійовано: [VARIANT]')
+		})
+	}, [])
+
+	const copyButton = (
+		<Button
+			variant='link'
+			className='text-accent-text p-0'
+			onClick={copyVariantPlaceholder}
+		>
+			[VARIANT]
+		</Button>
+	)
+
 	return (
 		<div className='flex flex-col gap-4'>
 			<FormInput
-				title='Шаблон назви продукту (використовуйте [VARIANT] як плейсхолдер)'
+				title={
+					<div className='flex items-center gap-2'>
+						Шаблон назви продукту (використовуйте
+						{copyButton}
+						як плейсхолдер)
+					</div>
+				}
 				value={nameTemplate}
 				onChange={e => setNameTemplate(e.target.value)}
 				placeholder='Наприклад: Топ для гель-лаку Top Secret №[VARIANT] 13ml'
@@ -53,9 +77,11 @@ export default function BatchProductForm(props: IBatchProductForm) {
 			/>
 
 			<div>
-				<span className='mb-2 block'>
-					Шаблон опису продукту (використовуйте [VARIANT] як плейсхолдер)
-				</span>
+				<div className='flex items-center gap-2'>
+					Шаблон опису продукту (використовуйте
+					{copyButton}
+					як плейсхолдер)
+				</div>
 				<ReactQuill
 					theme='snow'
 					value={descriptionDelta}
@@ -65,7 +91,13 @@ export default function BatchProductForm(props: IBatchProductForm) {
 			</div>
 
 			<FormInput
-				title='Шаблон артикулу (використовуйте [VARIANT] як плейсхолдер)'
+				title={
+					<div className='flex items-center gap-2'>
+						Шаблон артикулу (використовуйте
+						{copyButton}
+						як плейсхолдер)
+					</div>
+				}
 				value={skuTemplate}
 				onChange={e => setSkuTemplate(e.target.value)}
 				placeholder='Наприклад: TS-[VARIANT]-13ml'
