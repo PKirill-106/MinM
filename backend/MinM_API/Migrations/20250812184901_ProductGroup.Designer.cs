@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MinM_API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250726062032_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250812184901_ProductGroup")]
+    partial class ProductGroup
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -219,13 +219,26 @@ namespace MinM_API.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
-                    b.Property<int>("SequenceNumber")
-                        .HasColumnType("integer");
+                    b.Property<string>("ButtonText")
+                        .HasMaxLength(248)
+                        .HasColumnType("character varying(248)");
 
                     b.Property<string>("ImageURL")
                         .IsRequired()
                         .HasMaxLength(2048)
                         .HasColumnType("character varying(2048)");
+
+                    b.Property<string>("PageURL")
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("character varying(2048)");
+
+                    b.Property<int>("SequenceNumber")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Text")
+                        .HasMaxLength(248)
+                        .HasColumnType("character varying(248)");
 
                     b.HasKey("Id");
 
@@ -477,6 +490,12 @@ namespace MinM_API.Migrations
                     b.Property<string>("SKU")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<char>("SKUGroup")
+                        .HasColumnType("character(1)");
+
+                    b.Property<int>("SKUSequence")
+                        .HasColumnType("integer");
 
                     b.Property<string>("SeasonId")
                         .HasColumnType("text");
