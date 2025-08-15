@@ -1,3 +1,4 @@
+import CartCTA from '@/components/cart/CartCTA'
 import CartList from '@/components/cart/CartList'
 import { getAllProducts } from '@/lib/services/productServices'
 import { Metadata } from 'next'
@@ -29,7 +30,10 @@ export default async function CartPage() {
 	return (
 		<div className='container'>
 			<h2 className='mb-2 md:mb-3 lg:mb-4'>Кошик</h2>
-			<CartList products={products} />
+			<div className='flex flex-col gap-6'>
+				<CartList products={products} />
+				<CartCTA products={products} />
+			</div>
 		</div>
 	)
 }

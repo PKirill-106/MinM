@@ -132,9 +132,17 @@ export interface ICartList {
 	products: IProduct[]
 }
 
+export interface ICartCTA {
+	products: IProduct[]
+}
+
 export interface ICartItemProps {
 	product: IProduct
 	cartItem: IGetCartItem
+}
+
+export interface ICheckoutClient {
+	products: IProduct[]
 }
 
 export interface ICartButton {
