@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -46,7 +47,7 @@ namespace MinM_API.Migrations
                 table: "BannerImages");
 
             migrationBuilder.DropColumn(
-                name: "ImageURL",
+                name: "PageURL",
                 table: "BannerImages");
 
             migrationBuilder.DropColumn(

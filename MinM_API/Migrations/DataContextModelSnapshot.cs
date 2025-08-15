@@ -284,7 +284,7 @@ namespace MinM_API.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<string>("FilePath")
+                    b.Property<string>("ImageURL")
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -400,8 +400,15 @@ namespace MinM_API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("DeliveryMethod")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("OrderNumber")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("PaymentMethod")
                         .IsRequired()
@@ -410,7 +417,23 @@ namespace MinM_API.Migrations
                     b.Property<byte>("Status")
                         .HasColumnType("smallint");
 
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserFirstName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserLastName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserPhone")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -428,6 +451,10 @@ namespace MinM_API.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
+                    b.Property<string>("ItemId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("OrderId")
                         .IsRequired()
                         .HasColumnType("text");
@@ -436,18 +463,14 @@ namespace MinM_API.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("numeric(18,2)");
 
-                    b.Property<string>("ProductId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("ItemId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("OrderId");
 
                     b.ToTable("OrderItems");
                 });
@@ -487,6 +510,12 @@ namespace MinM_API.Migrations
                     b.Property<string>("SKU")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<char>("SKUGroup")
+                        .HasColumnType("character(1)");
+
+                    b.Property<int>("SKUSequence")
+                        .HasColumnType("integer");
 
                     b.Property<string>("SeasonId")
                         .HasColumnType("text");
@@ -907,21 +936,21 @@ namespace MinM_API.Migrations
 
             modelBuilder.Entity("MinM_API.Models.OrderItem", b =>
                 {
+                    b.HasOne("MinM_API.Models.ProductVariant", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("MinM_API.Models.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MinM_API.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                    b.Navigation("Item");
 
                     b.Navigation("Order");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("MinM_API.Models.Product", b =>
