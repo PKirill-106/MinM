@@ -1,38 +1,71 @@
 'use client'
+import { Autoplay, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Pagination, Autoplay } from 'swiper/modules'
 
+import { IBannerClientPage } from '@/types/Interfaces'
 import 'swiper/css'
 import 'swiper/css/pagination'
+import { Button } from './UI/button'
+import Link from 'next/link'
+import type { Swiper as SwiperType } from 'swiper'
+import { useRef } from 'react'
 
-
-const banners = [
-	{ id: 1, color: '#111', text: 'Banner 1' },
-	{ id: 2, color: '#222', text: 'Banner 2' },
-	{ id: 3, color: '#333', text: 'Banner 3' },
-	{ id: 4, color: '#444', text: 'Banner 4' },
-]
-
-export default function BannerSlider() {
+export default function BannerSlider({ banners }: IBannerClientPage) {
+	const swiperRef = useRef<SwiperType | null>(null)
 
 	return (
 		<section className='relative mt-6 w-full max-w-5xl mx-auto rounded-xl overflow-hidden shadow-md'>
 			<Swiper
 				modules={[Pagination, Autoplay]}
 				pagination={{ clickable: true }}
-				autoplay={{ delay: 4000 }}
+				// autoplay={{ delay: 4000, disableOnInteraction: false }}
 				loop
+				onSwiper={swiper => (swiperRef.current = swiper)}
 				className='w-full h-90 md:h-125'
+				onMouseEnter={() => swiperRef.current?.autoplay.stop()}
+				onMouseLeave={() => swiperRef.current?.autoplay.start()}
 			>
 				{banners.map(banner => (
-					<SwiperSlide key={banner.id}>
+					<SwiperSlide key={banner.imageURL}>
 						<div
-							className='flex flex-col items-center justify-center w-full h-full text-white'
-							style={{ backgroundColor: banner.color }}
+							className='flex flex-col items-center justify-end w-full h-full text-white'
+							style={{
+								backgroundImage: `url(${banner.imageURL})`,
+								backgroundSize: 'cover',
+								backgroundPosition: 'center',
+								backgroundRepeat: 'no-repeat',
+							}}
 						>
-							<h2 className='text-xl md:text-2xl font-semibold'>
-								{banner.text}
-							</h2>
+							<div>
+								{banner.buttonText ? (
+									<div className='relative mb-20 text-center justify-baseline items-center space-y-4'>
+										<div className='p-2 absolute inset-0 bg-black/25 blur-3xl rounded-lg -m-2' />
+										<h2
+											className='max-w-xl relative z-10 text-white !font-bold px-4 py-2'
+											style={{ fontFamily: 'var(--font-heading)' }}
+										>
+											{banner.text}
+										</h2>
+										<Link href={banner.pageURL} className='relative z-10'>
+											<Button className='p-6 md:p-7 text-md md:text-lg'>
+												{banner.buttonText}
+											</Button>
+										</Link>
+									</div>
+								) : (
+									<div className='relative'>
+										<div className='p-4 absolute inset-0 bg-black/35 blur-3xl rounded-lg -m-2' />
+										<Link href={banner.pageURL}>
+											<h3
+												className='max-w-md text-lg md:text-xl lg:text-xl xl:text-2xl relative z-10 text-white text-center !font-bold px-4 py-2 hover:underline'
+												style={{ fontFamily: 'var(--font-heading)' }}
+											>
+												{banner.text}
+											</h3>
+										</Link>
+									</div>
+								)}
+							</div>
 						</div>
 					</SwiperSlide>
 				))}
