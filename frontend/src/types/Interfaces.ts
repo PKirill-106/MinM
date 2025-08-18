@@ -96,7 +96,7 @@ export type CartOperation = (
 	variantId: string,
 	quantity: number,
 	maxAvailable: number,
-	itemId?: string,
+	itemId?: string
 ) => Promise<void>
 
 export type VariantUpdate = (
@@ -149,6 +149,28 @@ export interface ICartButton {
 	productId: string
 	initialVariantId: string
 	unitsInStock: number
+}
+
+// Banner
+export interface IBanner {
+	sequenceNumber: number
+	imageURL: string
+	pageURL: string
+	buttonText: string
+	text: string
+}
+
+export interface IUpdateBanner {
+	existingImages: string
+	newImages: (File | string)[]
+	imageSequenceNumbers: number[]
+	pageUrls: string[]
+	buttonTexts: string[]
+	texts: string[]
+}
+
+export interface IBannerClientPage {
+	banners: IBanner[]
 }
 
 // Category

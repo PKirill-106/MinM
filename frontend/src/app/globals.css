@@ -157,7 +157,7 @@ body::-webkit-scrollbar-thumb {
 		@apply text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold;
 	}
 	h3 {
-		@apply text-lg/5 sm:text-lg/5 md:text-xl/6 lg:text-xl/7 xl:text-2xl/7 2xl:text-3xl/7  font-light;
+		@apply text-lg/5 sm:text-lg/5 md:text-xl/6 lg:text-xl/7 xl:text-2xl/7 2xl:text-3xl/7 font-light;
 	}
 	p {
 		@apply text-xs sm:text-base md:text-lg lg:text-xl;

@@ -26,6 +26,9 @@ export default async function AdminLayout({
 						<SidebarMenuButton asChild className='border-1'>
 							<Link href='/admin/products'>Продукти</Link>
 						</SidebarMenuButton>
+						<SidebarMenuButton asChild className='border-1'>
+							<Link href='/admin/banners'>Банери</Link>
+						</SidebarMenuButton>
 						<SidebarMenuButton asChild className='p-2 border-1'>
 							<Link href='/admin/seasons'>Сезони</Link>
 						</SidebarMenuButton>
