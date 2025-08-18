@@ -5,12 +5,13 @@ import { Input } from '@/components/UI/input'
 import { useApi } from '@/hooks/useApi'
 import { updateBanner } from '@/lib/services/bannerServices'
 import { IBannerClientPage } from '@/types/Interfaces'
-import { ChevronDown, ChevronUp, Upload, X } from 'lucide-react'
+import { ChevronDown, ChevronUp, ImagePlus, Upload, X } from 'lucide-react'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import BannerCardHeader from './BannerCardHeader'
 import BannerCardContent from './BannerCardContent'
+import AddBannerButton from './AddBannerButton'
 
 export type BannerItem = {
 	filePath: string
@@ -59,16 +60,6 @@ export default function BannerClientPage(props: IBannerClientPage) {
 		setItems(prev => [...prev, ...toAdd])
 	}
 
-	const handleChange = <K extends 'pageURL' | 'buttonText' | 'text'>(
-		idx: number,
-		key: K,
-		value: string
-	) => {
-		setItems(prev =>
-			prev.map((it, i) => (i !== idx ? it : { ...it, [key]: value }))
-		)
-	}
-
 	const handleUpload = async () => {
 		setIsLoading(true)
 		if (items.length === 0 && props.banners.length === 0) return
@@ -115,17 +106,9 @@ export default function BannerClientPage(props: IBannerClientPage) {
 
 	return (
 		<div className='max-w-2xl w-full'>
-			<h1 className='text-xl font-semibold'>Управління банерами</h1>
+			<h1 className='mb-10'>Банери</h1>
 
-			<div className='space-y-4 mt-4'>
-				<input
-					type='file'
-					multiple
-					accept='image/*'
-					onChange={e => addFiles(e.target.files)}
-					className='block w-full text-sm text-gray-600'
-				/>
-			</div>
+			<AddBannerButton items={items} setItems={setItems} />
 
 			<div className='grid grid-cols-1 gap-4 mt-6'>
 				{items.map((it, idx) => (

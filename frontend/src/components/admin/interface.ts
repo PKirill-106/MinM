@@ -153,3 +153,7 @@ export interface IBannerCardContent {
 	setItems: Dispatch<SetStateAction<BannerItem[]>>
 	idx: number
 }
+export interface IAddBannerButton {
+	items: BannerItem[]
+	setItems: Dispatch<SetStateAction<BannerItem[]>>
+}
