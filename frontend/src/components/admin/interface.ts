@@ -9,6 +9,7 @@ import {
 import { DragEndEvent } from '@dnd-kit/core'
 import { Dispatch, RefObject, SetStateAction } from 'react'
 import { ISeason } from './../../types/Interfaces'
+import { BannerItem } from './banners/BannerClientPage'
 
 export interface IProductModal {
 	type: 'create' | 'update'
@@ -141,4 +142,14 @@ export interface ISeasonPageClient {
 export interface IDiscountPageClient {
 	discounts: IDiscount[]
 	products: IProduct[]
+}
+export interface IBannerCardHeader {
+	items: BannerItem[]
+	setItems: Dispatch<SetStateAction<BannerItem[]>>
+	idx: number
+}
+export interface IBannerCardContent {
+	it: BannerItem
+	setItems: Dispatch<SetStateAction<BannerItem[]>>
+	idx: number
 }

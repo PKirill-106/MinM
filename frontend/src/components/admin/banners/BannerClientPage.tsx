@@ -9,8 +9,10 @@ import { ChevronDown, ChevronUp, Upload, X } from 'lucide-react'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
+import BannerCardHeader from './BannerCardHeader'
+import BannerCardContent from './BannerCardContent'
 
-type BannerItem = {
+export type BannerItem = {
 	filePath: string
 	sequenceNumber: number
 	pageURL: string
@@ -55,31 +57,6 @@ export default function BannerClientPage(props: IBannerClientPage) {
 			file: f,
 		}))
 		setItems(prev => [...prev, ...toAdd])
-	}
-
-	const removeAt = (idx: number) => {
-		setItems(prev => {
-			const newItems = prev.filter((_, i) => i !== idx)
-			return newItems.map((item, i) => ({
-				...item,
-				sequenceNumber: i + 1,
-			}))
-		})
-	}
-
-	const move = (from: number, to: number) => {
-		setItems(prev => {
-			if (to < 0 || to >= prev.length) return prev
-
-			const copy = [...prev]
-			const [moved] = copy.splice(from, 1)
-			copy.splice(to, 0, moved)
-
-			return copy.map((item, i) => ({
-				...item,
-				sequenceNumber: i + 1,
-			}))
-		})
 	}
 
 	const handleChange = <K extends 'pageURL' | 'buttonText' | 'text'>(
@@ -136,15 +113,11 @@ export default function BannerClientPage(props: IBannerClientPage) {
 		}
 	}
 
-	const canMoveUp = (i: number) => i > 0
-	const canMoveDown = (i: number) => i < items.length - 1
-
 	return (
 		<div className='max-w-2xl w-full'>
 			<h1 className='text-xl font-semibold'>Управління банерами</h1>
 
 			<div className='space-y-4 mt-4'>
-				<label className='block text-sm font-medium'>Нові банери</label>
 				<input
 					type='file'
 					multiple
@@ -160,76 +133,8 @@ export default function BannerClientPage(props: IBannerClientPage) {
 						key={it.filePath + idx}
 						className={`p-0 ${!it.file ? 'border-2 border-green-500' : ''}`}
 					>
-						<CardHeader className='p-0 relative'>
-							<div className='absolute left-2 top-2 text-xs bg-black/70 text-white rounded px-2 py-0.5'>
-								#{idx + 1}
-							</div>
-
-							<div className='absolute right-2 top-2 flex gap-1'>
-								<Button
-									type='button'
-									variant='outline'
-									size='icon'
-									onClick={() => move(idx, idx - 1)}
-									disabled={!canMoveUp(idx)}
-									title='Up'
-								>
-									<ChevronUp size={16} />
-								</Button>
-								<Button
-									type='button'
-									variant='outline'
-									size='icon'
-									onClick={() => move(idx, idx + 1)}
-									disabled={!canMoveDown(idx)}
-									title='Down'
-								>
-									<ChevronDown size={16} />
-								</Button>
-								<Button
-									type='button'
-									variant='destructive'
-									size='icon'
-									onClick={() => removeAt(idx)}
-									title='Delete'
-								>
-									<X size={16} />
-								</Button>
-							</div>
-						</CardHeader>
-
-						<CardContent className='p-3 flex gap-2'>
-							<div className='relative max-w-2xl h-40 w-full basis-2/5'>
-								<Image
-									src={it.filePath}
-									alt='banner'
-									fill
-									className='object-cover'
-								/>
-							</div>
-							<div className='basis-3/5 flex flex-col justify-between'>
-								<span>Посилання</span>
-								<Input
-									placeholder='Посилання на сторінку'
-									value={it.pageURL}
-									onChange={e => handleChange(idx, 'pageURL', e.target.value)}
-								/>
-								<span>Текст баннера</span>
-								<Input
-									placeholder='Текст баннера'
-									value={it.text}
-									onChange={e => handleChange(idx, 'text', e.target.value)}
-								/>
-								<span>Текст кнопки</span>
-								<Input
-									placeholder='Текст кнопки'
-									value={it.buttonText}
-									onChange={e =>
-										handleChange(idx, 'buttonText', e.target.value)
-									}
-								/>
-							</div>
-						</CardContent>
+						<BannerCardHeader items={items} setItems={setItems} idx={idx} />
+						<BannerCardContent it={it} idx={idx} setItems={setItems} />
 					</Card>
 				))}
 			</div>
