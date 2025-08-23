@@ -74,6 +74,19 @@ export default function SearchBar({
 		setFilteredProducts(filtered)
 	}, [inputValue])
 
+	const getProductImage = (product: (typeof products)[0]) => {
+		if (!product.productImages || product.productImages.length === 0) {
+			return '/prod/product-image-unavailable.png'
+		}
+
+		const firstImage = product.productImages[0]
+		if (!firstImage || !firstImage.filePath) {
+			return '/prod/product-image-unavailable.png'
+		}
+
+		return firstImage.filePath
+	}
+
 	return (
 		<div ref={searchRef} className='flex flex-col'>
 			<div
@@ -111,13 +124,13 @@ export default function SearchBar({
 							key={product.id}
 							className='flex items-center p-2 hover:bg-gray-200 duration-100 transition-all cursor-pointer'
 						>
-							<div className='w-14 mr-1 md:mr-2 lg:mr-3 xl:mr-4'>
+							<div className='relative w-14 mr-1 md:mr-2 lg:mr-3 xl:mr-4'>
 								<Image
-									src='/M-in-M-GP-7.5.jpg'
+									src={getProductImage(product)}
 									alt={product.name}
 									width={267}
 									height={267}
-									className='w-full h-full aspect-square object-cover'
+									className='w-full aspect-square object-cover rounded-sm'
 								/>
 							</div>
 							{product.name}
