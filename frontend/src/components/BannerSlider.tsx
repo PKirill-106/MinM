@@ -18,7 +18,7 @@ export default function BannerSlider({ banners }: IBannerClientPage) {
 			<Swiper
 				modules={[Pagination, Autoplay]}
 				pagination={{ clickable: true }}
-				// autoplay={{ delay: 4000, disableOnInteraction: false }}
+				autoplay={{ delay: 4000, disableOnInteraction: false }}
 				loop
 				onSwiper={swiper => (swiperRef.current = swiper)}
 				className='w-full h-90 md:h-125'
@@ -38,10 +38,10 @@ export default function BannerSlider({ banners }: IBannerClientPage) {
 						>
 							<div>
 								{banner.buttonText ? (
-									<div className='relative mb-20 text-center justify-baseline items-center space-y-4'>
+									<div className='relative mb-15 md:mb-17 lg:md-20 text-center justify-baseline items-center space-y-4'>
 										<div className='p-2 absolute inset-0 bg-black/25 blur-3xl rounded-lg -m-2' />
 										<h2
-											className='max-w-xl relative z-10 text-white !font-bold px-4 py-2'
+											className='max-w-sm md:max-w-lg lg:max-w-xl relative z-10 text-white !font-bold px-4 py-2'
 											style={{ fontFamily: 'var(--font-heading)' }}
 										>
 											{banner.text}
@@ -53,15 +53,15 @@ export default function BannerSlider({ banners }: IBannerClientPage) {
 										</Link>
 									</div>
 								) : (
-									<div className='relative'>
-										<div className='p-4 absolute inset-0 bg-black/35 blur-3xl rounded-lg -m-2' />
+									<div className='relative mb-15 md:mb-17 lg:md-20 text-center justify-baseline items-center space-y-4'>
+										<div className='p-2 absolute inset-0 bg-black/25 blur-3xl rounded-lg -m-2' />
 										<Link href={banner.pageURL}>
-											<h3
-												className='max-w-md text-lg md:text-xl lg:text-xl xl:text-2xl relative z-10 text-white text-center !font-bold px-4 py-2 hover:underline'
+											<h2
+												className='max-w-sm md:max-w-lg lg:max-w-xl relative z-10 text-white !font-bold px-4 py-2 hover:underline'
 												style={{ fontFamily: 'var(--font-heading)' }}
 											>
 												{banner.text}
-											</h3>
+											</h2>
 										</Link>
 									</div>
 								)}
