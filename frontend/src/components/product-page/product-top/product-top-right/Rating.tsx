@@ -55,7 +55,7 @@ export default function GetRating({ rating }: IRating) {
 					/>
 				)
 			})}
-			<span className='underline'>X reviews</span>
+			<span className='underline'>0 відгуків</span>
 		</div>
 	)
 }

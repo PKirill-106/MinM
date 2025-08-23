@@ -77,7 +77,8 @@ export default function Footer({ categories }: { categories: ICategory[] }) {
 					</div>
 				</div>
 				<p className='text-xs lg:text-sm xl:text-base mt-15'>
-					© {year} “M-in-M” — український виробник гель-лакових систем
+					© {year} “M-in-M” — польський виробник професійної косметики для
+					нігтьового сервісу
 				</p>
 			</div>
 		</section>

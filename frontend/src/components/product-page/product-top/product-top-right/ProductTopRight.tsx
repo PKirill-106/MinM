@@ -47,7 +47,7 @@ export default function ProductTopRight({
 						</div>
 					)}
 					<span className='text-transparent-text'>art. {product.sku}</span>
-					<GetRating rating={3.5} />
+					<GetRating rating={0} />
 				</div>
 				<div className='flex items-center gap-3 lg:gap-5 flex-wrap mt-4'>
 					<div className='flex items-center justify-between w-full md:w-auto'>
