@@ -1,0 +1,22 @@
+User-agent: *
+# Закрываем приватные страницы
+Disallow: /auth/
+Disallow: /dashboard/
+Disallow: /profile
+
+# Разрешаем каталог и товары
+Allow: /product/
+Allow: /catalog/
+Allow: /checkout
+Allow: /cart
+Allow: /favorites
+Allow: /about
+Allow: /contacts
+Allow: /cooperation
+Allow: /offer-agreement
+Allow: /privacy-policy
+Allow: /returns
+Allow: /shipping-payment
+Allow: /
+
+Sitemap: https://new.m-in-m.com.ua/sitemap.xml
