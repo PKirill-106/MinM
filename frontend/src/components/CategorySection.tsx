@@ -13,8 +13,8 @@ export default function CategorySection({
 	return (
 		<div>
 			<h2 className='mx-auto text-xl md:text-2xl lg:text-3xl font-semibold text-center mb-6 md:mb-8 lg:mb-12 xl:mb-15'>
-				Манікюрні матеріали, <br /> яким{' '}
-				<span className='text-accent font-bold'>довіряють професіонали!</span>
+				Професійні матеріали для нігтів, <br /> яким{' '}
+				<span className='text-accent font-bold'>довіряють майстри!</span>
 			</h2>
 
 			<div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-6'>
