@@ -7,10 +7,16 @@ import { Sidebar, SidebarGroup, SidebarMenuButton } from '../UI/sidebar'
 export default function MySidebar() {
 	const pathname = usePathname()
 
+	const count = pathname.split('/')
+
+	const isAbleToClick = count.length > 3
+
 	const currentClass = (path: string) => {
 		const isActive = pathname.startsWith(path)
 		return isActive
-			? 'bg-button text-button-text font-semibold pointer-events-none'
+			? `bg-button text-button-text font-semibold ${
+					isAbleToClick ? '' : 'pointer-events-none'
+			  }`
 			: 'border-1'
 	}
 
