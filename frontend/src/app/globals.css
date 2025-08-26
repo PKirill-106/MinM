@@ -167,7 +167,7 @@ body::-webkit-scrollbar-thumb {
 	}
 
 	hr {
-		@apply border-b w-full opacity-20;
+		@apply border-b w-full text-transparent-text;
 	}
 	strong {
 		@apply font-bold text-accent;

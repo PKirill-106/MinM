@@ -20,6 +20,7 @@ import { INavbarProps } from '@/types/Interfaces'
 import { usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import NavCounterWrapper from '../UI/NavCounterWrapper'
+import { Button } from '../UI/button'
 
 export default function Navbar({ categories, products }: INavbarProps) {
 	const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -136,6 +137,14 @@ export default function Navbar({ categories, products }: INavbarProps) {
 						className='flex flex-col gap-5 text-base'
 						isFooter={false}
 					/>
+					<Link href='/catalog'>
+						<Button
+							variant='outline'
+							className='w-full hover:bg-button hover:text-button-text active:bg-button active:text-button-text'
+						>
+							Всі категорії
+						</Button>
+					</Link>
 					<hr />
 					<div className='flex flex-col gap-8'>
 						<Link
