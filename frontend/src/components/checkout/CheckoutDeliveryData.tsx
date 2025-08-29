@@ -110,14 +110,14 @@ export default function CheckoutDeliveryData({
 							</div>
 						</div>
 						<div className='flex gap-4'>
-							<div className='basis-3/5 md:basis-4/5'>
+							<div className='basis-3/5 md:basis-4/6 lg:basis-4/5'>
 								<span className='text-transparent-text'>Вулиця</span>
 								<Input
 									value={formData.address.street}
 									onChange={e => onChange('address.street', e.target.value)}
 								/>
 							</div>
-							<div className='basis-2/5 md:basis-1/5'>
+							<div className='basis-2/5 md:basis-2/6 lg:basis-1/5'>
 								<span className='text-transparent-text'>№ буд. / кв.</span>
 								<Input
 									value={formData.address.homeNumber}

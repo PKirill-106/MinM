@@ -120,8 +120,8 @@ export default function CheckoutClient({ products }: ICheckoutClient) {
 	if (loading) return <div>Завантаження...</div>
 
 	return (
-		<div className='flex flex-col md:grid md:grid-cols-5 lg:grid-cols-3 gap-6'>
-			<div className='space-y-6 md:col-span-3 lg:col-span-2 order-2 md:order-1'>
+		<div className='flex flex-col md:grid md:grid-cols-7 lg:grid-cols-3 gap-2 md:gap-3 lg:gap-6'>
+			<div className='space-y-2 md:space-y-3 lg:space-y-6 md:col-span-4 lg:col-span-2 order-2 md:order-1'>
 				<CheckoutAuth />
 				<CheckoutContactData formData={formData} setFormData={setFormData} />
 				<CheckoutDeliveryData formData={formData} setFormData={setFormData} />

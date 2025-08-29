@@ -17,7 +17,7 @@ export default function CheckoutTotal({ products }: ICheckoutTotal) {
 
 	const checkoutTotal = cartTotal + deliveryPrice
 	return (
-		<Card className='w-full h-fit shadow-lg text-foreground md:sticky md:top-23 lg:top-28 xl:top-30 md:col-span-2 lg:col-span-1 order-1 md:order-2'>
+		<Card className='w-full h-fit shadow-lg text-foreground md:sticky md:top-23 lg:top-28 xl:top-30 md:col-span-3 lg:col-span-1 order-1 md:order-2'>
 			<CardHeader className='text-2xl flex justify-between '>
 				<CardTitle>Товарів: {cartProducts.length}</CardTitle>{' '}
 				<CardTitle>{cartTotal} грн</CardTitle>{' '}

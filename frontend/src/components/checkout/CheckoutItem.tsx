@@ -35,18 +35,18 @@ export default function CheckoutItem({
 				<Button
 					onClick={() => removeFromCart(cartItem!.id!, product.id, variant.id)}
 					variant='destructive'
-					className='relative p-0! z-10'
+					className='relative p-0! z-10 w-7 h-7 md:w-6 md:h-6! rounded-sm'
 				>
-					<Trash className='w-18 mx-2' />
+					<Trash className='md:w-4! md:h-4!' />
 				</Button>
 			</div>
 			<div className='flex flex-2 flex-col justify-between w-full'>
-				<p>{product.name}</p>
+				<p className='line-clamp-1'>{product.name}</p>
 				<div className='flex justify-between items-center'>
-					<div className='border p-2 rounded-lg'>
-						<p>{variant.name} мл</p>
+					<div className='border p-1 lg:p-2 rounded-lg'>
+						<span>{variant.name} мл</span>
 					</div>
-					<p className='price'>{displayPrice}</p>
+					<p className='text-xl font-bold'>{displayPrice} грн</p>
 				</div>
 			</div>
 		</div>
