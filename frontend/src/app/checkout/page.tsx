@@ -1,7 +1,6 @@
 import CheckoutClient from '@/components/checkout/CheckoutClient'
 import { getAllProducts } from '@/lib/services/productServices'
 import { Metadata } from 'next'
-import React from 'react'
 
 export const metadata: Metadata = {
 	title: 'Оформлення замовлення | M in M',

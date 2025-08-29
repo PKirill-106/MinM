@@ -1,11 +1,9 @@
-// cspell: disable
 'use client'
 
+import { cn } from '@/lib/utils'
 import Cleave from 'cleave.js/react'
 import { Input } from '../../UI/input'
 import { IAddressSectionProps } from '../interfaces'
-import { delimiter } from 'path'
-import { cn } from '@/lib/utils'
 
 export default function AddressSection({
 	formData,

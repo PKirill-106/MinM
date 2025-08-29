@@ -1,6 +1,7 @@
 import { HTMLMotionProps } from 'framer-motion'
 import { ReactNode } from 'react'
 
+// User
 export interface ISignUpUser {
 	email: string
 	password: string
@@ -13,11 +14,17 @@ export interface ISignInUser {
 
 export interface IAddress {
 	street: string
-	homeNumber: number
+	homeNumber: string | number
 	city: string
 	region: string
 	postalCode: string
 	country: string
+}
+export interface INovaPost {
+	country: string
+	region: string
+	city: string
+	departmentAddress: string
 }
 
 export interface IGetUserInfo {
@@ -35,6 +42,42 @@ export interface IUpdateUserInfo {
 	userLastName: string
 	phoneNumber: string
 	addressDto: IAddress
+}
+
+// Order
+export interface IOrderItem {
+	itemId: string
+	quantity: number
+	price: number
+}
+
+export interface IOrder {
+	id: string
+	addressId: string
+	address: IAddress
+	novaPost: INovaPost
+	orderItems: IOrderItem
+	paymentMethod: string
+	deliveryMethod: string
+	additionalInfo: string
+	recipientFirstName: string
+	recipientLastName: string
+	recipientEmail: string
+	recipientPhone: string
+}
+
+export interface ICreateOrder {
+	deliveryType: 'address' | 'novaPost'
+	address: IAddress
+	novaPost: INovaPost
+	orderItems: IOrderItem
+	paymentMethod: string
+	deliveryMethod: string
+	additionalInfo: string
+	recipientFirstName: string
+	recipientLastName: string
+	recipientEmail: string
+	recipientPhone: string
 }
 
 export interface IApiError {

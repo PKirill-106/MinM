@@ -31,7 +31,7 @@ export default function ClientProfile({}: IClientProfileProps) {
 	useEffect(() => {
 		const fetchUser = async () => {
 			try {
-				const userData = await apiFetch(getUserInfo)
+				const userData: IGetUserInfo = await apiFetch(getUserInfo)
 				setUser(userData)
 				setFormData({
 					userFirstName: normalizeInput(userData.userFirstName),

@@ -1,0 +1,54 @@
+import { useCart } from '@/providers/CartProvider'
+import { IGetCartItem, IProduct, IProductVariant } from '@/types/Interfaces'
+import { Trash } from 'lucide-react'
+import Image from 'next/image'
+import { Button } from '../UI/button'
+
+export interface ICheckoutItem {
+	product: IProduct
+	variant: IProductVariant
+	cartItem: IGetCartItem
+}
+
+export default function CheckoutItem({
+	product,
+	variant,
+	cartItem,
+}: ICheckoutItem) {
+	const { removeFromCart } = useCart()
+
+	const imgSrc = product.productImages?.[0]?.filePath
+	const validSrc =
+		imgSrc && (imgSrc.startsWith('http://') || imgSrc.startsWith('https://'))
+			? imgSrc
+			: '/prod/product-image-unavailable.png'
+
+	const displayPrice = product.isDiscounted
+		? variant.discountPrice
+		: variant.price
+
+	const totalPrice = displayPrice * cartItem.quantity
+	return (
+		<div className='flex gap-2 border p-2 rounded-lg'>
+			<div className='flex-1 relative w-full max-w-30 h-full max-h-30 aspect-square'>
+				<Image src={validSrc} alt='' fill className='object-cover rounded-lg' />
+				<Button
+					onClick={() => removeFromCart(cartItem!.id!, product.id, variant.id)}
+					variant='destructive'
+					className='relative p-0! z-10'
+				>
+					<Trash className='w-18 mx-2' />
+				</Button>
+			</div>
+			<div className='flex flex-2 flex-col justify-between w-full'>
+				<p>{product.name}</p>
+				<div className='flex justify-between items-center'>
+					<div className='border p-2 rounded-lg'>
+						<p>{variant.name} мл</p>
+					</div>
+					<p className='price'>{displayPrice}</p>
+				</div>
+			</div>
+		</div>
+	)
+}
