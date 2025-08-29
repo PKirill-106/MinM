@@ -1,3 +1,5 @@
+'use client'
+import useOrderManagement from '@/hooks/useOrderManagement'
 import { cn } from '@/lib/utils'
 import { ICreateOrder } from '@/types/Interfaces'
 import Cleave from 'cleave.js/react'
@@ -11,6 +13,8 @@ export default function CheckoutDeliveryData({
 	formData,
 	setFormData,
 }: ICheckoutDataProps) {
+	const { saveAddress, setSaveAddress } = useOrderManagement()
+
 	const onChange = (field: string, value: string | boolean) => {
 		setFormData(prev => {
 			if (field.startsWith('address.')) {
@@ -32,7 +36,7 @@ export default function CheckoutDeliveryData({
 			</CardHeader>
 			<CardContent className='w-full space-y-2'>
 				{/* Choose delivery type */}
-				<div className='flex gap-4'>
+				<div className='flex gap-4 mb-4'>
 					<div className='flex items-center space-x-2'>
 						<Checkbox
 							id='addressDeliveryType'
@@ -124,6 +128,19 @@ export default function CheckoutDeliveryData({
 									onChange={e => onChange('address.homeNumber', e.target.value)}
 								/>
 							</div>
+						</div>
+						<div className='flex items-center space-x-2 mt-4'>
+							<Checkbox
+								id='saveAddress'
+								checked={saveAddress}
+								onClick={() => setSaveAddress(p => !p)}
+							/>
+							<Label
+								htmlFor='saveAddress'
+								className='flex items-center gap-2 cursor-pointer'
+							>
+								Чи бажаєте зберегти адресу для наступних замовлень?
+							</Label>
 						</div>
 					</>
 				) : (

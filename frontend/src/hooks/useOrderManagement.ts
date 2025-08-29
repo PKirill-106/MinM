@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useApi } from './useApi'
-import { ICreateOrder } from '@/types/Interfaces'
+import { ICreateOrder, IUpdateUserInfo } from '@/types/Interfaces'
 import {
 	cancelOrder,
 	createAuthOrder,
@@ -10,18 +10,40 @@ import {
 } from '@/lib/services/orderServices'
 import { useSession } from 'next-auth/react'
 import toast from 'react-hot-toast'
+import { updateUserInfo } from '@/lib/services/userServices'
 
 export default function useOrderManagement() {
 	const { apiFetch } = useApi()
 	const { data: session } = useSession()
 
 	const [isLoading, setIsLoading] = useState(false)
+	const [saveAddress, setSaveAddress] = useState<boolean>(true)
+
+	function mapOrderToUserInfo(order: ICreateOrder): IUpdateUserInfo {
+		return {
+			userFirstName: order.recipientFirstName,
+			userLastName: order.recipientLastName,
+			phoneNumber: order.recipientPhone,
+			addressDto: {
+				street: order.address.street,
+				homeNumber: order.address.homeNumber,
+				city: order.address.city,
+				region: order.address.region,
+				postalCode: order.address.postalCode,
+				country: order.address.country,
+			},
+		}
+	}
 
 	const handleOrderCreate = async (orderData: ICreateOrder) => {
 		setIsLoading(true)
 		try {
 			if (session) {
 				await apiFetch(token => createAuthOrder(orderData, token))
+				if (saveAddress && orderData.deliveryType === 'address') {
+					const userUpdate: IUpdateUserInfo = mapOrderToUserInfo(orderData)
+					await apiFetch(token => updateUserInfo(userUpdate, token))
+				}
 			} else {
 				await createGuestOrder(orderData)
 			}
@@ -71,6 +93,8 @@ export default function useOrderManagement() {
 
 	return {
 		isLoading,
+		saveAddress,
+		setSaveAddress,
 		handleOrderCreate,
 		handleOrderCancel,
 		setOrderAsPaid,
