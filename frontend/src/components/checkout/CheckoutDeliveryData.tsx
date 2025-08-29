@@ -8,6 +8,13 @@ import { Checkbox } from '../UI/checkbox'
 import { Input } from '../UI/input'
 import { Label } from '../UI/label'
 import { ICheckoutDataProps } from './CheckoutContactData'
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '../UI/select'
 
 export default function CheckoutDeliveryData({
 	formData,
@@ -36,38 +43,18 @@ export default function CheckoutDeliveryData({
 			</CardHeader>
 			<CardContent className='w-full space-y-2'>
 				{/* Choose delivery type */}
-				<div className='flex gap-4 mb-4'>
-					<div className='flex items-center space-x-2'>
-						<Checkbox
-							id='addressDeliveryType'
-							checked={formData.deliveryType === 'address'}
-							onCheckedChange={checked => {
-								onChange('deliveryType', checked ? 'address' : '')
-							}}
-						/>
-						<Label
-							htmlFor='addressDeliveryType'
-							className='flex items-center gap-2 cursor-pointer'
-						>
-							На адресу
-						</Label>
-					</div>
-					<div className='flex items-center space-x-2'>
-						<Checkbox
-							id='novaPostDeliveryType'
-							checked={formData.deliveryType === 'novaPost'}
-							onCheckedChange={checked => {
-								onChange('deliveryType', checked ? 'novaPost' : '')
-							}}
-						/>
-						<Label
-							htmlFor='novaPostDeliveryType'
-							className='flex items-center gap-2 cursor-pointer'
-						>
-							Нова пошта
-						</Label>
-					</div>
-				</div>
+				<Select
+					value={formData.deliveryType}
+					onValueChange={value => onChange('deliveryType', value)}
+				>
+					<SelectTrigger className='w-[180px]'>
+						<SelectValue placeholder='Оберіть тип доставки' />
+					</SelectTrigger>
+					<SelectContent>
+						<SelectItem value='address'>На адресу</SelectItem>
+						<SelectItem value='novaPost'>Нова пошта</SelectItem>
+					</SelectContent>
+				</Select>
 
 				{/* Delivery form */}
 				{formData.deliveryType === 'address' ? (
