@@ -80,6 +80,9 @@ export async function createGuestOrder(orderData: ICreateOrder) {
 	const res = await fetch(`${API_URL}/Order/create-guest`, {
 		method: 'POST',
 		credentials: 'include',
+		headers: {
+			'Content-Type': 'application/json',
+		},
 		body: JSON.stringify(orderData),
 	})
 
