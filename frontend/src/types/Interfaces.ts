@@ -24,7 +24,7 @@ export interface INovaPost {
 	country: string
 	region: string
 	city: string
-	departmentAddress: string
+	postDepartment: string
 }
 
 export interface IGetUserInfo {
@@ -51,28 +51,20 @@ export interface IOrderItem {
 	price: number
 }
 
-export interface IOrder {
+export interface IOrder extends ICreateOrder {
 	id: string
+	orderNumber: number
+	orderDate: string
 	addressId: string
-	address: IAddress
-	novaPost: INovaPost
-	orderItems: IOrderItem
-	paymentMethod: string
-	deliveryMethod: string
-	additionalInfo: string
-	recipientFirstName: string
-	recipientLastName: string
-	recipientEmail: string
-	recipientPhone: string
+	userName: string
 }
 
 export interface ICreateOrder {
-	deliveryType: 'address' | 'novaPost'
-	address: IAddress
-	novaPost: INovaPost
-	orderItems: IOrderItem
-	paymentMethod: string
-	deliveryMethod: string
+	userAddress: IAddress
+	postAddress: INovaPost
+	orderItems: IOrderItem[]
+	paymentMethod: 'paymentSystem' | 'onCard'
+	deliveryMethod: 'novaPost' | 'courier'
 	additionalInfo: string
 	recipientFirstName: string
 	recipientLastName: string

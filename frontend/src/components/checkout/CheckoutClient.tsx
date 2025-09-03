@@ -12,15 +12,16 @@ import CheckoutDeliveryData from './CheckoutDeliveryData'
 import CheckoutTotal from './CheckoutTotal'
 import CheckoutMoreInfo from './CheckoutMoreInfo'
 import { Button } from '../UI/button'
+import CheckoutPayment from './CheckoutPayment'
 
 export default function CheckoutClient({ products }: ICheckoutClient) {
 	const { apiFetch } = useApi()
 	const { status } = useSession()
 
 	const { cartProducts } = useCart()
+
 	const [formData, setFormData] = useState<ICreateOrder>({
-		deliveryType: 'address',
-		address: {
+		userAddress: {
 			country: 'Україна',
 			city: '',
 			region: '',
@@ -28,19 +29,29 @@ export default function CheckoutClient({ products }: ICheckoutClient) {
 			street: '',
 			homeNumber: '',
 		},
-		novaPost: {
-			country: '',
+		postAddress: {
+			country: 'Україна',
 			region: '',
 			city: '',
-			departmentAddress: '',
+			postDepartment: '',
 		},
-		orderItems: {
-			itemId: '',
-			quantity: 0,
-			price: 0,
-		},
-		paymentMethod: '',
-		deliveryMethod: '',
+		orderItems: cartProducts.map(item => {
+			const product = products.find(p =>
+				p.productVariants.some(pV => pV.id === item.productVariantId)
+			)
+
+			const variant = product?.productVariants.find(
+				pV => pV.id === item.productVariantId
+			)
+
+			return {
+				itemId: item.productVariantId,
+				quantity: item.quantity,
+				price: variant?.price ?? 0,
+			}
+		}),
+		paymentMethod: 'paymentSystem',
+		deliveryMethod: 'courier',
 		additionalInfo: '',
 		recipientFirstName: '',
 		recipientLastName: '',
@@ -50,8 +61,7 @@ export default function CheckoutClient({ products }: ICheckoutClient) {
 
 	const [loading, setLoading] = useState(true)
 
-	const { isLoading, handleOrderCreate, handleOrderCancel } =
-		useOrderManagement()
+	const { isLoading, handleOrderCreate } = useOrderManagement()
 
 	function normalizeInput(value: unknown): string {
 		if (
@@ -72,9 +82,9 @@ export default function CheckoutClient({ products }: ICheckoutClient) {
 			}
 			try {
 				const userData: IGetUserInfo = await apiFetch(getUserInfo)
-				setFormData({
-					deliveryType: 'address',
-					address: {
+				setFormData(prev => ({
+					...prev,
+					userAddress: {
 						country: normalizeInput(userData.address?.country),
 						city: normalizeInput(userData.address?.city),
 						region: normalizeInput(userData.address?.region),
@@ -82,34 +92,47 @@ export default function CheckoutClient({ products }: ICheckoutClient) {
 						street: normalizeInput(userData.address?.street),
 						homeNumber: userData.address?.homeNumber || '',
 					},
-					novaPost: {
-						country: '',
+					postAddress: {
+						country: 'Україна',
 						region: '',
 						city: '',
-						departmentAddress: '',
+						postDepartment: '',
 					},
-					orderItems: {
-						itemId: '',
-						quantity: 0,
-						price: 0,
-					},
-					paymentMethod: '',
-					deliveryMethod: '',
+					paymentMethod: 'paymentSystem',
+					deliveryMethod: 'courier',
 					additionalInfo: '',
 					recipientFirstName: normalizeInput(userData.userFirstName),
 					recipientLastName: normalizeInput(userData.userLastName),
 					recipientEmail: normalizeInput(userData.email),
 					recipientPhone: normalizeInput(userData.phoneNumber),
-				})
+				}))
 			} catch (error) {
 				console.error('Failed to fetch user info:', error)
 			} finally {
 				setLoading(false)
 			}
 		}
-
 		fetchUser()
 	}, [apiFetch, status])
+
+	useEffect(() => {
+		setFormData(prev => ({
+			...prev,
+			orderItems: cartProducts.map(item => {
+				const product = products.find(p =>
+					p.productVariants.some(pV => pV.id === item.productVariantId)
+				)
+				const variant = product?.productVariants.find(
+					pV => pV.id === item.productVariantId
+				)
+				return {
+					itemId: item.productVariantId,
+					quantity: item.quantity,
+					price: variant?.price ?? 0,
+				}
+			}),
+		}))
+	}, [cartProducts, products])
 
 	if (cartProducts.length === 0) {
 		return (
@@ -125,9 +148,11 @@ export default function CheckoutClient({ products }: ICheckoutClient) {
 				<CheckoutAuth />
 				<CheckoutContactData formData={formData} setFormData={setFormData} />
 				<CheckoutDeliveryData formData={formData} setFormData={setFormData} />
+				<CheckoutPayment formData={formData} setFormData={setFormData} />
 				<CheckoutMoreInfo formData={formData} setFormData={setFormData} />
 				<div className='w-full flex justify-end'>
 					<Button
+						disabled={isLoading}
 						onClick={() => handleOrderCreate(formData)}
 						className='p-6 md:p-7 text-md md:text-lg w-full md:w-auto'
 					>

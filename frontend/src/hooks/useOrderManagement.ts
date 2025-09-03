@@ -5,16 +5,18 @@ import {
 	cancelOrder,
 	createAuthOrder,
 	createGuestOrder,
-  updateOrder,
-  updateOrderToPaid,
+	updateOrder,
+	updateOrderToPaid,
 } from '@/lib/services/orderServices'
 import { useSession } from 'next-auth/react'
 import toast from 'react-hot-toast'
 import { updateUserInfo } from '@/lib/services/userServices'
+import { useRouter } from 'next/navigation'
 
 export default function useOrderManagement() {
 	const { apiFetch } = useApi()
 	const { data: session } = useSession()
+	const router = useRouter()
 
 	const [isLoading, setIsLoading] = useState(false)
 	const [saveAddress, setSaveAddress] = useState<boolean>(true)
@@ -25,31 +27,35 @@ export default function useOrderManagement() {
 			userLastName: order.recipientLastName,
 			phoneNumber: order.recipientPhone,
 			addressDto: {
-				street: order.address.street,
-				homeNumber: order.address.homeNumber,
-				city: order.address.city,
-				region: order.address.region,
-				postalCode: order.address.postalCode,
-				country: order.address.country,
+				street: order.userAddress.street,
+				homeNumber: order.userAddress.homeNumber,
+				city: order.userAddress.city,
+				region: order.userAddress.region,
+				postalCode: order.userAddress.postalCode,
+				country: order.userAddress.country,
 			},
 		}
 	}
 
 	const handleOrderCreate = async (orderData: ICreateOrder) => {
 		setIsLoading(true)
+		console.log(orderData)
 		try {
 			if (session) {
 				await apiFetch(token => createAuthOrder(orderData, token))
-				if (saveAddress && orderData.deliveryType === 'address') {
+				toast.success('Замовлення створено')
+				if (saveAddress && orderData.deliveryMethod === 'courier') {
 					const userUpdate: IUpdateUserInfo = mapOrderToUserInfo(orderData)
 					await apiFetch(token => updateUserInfo(userUpdate, token))
+					toast.success('Дані оновлено')
 				}
 			} else {
 				await createGuestOrder(orderData)
 			}
+			//router.push('/profile')
 		} catch (err) {
 			toast.error('Сталася помилка')
-			console.error('[Checkout] Order create failed:', err)
+			console.log('[Checkout] Order create failed:', err)
 		} finally {
 			setIsLoading(false)
 		}
@@ -68,7 +74,7 @@ export default function useOrderManagement() {
 	}
 
 	const setOrderAsPaid = async (orderId: string) => {
-    setIsLoading(true)
+		setIsLoading(true)
 		try {
 			await apiFetch(token => updateOrderToPaid(orderId, token))
 		} catch (err) {
@@ -77,10 +83,10 @@ export default function useOrderManagement() {
 		} finally {
 			setIsLoading(false)
 		}
-  }
-	
-  const changeOrderStatus = async (orderId: string) => {
-    setIsLoading(true)
+	}
+
+	const changeOrderStatus = async (orderId: string) => {
+		setIsLoading(true)
 		try {
 			await apiFetch(token => updateOrder(orderId, token))
 		} catch (err) {
@@ -89,7 +95,7 @@ export default function useOrderManagement() {
 		} finally {
 			setIsLoading(false)
 		}
-  }
+	}
 
 	return {
 		isLoading,

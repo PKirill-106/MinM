@@ -5,29 +5,22 @@ import Cleave from 'cleave.js/react'
 import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '../UI/card'
 import { Input } from '../UI/input'
+import { CircleCheckBig } from 'lucide-react'
 
 export interface ICheckoutDataProps {
 	formData: ICreateOrder
 	setFormData: React.Dispatch<React.SetStateAction<ICreateOrder>>
 }
 
-export default function CheckoutContactData({ formData, setFormData }: ICheckoutDataProps) {
+export default function CheckoutContactData({
+	formData,
+	setFormData,
+}: ICheckoutDataProps) {
 	const [changed, setChanged] = useState(false)
 
 	const handleChange = (field: string, value: string) => {
 		setFormData(prev => {
 			if (!prev) return prev
-
-			if (field.startsWith('address.')) {
-				const key = field.split('.')[1] as keyof ICreateOrder['address']
-				return {
-					...prev,
-					address: {
-						...prev.address,
-						[key]: value,
-					},
-				}
-			}
 
 			const key = field as keyof ICreateOrder
 			return {
@@ -59,7 +52,7 @@ export default function CheckoutContactData({ formData, setFormData }: ICheckout
 		setRawPhone(rawValue)
 
 		if (rawValue.length <= 10) {
-			handleChange('phoneNumber', `38${rawValue}`)
+			handleChange('recipientPhone', `38${rawValue}`)
 		}
 	}
 
@@ -67,10 +60,23 @@ export default function CheckoutContactData({ formData, setFormData }: ICheckout
 		setIsPhoneValid(rawPhone.length >= 10)
 	}
 
+	const isField =
+		formData.recipientFirstName.length !== 0 &&
+		formData.recipientLastName.length !== 0 &&
+		formData.recipientEmail.length !== 0 &&
+		formData.recipientPhone.length !== 0
+
 	return (
 		<Card className='w-full shadow-lg text-foreground'>
 			<CardHeader>
-				<CardTitle className='text-2xl'>Контактні дані</CardTitle>
+				{isField ? (
+					<div className='flex items-center gap-2'>
+						<CircleCheckBig className='text-green-600!' />
+						<CardTitle className='text-2xl'>Контактні дані</CardTitle>
+					</div>
+				) : (
+					<CardTitle className='text-2xl'>Контактні дані</CardTitle>
+				)}
 			</CardHeader>
 			<CardContent className='w-full space-y-2'>
 				<div className='sm:grid sm:grid-cols-2 gap-4 mb-4'>
@@ -78,21 +84,21 @@ export default function CheckoutContactData({ formData, setFormData }: ICheckout
 						<span className='text-transparent-text'>Ім’я</span>
 						<Input
 							value={formData.recipientFirstName}
-							onChange={e => handleChange('userFirstName', e.target.value)}
+							onChange={e => handleChange('recipientFirstName', e.target.value)}
 						/>
 					</div>
 					<div>
 						<span className='text-transparent-text'>Прізвище</span>
 						<Input
 							value={formData.recipientLastName}
-							onChange={e => handleChange('userLastName', e.target.value)}
+							onChange={e => handleChange('recipientLastName', e.target.value)}
 						/>
 					</div>
 					<div>
 						<span className='text-transparent-text'>Email</span>
 						<Input
 							value={formData.recipientEmail}
-							onChange={e => handleChange('email', e.target.value)}
+							onChange={e => handleChange('recipientEmail', e.target.value)}
 							disabled={!!formData.recipientEmail}
 						/>
 					</div>
