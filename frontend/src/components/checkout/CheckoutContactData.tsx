@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '../UI/card'
 import { Input } from '../UI/input'
 import { CircleCheckBig } from 'lucide-react'
-
+import { useSession } from 'next-auth/react'
 export interface ICheckoutDataProps {
 	formData: ICreateOrder
 	setFormData: React.Dispatch<React.SetStateAction<ICreateOrder>>
@@ -16,7 +16,15 @@ export default function CheckoutContactData({
 	formData,
 	setFormData,
 }: ICheckoutDataProps) {
+	const { status } = useSession()
 	const [changed, setChanged] = useState(false)
+	const [isAuth, setIsAuth] = useState(false)
+
+	useEffect(() => {
+		if (status === 'authenticated') {
+			setIsAuth(true)
+		}
+	},[status])
 
 	const handleChange = (field: string, value: string) => {
 		setFormData(prev => {
@@ -99,7 +107,7 @@ export default function CheckoutContactData({
 						<Input
 							value={formData.recipientEmail}
 							onChange={e => handleChange('recipientEmail', e.target.value)}
-							disabled={!!formData.recipientEmail}
+							disabled={isAuth}
 						/>
 					</div>
 					<div>
