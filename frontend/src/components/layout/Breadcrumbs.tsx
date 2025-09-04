@@ -28,6 +28,8 @@ export default function Breadcrumbs({ categories, products }: IBreadcrumbs) {
 		'sign-up': 'Реєстрація',
 		catalog: 'Каталог',
 		product: 'Продукт',
+		payment: 'Платіж',
+		result: 'Результат',
 	}
 
 	const findOriginalName = (slug: string): string | null => {
