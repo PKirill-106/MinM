@@ -148,6 +148,7 @@ export interface ICartContext {
 		productId: string,
 		variantId: string
 	) => Promise<void>
+	clearCart: () => void
 	updateCartItem: (
 		itemId: string | undefined,
 		productId: string,

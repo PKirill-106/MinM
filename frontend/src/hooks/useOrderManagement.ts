@@ -39,10 +39,10 @@ export default function useOrderManagement() {
 
 	const handleOrderCreate = async (orderData: ICreateOrder) => {
 		setIsLoading(true)
-		console.log(orderData)
+		let result
 		try {
 			if (session) {
-				await apiFetch(token => createAuthOrder(orderData, token))
+				result = await apiFetch(token => createAuthOrder(orderData, token))
 				toast.success('Замовлення створено')
 				if (saveAddress && orderData.deliveryMethod === 'courier') {
 					const userUpdate: IUpdateUserInfo = mapOrderToUserInfo(orderData)
@@ -50,12 +50,16 @@ export default function useOrderManagement() {
 					toast.success('Дані оновлено')
 				}
 			} else {
-				await createGuestOrder(orderData)
+				result = await createGuestOrder(orderData)
+				toast.success('Замовлення створено')
 			}
 			//router.push('/profile')
+
+			return { success: true, data: result }
 		} catch (err) {
 			toast.error('Сталася помилка')
 			console.log('[Checkout] Order create failed:', err)
+			return { success: false, error: err }
 		} finally {
 			setIsLoading(false)
 		}

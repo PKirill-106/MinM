@@ -145,6 +145,51 @@ export default function CheckoutClient({ products }: ICheckoutClient) {
 		)
 	}
 
+	const handleSubmit = async (formData: ICreateOrder) => {
+		const res = await handleOrderCreate(formData)
+
+		const orderNumber = await res.data
+
+		try {
+			localStorage.setItem('checkoutFormData', JSON.stringify(formData))
+
+			const response = await fetch('/api/payments/portmone', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					amount: checkoutTotal,
+					description: 'Оплата замовлення M-in-M',
+					shopOrderNumber: orderNumber,
+					successUrl: `${window.location.origin}/api/payments/portmone/callback`,
+					failureUrl: `${window.location.origin}/api/payments/portmone/callback`,
+				}),
+			})
+
+			const payload = await response.json()
+
+			const form = document.createElement('form')
+			form.method = 'POST'
+			form.action = 'https://www.portmone.com.ua/gateway/'
+
+			const bodyInput = document.createElement('input')
+			bodyInput.type = 'hidden'
+			bodyInput.name = 'bodyRequest'
+			bodyInput.value = JSON.stringify(payload)
+
+			const typeInput = document.createElement('input')
+			typeInput.type = 'hidden'
+			typeInput.name = 'typeRequest'
+			typeInput.value = 'json'
+
+			form.appendChild(bodyInput)
+			form.appendChild(typeInput)
+			document.body.appendChild(form)
+			form.submit()
+		} catch (err) {
+			console.error('handleSubmit error:', err)
+		}
+	}
+
 	if (loading) return <div>Завантаження...</div>
 
 	return (
@@ -158,7 +203,7 @@ export default function CheckoutClient({ products }: ICheckoutClient) {
 				<div className='w-full flex justify-end'>
 					<Button
 						disabled={isLoading}
-						onClick={() => handleOrderCreate(formData)}
+						onClick={() => handleSubmit(formData)}
 						className='p-6 md:p-7 text-md md:text-lg w-full md:w-auto'
 					>
 						Оформити замовлення

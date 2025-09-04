@@ -198,6 +198,12 @@ export default function CartProvider({
 		}
 	}
 
+	const clearCart = async () => {
+		for (const item of cartProducts) {
+			await removeFromCart(item.id, item.productId, item.productVariantId)
+		}
+	}
+
 	const updateCartItem = async (
 		itemId: string | undefined,
 		productId: string,
@@ -261,6 +267,7 @@ export default function CartProvider({
 				cartProducts,
 				addToCart,
 				removeFromCart,
+				clearCart,
 				updateCartItem,
 				isInCart,
 				isVariantInCart,
