@@ -13,10 +13,15 @@ import CheckoutTotal from './CheckoutTotal'
 import CheckoutMoreInfo from './CheckoutMoreInfo'
 import { Button } from '../UI/button'
 import CheckoutPayment from './CheckoutPayment'
+import { useCartTotal } from '@/hooks/useCartTotal'
 
 export default function CheckoutClient({ products }: ICheckoutClient) {
 	const { apiFetch } = useApi()
 	const { status } = useSession()
+
+	const cartTotal = useCartTotal(products)
+	const deliveryPrice = 55
+	const checkoutTotal = cartTotal + deliveryPrice
 
 	const { cartProducts } = useCart()
 
@@ -160,7 +165,12 @@ export default function CheckoutClient({ products }: ICheckoutClient) {
 					</Button>
 				</div>
 			</div>
-			<CheckoutTotal products={products} />
+			<CheckoutTotal
+				products={products}
+				cartTotal={cartTotal}
+				checkoutTotal={checkoutTotal}
+				deliveryPrice={deliveryPrice}
+			/>
 		</div>
 	)
 }
