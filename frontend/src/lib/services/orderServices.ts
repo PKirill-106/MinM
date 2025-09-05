@@ -133,6 +133,25 @@ export async function updateOrderToPaid(orderId: string, token: string) {
 	return data
 }
 
+export async function updateOrderStatusAsFailed(orderId: string, token: string) {
+	const res = await fetch(`${API_URL}/Order/fail/${orderId}`, {
+		method: 'PUT',
+		credentials: 'include',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${token}`,
+		},
+	})
+
+	if (!res.ok && res.status !== 404) {
+		throw new Error(`Failed to set order as paid: ${res.status}`)
+	}
+
+	const { data } = await res.json()
+
+	return data
+}
+
 export async function updateOrder(orderId: string, status: string) {
 	const res = await fetch(`${API_URL}/Order/change/${orderId}`, {
 		method: 'PUT',
