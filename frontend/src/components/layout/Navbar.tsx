@@ -55,7 +55,7 @@ export default function Navbar({ categories, products }: INavbarProps) {
 	let profileHref = '/sign-in'
 	if (status === 'authenticated') {
 		const role = session?.user?.role
-		profileHref = role === 'Admin' ? '/admin' : '/profile'
+		profileHref = role === 'Admin' ? '/admin' : '/profile?tab=profile'
 	}
 
 	return (

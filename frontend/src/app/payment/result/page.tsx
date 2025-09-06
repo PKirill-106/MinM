@@ -50,7 +50,7 @@ export default function PaymentResultPage() {
 										На головну
 									</Button>
 								</Link>
-								<Link href='/profile'>
+								<Link href='/profile?tab=orders'>
 									<Button className='w-full'>Історія замовлень</Button>
 								</Link>
 							</div>

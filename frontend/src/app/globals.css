@@ -159,6 +159,9 @@ body::-webkit-scrollbar-thumb {
 	h3 {
 		@apply text-lg/5 sm:text-lg/5 md:text-xl/6 lg:text-xl/7 xl:text-2xl/7 2xl:text-3xl/7 font-light;
 	}
+	h4 {
+		@apply text-xs/5 sm:text-base/5 md:text-lg/5 xl:text-xl/6;
+	}
 	p {
 		@apply text-xs sm:text-base md:text-lg lg:text-xl;
 	}
