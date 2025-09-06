@@ -69,7 +69,7 @@ export default function CheckoutDeliveryData({
 		})
 	}
 
-	const isField =
+	const isFilled =
 		(formData.userAddress.country.length !== 0 &&
 			formData.userAddress.region.length !== 0 &&
 			formData.userAddress.city.length !== 0 &&
@@ -83,7 +83,7 @@ export default function CheckoutDeliveryData({
 	return (
 		<Card className='w-full shadow-lg text-foreground'>
 			<CardHeader>
-				{isField ? (
+				{isFilled ? (
 					<div className='flex items-center gap-2'>
 						<CircleCheckBig className='text-green-600!' />
 						<CardTitle className='text-2xl'>Дані доставки</CardTitle>
