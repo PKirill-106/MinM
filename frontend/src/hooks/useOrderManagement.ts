@@ -1,22 +1,21 @@
-import { useState } from 'react'
-import { useApi } from './useApi'
-import { ICreateOrder, IUpdateUserInfo } from '@/types/Interfaces'
 import {
 	cancelOrder,
 	createAuthOrder,
 	createGuestOrder,
 	updateOrder,
+	updateOrderStatusAsFailed,
 	updateOrderToPaid,
 } from '@/lib/services/orderServices'
-import { useSession } from 'next-auth/react'
-import toast from 'react-hot-toast'
 import { updateUserInfo } from '@/lib/services/userServices'
-import { useRouter } from 'next/navigation'
+import { ICreateOrder, IUpdateUserInfo } from '@/types/Interfaces'
+import { useSession } from 'next-auth/react'
+import { useState } from 'react'
+import toast from 'react-hot-toast'
+import { useApi } from './useApi'
 
 export default function useOrderManagement() {
 	const { apiFetch } = useApi()
 	const { data: session } = useSession()
-	const router = useRouter()
 
 	const [isLoading, setIsLoading] = useState(false)
 	const [saveAddress, setSaveAddress] = useState<boolean>(true)
@@ -53,12 +52,11 @@ export default function useOrderManagement() {
 				result = await createGuestOrder(orderData)
 				toast.success('Замовлення створено')
 			}
-			//router.push('/profile')
 
 			return { success: true, data: result }
 		} catch (err) {
 			toast.error('Сталася помилка')
-			console.log('[Checkout] Order create failed:', err)
+			console.error('[Checkout] Order create failed:', err)
 			return { success: false, error: err }
 		} finally {
 			setIsLoading(false)
@@ -89,6 +87,18 @@ export default function useOrderManagement() {
 		}
 	}
 
+	const setOrderAsFailed = async (orderId: string) => {
+		setIsLoading(true)
+		try {
+			await apiFetch(token => updateOrderStatusAsFailed(orderId, token))
+		} catch (err) {
+			toast.error('Сталася помилка')
+			console.error('[Checkout] failed to set Order as failed:', err)
+		} finally {
+			setIsLoading(false)
+		}
+	}
+
 	const changeOrderStatus = async (orderId: string) => {
 		setIsLoading(true)
 		try {
@@ -108,6 +118,7 @@ export default function useOrderManagement() {
 		handleOrderCreate,
 		handleOrderCancel,
 		setOrderAsPaid,
+		setOrderAsFailed,
 		changeOrderStatus,
 	}
 }

@@ -1,17 +1,30 @@
 'use client'
 import { useApi } from '@/hooks/useApi'
 import { getUserInfo } from '@/lib/services/userServices'
-import { IGetUserInfo, IUpdateUserInfo } from '@/types/Interfaces'
+import { IGetUserInfo, IOrder, IUpdateUserInfo } from '@/types/Interfaces'
 import { useEffect, useState } from 'react'
 import ProfileTab from './ProfileTab'
 import ActiveProfile from './active-profile/ActiveProfile'
+import OrderHistory from './active-order-history/OrderHistory'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { IClientProfileProps } from './interfaces'
+import { getMyOrders } from '@/lib/services/orderServices'
+import { useSession } from 'next-auth/react'
 
-export interface IClientProfileProps {}
-
-export default function ClientProfile({}: IClientProfileProps) {
+export default function ClientProfile({ products }: IClientProfileProps) {
+	const session = useSession()
 	const { apiFetch } = useApi()
 	const [user, setUser] = useState<IGetUserInfo | null>(null)
-	const [activeTab, setActiveTab] = useState<'profile' | 'orders'>('profile')
+
+	const router = useRouter()
+	const searchParams = useSearchParams()
+
+	const tabFromUrl = searchParams.get('tab') as 'profile' | 'orders' | null
+	const [activeTab, setActiveTab] = useState<'profile' | 'orders'>(
+		tabFromUrl || 'profile'
+	)
+
+	const [myOrders, setMyOrders] = useState<IOrder[]>([])
 	const [formData, setFormData] = useState<IUpdateUserInfo | null>(null)
 	const [changed, setChanged] = useState(false)
 	const [loading, setLoading] = useState(true)
@@ -31,8 +44,12 @@ export default function ClientProfile({}: IClientProfileProps) {
 	useEffect(() => {
 		const fetchUser = async () => {
 			try {
-				const userData: IGetUserInfo = await apiFetch(getUserInfo)
+				const [userData, orders] = await Promise.all([
+					apiFetch(getUserInfo),
+					apiFetch(getMyOrders),
+				])
 				setUser(userData)
+				setMyOrders(orders)
 				setFormData({
 					userFirstName: normalizeInput(userData.userFirstName),
 					userLastName: normalizeInput(userData.userLastName),
@@ -55,7 +72,13 @@ export default function ClientProfile({}: IClientProfileProps) {
 		fetchUser()
 	}, [apiFetch])
 
-	if (loading) return <div>Завантаження...</div>
+	useEffect(() => {
+		const params = new URLSearchParams(searchParams.toString())
+		params.set('tab', activeTab)
+		router.replace(`?${params.toString()}`)
+	}, [activeTab, router, searchParams])
+
+	if (loading) return <h3 className='text-center'>Завантаження...</h3>
 
 	if (!user || !formData) return <div>Не вдалося завантажити дані</div>
 
@@ -72,7 +95,11 @@ export default function ClientProfile({}: IClientProfileProps) {
 					setChanged={setChanged}
 				/>
 			) : (
-				''
+				<OrderHistory
+					products={products}
+					orders={myOrders}
+					isLoading={loading}
+				/>
 			)}
 		</div>
 	)

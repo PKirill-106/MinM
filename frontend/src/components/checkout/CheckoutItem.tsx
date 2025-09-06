@@ -43,10 +43,13 @@ export default function CheckoutItem({
 			<div className='flex flex-2 flex-col justify-between w-full'>
 				<p className='line-clamp-1'>{product.name}</p>
 				<div className='flex justify-between items-center'>
-					<div className='border p-1 lg:p-2 rounded-lg'>
-						<span>{variant.name} мл</span>
+					<div className='flex items-center gap-2'>
+						<div className='border p-1 lg:p-2 rounded-lg'>
+							<span>{variant.name} мл</span>
+						</div>
+						x<span>{cartItem.quantity} шт</span>
 					</div>
-					<p className='text-xl font-bold'>{displayPrice} грн</p>
+					<p className='text-xl font-bold'>{totalPrice} грн</p>
 				</div>
 			</div>
 		</div>
