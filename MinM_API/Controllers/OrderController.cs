@@ -18,7 +18,7 @@ namespace MinM_API.Controllers
         [HttpPost]
         [Route("create-authenticated")]
         [Authorize(AuthenticationSchemes = "MyTokenScheme")]
-        public async Task<ActionResult<ServiceResponse<int>>> CreateOrder(AddOrderDto addOrderDto)
+        public async Task<ActionResult<ServiceResponse<string>>> CreateOrder(AddOrderDto addOrderDto)
         {
 
             var response = await orderService.CreateOrder(addOrderDto, User);
@@ -28,7 +28,7 @@ namespace MinM_API.Controllers
 
         [HttpPost]
         [Route("create-guest")]
-        public async Task<ActionResult<ServiceResponse<int>>> CreateUnauthorizedOrder(AddOrderDto addOrderDto)
+        public async Task<ActionResult<ServiceResponse<string>>> CreateUnauthorizedOrder(AddOrderDto addOrderDto)
         {
             var response = await orderService.CreateUnauthorizedOrder(addOrderDto);
 
@@ -47,19 +47,19 @@ namespace MinM_API.Controllers
 
 
         [HttpPut]
-        [Route("paid/{orderId}")]
-        public async Task<ActionResult<ServiceResponse<int>>> SetOrderAsPaid([FromRoute] string orderId)
+        [Route("paid/{orderNumber}")]
+        public async Task<ActionResult<ServiceResponse<int>>> SetOrderAsPaid([FromRoute] string orderNumber)
         {
-            var response = await orderService.SetOrderAsPaid(orderId);
+            var response = await orderService.SetOrderAsPaid(orderNumber);
 
             return StatusCode((int)response.StatusCode, response);
         }
 
         [HttpPut]
-        [Route("fail/{orderId}")]
-        public async Task<ActionResult<ServiceResponse<long>>> FailOrder([FromRoute] string orderId)
+        [Route("fail/{orderNumber}")]
+        public async Task<ActionResult<ServiceResponse<long>>> FailOrder([FromRoute] string orderNumber)
         {
-            var response = await orderService.FailOrder(orderId);
+            var response = await orderService.FailOrder(orderNumber);
 
             return StatusCode((int)response.StatusCode, response);
         }
