@@ -53,7 +53,7 @@ export interface IOrderItem {
 
 export interface IOrder extends ICreateOrder {
 	id: string
-	orderNumber: number
+	orderNumber: string
 	orderDate: string
 	addressId: string
 	status: string
