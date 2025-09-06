@@ -4,9 +4,14 @@ import { ICreateOrder } from '@/types/Interfaces'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
-export async function getAllOrders() {
+export async function getAllOrders(token: string) {
 	const res = await fetch(`${API_URL}/Order/all`, {
 		method: 'GET',
+		credentials: 'include',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${token}`,
+		},
 	})
 
 	if (!res.ok && res.status !== 404) {

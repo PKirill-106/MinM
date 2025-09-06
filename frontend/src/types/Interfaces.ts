@@ -56,6 +56,7 @@ export interface IOrder extends ICreateOrder {
 	orderNumber: number
 	orderDate: string
 	addressId: string
+	status: string
 	userName: string
 }
 
