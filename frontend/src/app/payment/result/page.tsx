@@ -2,13 +2,21 @@
 
 import { Button } from '@/components/UI/button'
 import { Card } from '@/components/UI/card'
+import { useApi } from '@/hooks/useApi'
+import {
+	updateOrderStatusAsFailed,
+	updateOrderToPaid,
+} from '@/lib/services/orderServices'
 import { useCart } from '@/providers/CartProvider'
 import { CircleCheckBig, CircleX } from 'lucide-react'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 
 export default function PaymentResultPage() {
+	const { apiFetch } = useApi()
+	const { status } = useSession()
 	const searchParams = useSearchParams()
 	const { clearCart } = useCart()
 
@@ -18,11 +26,19 @@ export default function PaymentResultPage() {
 
 	const isSuccess = result === '0'
 
-	useEffect(() => {
-		if (isSuccess) {
-			localStorage.removeItem('checkoutFormData')
-			clearCart()
+	const updateOrderStatus = async () => {
+		if (status === 'authenticated' && isSuccess) {
+			await apiFetch(token => updateOrderToPaid(orderNumber!, token))
+		} else if (status === 'authenticated' && !isSuccess) {
+			await apiFetch(token => updateOrderStatusAsFailed(orderNumber!, token))
 		}
+	}
+
+	useEffect(() => {
+		updateOrderStatus()
+
+		localStorage.removeItem('checkoutFormData')
+		clearCart()
 	}, [isSuccess, clearCart])
 
 	return (
