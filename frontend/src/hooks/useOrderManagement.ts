@@ -20,7 +20,16 @@ export default function useOrderManagement() {
 	const [isLoading, setIsLoading] = useState(false)
 	const [saveAddress, setSaveAddress] = useState<boolean>(true)
 
-	function mapOrderToUserInfo(order: ICreateOrder): IUpdateUserInfo {
+	function mapOrderToUserInfo(order: Partial<ICreateOrder>): IUpdateUserInfo {
+		if (
+			!order.userAddress ||
+			!order.recipientFirstName ||
+			!order.recipientLastName ||
+			!order.recipientPhone
+		) {
+			throw new Error('All fields are required when mapping to user info')
+		}
+
 		return {
 			userFirstName: order.recipientFirstName,
 			userLastName: order.recipientLastName,
@@ -36,7 +45,7 @@ export default function useOrderManagement() {
 		}
 	}
 
-	const handleOrderCreate = async (orderData: ICreateOrder) => {
+	const handleOrderCreate = async (orderData: Partial<ICreateOrder>) => {
 		setIsLoading(true)
 		let result
 		try {

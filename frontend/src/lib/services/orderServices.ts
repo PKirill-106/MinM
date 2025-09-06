@@ -38,6 +38,7 @@ export async function getMyOrders(token: string) {
 	}
 
 	const { data } = await res.json()
+	console.log(data)
 
 	return data
 }
@@ -61,7 +62,8 @@ export async function getMyOrderById(orderId: string, token: string) {
 	return data
 }
 
-export async function createAuthOrder(orderData: ICreateOrder, token: string) {
+export async function createAuthOrder(orderData: Partial<ICreateOrder>, token: string) {
+	console.log('orderData: ', orderData)
 	const res = await fetch(`${API_URL}/Order/create-authenticated`, {
 		method: 'POST',
 		credentials: 'include',
@@ -81,7 +83,7 @@ export async function createAuthOrder(orderData: ICreateOrder, token: string) {
 	return data
 }
 
-export async function createGuestOrder(orderData: ICreateOrder) {
+export async function createGuestOrder(orderData: Partial<ICreateOrder>) {
 	const res = await fetch(`${API_URL}/Order/create-guest`, {
 		method: 'POST',
 		credentials: 'include',
@@ -119,8 +121,8 @@ export async function cancelOrder(orderId: string, token: string) {
 	return data
 }
 
-export async function updateOrderToPaid(orderId: string, token: string) {
-	const res = await fetch(`${API_URL}/Order/paid/${orderId}`, {
+export async function updateOrderToPaid(orderNumber: string, token: string) {
+	const res = await fetch(`${API_URL}/Order/paid/${orderNumber}`, {
 		method: 'PUT',
 		credentials: 'include',
 		headers: {
@@ -138,8 +140,8 @@ export async function updateOrderToPaid(orderId: string, token: string) {
 	return data
 }
 
-export async function updateOrderStatusAsFailed(orderId: string, token: string) {
-	const res = await fetch(`${API_URL}/Order/fail/${orderId}`, {
+export async function updateOrderStatusAsFailed(orderNumber: string, token: string) {
+	const res = await fetch(`${API_URL}/Order/fail/${orderNumber}`, {
 		method: 'PUT',
 		credentials: 'include',
 		headers: {

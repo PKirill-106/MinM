@@ -51,12 +51,21 @@ export interface IOrderItem {
 	price: number
 }
 
-export interface IOrder extends ICreateOrder {
+export interface IOrder {
 	id: string
 	orderNumber: string
 	orderDate: string
 	addressId: string
+	address: IAddress | INovaPost
+	orderItems: IOrderItem[]
 	status: string
+	paymentMethod: 'paymentSystem' | 'onCard'
+	deliveryMethod: 'novaPost' | 'courier'
+	additionalInfo: string
+	recipientFirstName: string
+	recipientLastName: string
+	recipientEmail: string
+	recipientPhone: string
 	userName: string
 }
 

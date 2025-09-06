@@ -14,6 +14,7 @@ import CheckoutMoreInfo from './CheckoutMoreInfo'
 import { Button } from '../UI/button'
 import CheckoutPayment from './CheckoutPayment'
 import { useCartTotal } from '@/hooks/useCartTotal'
+import { buildOrderPayload } from '@/lib/utils/buildOrderPayload'
 
 export default function CheckoutClient({ products }: ICheckoutClient) {
 	const { apiFetch } = useApi()
@@ -146,12 +147,13 @@ export default function CheckoutClient({ products }: ICheckoutClient) {
 	}
 
 	const handleSubmit = async (formData: ICreateOrder) => {
-		const res = await handleOrderCreate(formData)
+		const orderPayload = buildOrderPayload(formData)
 
+		const res = await handleOrderCreate(orderPayload)
 		const orderNumber = await res.data
 
 		try {
-			localStorage.setItem('checkoutFormData', JSON.stringify(formData))
+			localStorage.setItem('checkoutFormData', JSON.stringify(orderPayload))
 
 			const response = await fetch('/api/payments/portmone', {
 				method: 'POST',

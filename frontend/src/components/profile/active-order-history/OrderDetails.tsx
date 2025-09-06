@@ -1,17 +1,17 @@
 import { Button } from '@/components/UI/button'
 import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from '@/components/UI/dialog'
+import { Textarea } from '@/components/UI/textarea'
+import Image from 'next/image'
 import { IOrderDetails } from '../interfaces'
 import DetailsInfoSection from './DetailsInfoSection'
-import Image from 'next/image'
-import { Input } from '@/components/UI/input'
-import { Textarea } from '@/components/UI/textarea'
+import { IAddress, INovaPost } from '@/types/Interfaces'
 
 export default function OrderDetails({
 	order,
@@ -94,7 +94,7 @@ export default function OrderDetails({
 				<div>
 					<DetailsInfoSection
 						title='Отримувач: '
-						info={`${order.recipientFirstName} ${order.recipientFirstName}`}
+						info={`${order.recipientFirstName} ${order.recipientLastName}`}
 					/>
 					<DetailsInfoSection
 						title='email: '
@@ -133,43 +133,45 @@ export default function OrderDetails({
 							<>
 								<DetailsInfoSection
 									title='Область:'
-									info={order.userAddress?.region || '-'}
+									info={order.address?.region || '-'}
 								/>
 								<DetailsInfoSection
 									title='Місто:'
-									info={order.userAddress?.city || '-'}
+									info={order.address?.city || '-'}
 								/>
 								<DetailsInfoSection
 									title='Вулиця:'
-									info={order.userAddress?.street || '-'}
+									info={(order.address as IAddress)?.street || '-'}
 								/>
 								<DetailsInfoSection
 									title='№ буд. / кв:'
-									info={order.userAddress?.homeNumber || '-'}
+									info={(order.address as IAddress)?.homeNumber || '-'}
 								/>
 							</>
 						) : (
 							<>
 								<DetailsInfoSection
 									title='Область:'
-									info={order.postAddress?.region || '-'}
+									info={order.address?.region || '-'}
 								/>
 								<DetailsInfoSection
 									title='Місто:'
-									info={order.postAddress?.city || '-'}
+									info={order.address?.city || '-'}
 								/>
 								<DetailsInfoSection
 									title='Відділення:'
-									info={order.postAddress?.postDepartment || '-'}
+									info={(order.address as INovaPost)?.postDepartment || '-'}
 								/>
 							</>
 						)}
 					</div>
 					<div className='mb-4'>
 						<span className='text-sm lg:text-base'>Коментар: </span>
-						<Textarea disabled value={order.additionalInfo} />
+						<Textarea readOnly value={order.additionalInfo} />
 					</div>
-					<span className='text-sm lg:text-base text-gray-500'>{orderDate}</span>
+					<span className='text-sm lg:text-base text-gray-500'>
+						{orderDate}
+					</span>
 				</div>
 			</DialogContent>
 		</Dialog>
