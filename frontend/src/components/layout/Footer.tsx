@@ -5,6 +5,7 @@ import Button from '../UI/MyButton'
 import Link from 'next/link'
 import CategoryList from '@/components/category-lists/CategoryList'
 import { ICategory } from '@/types/Interfaces'
+import Image from 'next/image'
 
 export default function Footer({ categories }: { categories: ICategory[] }) {
 	const year: number = new Date().getFullYear()
@@ -39,6 +40,13 @@ export default function Footer({ categories }: { categories: ICategory[] }) {
 							text={'INSTAGRAM'}
 							variant='instagram'
 							href='https://www.instagram.com/minmchik_/'
+						/>
+						<Image
+							src='/payment-logos-footer.svg'
+							alt=''
+							width={310}
+							height={50}
+							className='bg-foreground object-cover rounded-md'
 						/>
 					</div>
 					<div className='flex-1 hidden md:block'>
