@@ -35,7 +35,14 @@ export default function ProductCard({ product, categories }: IProductCard) {
 	}
 
 	return (
-		<div className='relative flex flex-col bg-white max-w-90 overflow-hidden rounded-lg shadow-sm hover:scale-105 hover:shadow-lg transition-all duration-300'>
+		<div
+			className={`relative flex flex-col bg-white max-w-90 overflow-hidden rounded-lg shadow-sm transition-all duration-300 ${
+				product.productVariants.length === 1 &&
+				product.productVariants[0].isStock === false
+					? ''
+					: 'hover:scale-105 hover:shadow-lg'
+			}`}
+		>
 			<Link href={productUrl} className='mb-1'>
 				<div className='relative w-full aspect-square'>
 					<Image

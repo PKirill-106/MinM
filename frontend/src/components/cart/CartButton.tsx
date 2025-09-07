@@ -17,7 +17,9 @@ export default function CartButton({
 
 	const handleClick = async () => {
 		if (isInCart(productId)) {
-			const itemsToRemove = cartProducts.filter(item => item.id === productId)
+			const itemsToRemove = cartProducts.filter(
+				item => item.productId === productId
+			)
 			await Promise.all(
 				itemsToRemove.map(item =>
 					removeFromCart(item.id!, productId, item.productVariantId)
@@ -36,14 +38,14 @@ export default function CartButton({
 			onClick={handleClick}
 			className={`transition duration-200 cursor-pointer ${
 				animate ? 'scale-120' : ''
-			}`}
+			} ${unitsInStock > 0 ? '' : 'pointer-events-none'}`}
 		>
 			<ShoppingBag
 				className={`h-6 w-6 md:h-7 md:w-7 lg:h-8 lg:w-8 xl:h-9 xl:w-9 2xl:h-10 2xl:w-10 ${
 					isInCart(productId)
 						? 'text-transparent-text hover:text-red-500'
 						: 'text-accent hover:text-button-text'
-				}`}
+				} ${unitsInStock > 0 ? '' : 'text-transparent-text'}`}
 			/>
 		</button>
 	)
