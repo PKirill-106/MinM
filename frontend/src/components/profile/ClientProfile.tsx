@@ -18,9 +18,7 @@ export default function ClientProfile({ products }: IClientProfileProps) {
 	const searchParams = useSearchParams()
 
 	const tabFromUrl = searchParams.get('tab') as 'profile' | 'orders' | null
-	const [activeTab, setActiveTab] = useState<'profile' | 'orders'>(
-		tabFromUrl || 'profile'
-	)
+	const activeTab = tabFromUrl || 'profile'
 
 	const [myOrders, setMyOrders] = useState<IOrder[]>([])
 	const [formData, setFormData] = useState<IUpdateUserInfo | null>(null)
@@ -72,10 +70,13 @@ export default function ClientProfile({ products }: IClientProfileProps) {
 	}, [apiFetch])
 
 	useEffect(() => {
-		const params = new URLSearchParams(searchParams.toString())
-		params.set('tab', activeTab)
-		router.replace(`?${params.toString()}`)
-	}, [activeTab, router, searchParams])
+		if (!tabFromUrl) {
+			const params = new URLSearchParams(searchParams.toString())
+			params.set('tab', 'profile')
+			router.replace(`?${params.toString()}`)
+		}
+	}, [tabFromUrl, router, searchParams])
+
 
 	if (loading) return <h3 className='text-center'>Завантаження...</h3>
 
@@ -85,7 +86,7 @@ export default function ClientProfile({ products }: IClientProfileProps) {
 
 	return (
 		<div className='flex flex-col gap-6 mx-auto w-full max-w-2xl'>
-			<ProfileTab activeTab={activeTab} setActiveTab={setActiveTab} />
+			<ProfileTab activeTab={activeTab} />
 
 			{activeTab === 'profile' ? (
 				<ActiveProfile

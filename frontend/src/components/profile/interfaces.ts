@@ -8,7 +8,6 @@ import { Dispatch, ReactNode, SetStateAction } from 'react'
 
 export interface IProfileTab {
 	activeTab: 'profile' | 'orders'
-	setActiveTab: Dispatch<SetStateAction<'profile' | 'orders'>>
 }
 export interface IActiveProfile {
 	user: IGetUserInfo

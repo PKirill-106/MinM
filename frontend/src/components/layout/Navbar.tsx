@@ -148,7 +148,7 @@ export default function Navbar({ categories, products }: INavbarProps) {
 					<hr />
 					<div className='flex flex-col gap-8'>
 						<Link
-							href='/profile'
+							href={profileHref}
 							className='flex items-center gap-3 active:underline hover-active-text group'
 						>
 							<User className='h-6 w-6' />
