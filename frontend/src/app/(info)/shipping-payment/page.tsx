@@ -41,24 +41,26 @@ export default function ShippingPayment() {
 				</div>
 
 				{/* Delivery */}
-				<div className='description-content space-y-2'>
+				<div className='space-y-2'>
 					<h2>Доставка</h2>
 					<div className='flex flex-col space-y-4 lg:space-y-2'>
 						<span className='text-xs md:text-sm lg:text-base'>
 							Зазвичай доставка займає 2-3 робочих дні. Точну дату доставки
 							товару ви дізнаєтесь з смс повідомлення додатку Нової пошти.
 						</span>
-						<span className='text-xs md:text-sm lg:text-base'>
+						<span className='m-0 text-xs md:text-sm lg:text-base'>
 							<strong>Доставка по Україні</strong> відбувається за допомогою
 							служби Нова Пошта.
 						</span>
-						<ul>
-							<li>
-								Вартість доставки розраховується згідно тарифів сервісу
-								доставки.
-							</li>
-							<li>Доставка по Україні від 1500грн безкоштовна.</li>
-						</ul>
+						<div className='description-content m-0! p-0!'>
+							<ul>
+								<li>
+									Вартість доставки розраховується згідно тарифів сервісу
+									доставки.
+								</li>
+								<li>Доставка по Україні від 1500грн безкоштовна.</li>
+							</ul>
+						</div>
 						<div className='flex flex-col'>
 							<span className='text-xs md:text-sm lg:text-base'>
 								MinM не робить відправлення закордон.
@@ -74,7 +76,7 @@ export default function ShippingPayment() {
 				</div>
 
 				{/* Payment */}
-				<div className='description-content space-y-2'>
+				<div className='space-y-2'>
 					<h2>Оплата</h2>
 					<div className='flex flex-col space-y-4 lg:space-y-2'>
 						<span className='text-xs md:text-sm lg:text-base'>
