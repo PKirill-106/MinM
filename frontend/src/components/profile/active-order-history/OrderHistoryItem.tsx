@@ -54,7 +54,7 @@ export default function OrderHistoryItem({
 				Замовлення <span className='font-semibold'>№{order.orderNumber}</span>
 			</h4>
 			<div className='flex'>
-				{orderProducts.length > 2 ? (
+				{orderProducts.length > 1 ? (
 					<div className='relative aspect-square w-14 md:w-24 lg:w-30'>
 						<Image
 							src={firstValidSrc}
@@ -87,7 +87,7 @@ export default function OrderHistoryItem({
 				)}
 				<div
 					className={`flex w-full justify-between ${
-						orderProducts.length > 2
+						orderProducts.length > 1
 							? 'translate-x-7 md:translate-x-10 lg:translate-x-14'
 							: 'ml-2 md:ml-3 lg:ml-4'
 					}`}
@@ -98,7 +98,7 @@ export default function OrderHistoryItem({
 					</div>
 					<div
 						className={`flex flex-col justify-end ${
-							orderProducts.length > 2 &&
+							orderProducts.length > 1 &&
 							'-translate-x-7 md:-translate-x-10 lg:-translate-x-14'
 						}`}
 					>
