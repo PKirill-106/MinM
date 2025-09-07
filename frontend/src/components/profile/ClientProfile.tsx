@@ -1,18 +1,16 @@
 'use client'
 import { useApi } from '@/hooks/useApi'
+import { getMyOrders } from '@/lib/services/orderServices'
 import { getUserInfo } from '@/lib/services/userServices'
 import { IGetUserInfo, IOrder, IUpdateUserInfo } from '@/types/Interfaces'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import ProfileTab from './ProfileTab'
-import ActiveProfile from './active-profile/ActiveProfile'
 import OrderHistory from './active-order-history/OrderHistory'
-import { useRouter, useSearchParams } from 'next/navigation'
+import ActiveProfile from './active-profile/ActiveProfile'
 import { IClientProfileProps } from './interfaces'
-import { getMyOrders } from '@/lib/services/orderServices'
-import { useSession } from 'next-auth/react'
 
 export default function ClientProfile({ products }: IClientProfileProps) {
-	const session = useSession()
 	const { apiFetch } = useApi()
 	const [user, setUser] = useState<IGetUserInfo | null>(null)
 
@@ -50,6 +48,7 @@ export default function ClientProfile({ products }: IClientProfileProps) {
 				])
 				setUser(userData)
 				setMyOrders(orders)
+
 				setFormData({
 					userFirstName: normalizeInput(userData.userFirstName),
 					userLastName: normalizeInput(userData.userLastName),
@@ -82,6 +81,8 @@ export default function ClientProfile({ products }: IClientProfileProps) {
 
 	if (!user || !formData) return <div>Не вдалося завантажити дані</div>
 
+	const filteredOrders = myOrders.filter(o => o.status !== 'Failed')
+
 	return (
 		<div className='flex flex-col gap-6 mx-auto w-full max-w-2xl'>
 			<ProfileTab activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -97,7 +98,7 @@ export default function ClientProfile({ products }: IClientProfileProps) {
 			) : (
 				<OrderHistory
 					products={products}
-					orders={myOrders}
+					orders={filteredOrders}
 					isLoading={loading}
 				/>
 			)}
