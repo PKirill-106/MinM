@@ -38,7 +38,6 @@ export async function getMyOrders(token: string) {
 	}
 
 	const { data } = await res.json()
-	console.log(data)
 
 	return data
 }
@@ -62,8 +61,10 @@ export async function getMyOrderById(orderId: string, token: string) {
 	return data
 }
 
-export async function createAuthOrder(orderData: Partial<ICreateOrder>, token: string) {
-	console.log('orderData: ', orderData)
+export async function createAuthOrder(
+	orderData: Partial<ICreateOrder>,
+	token: string
+) {
 	const res = await fetch(`${API_URL}/Order/create-authenticated`, {
 		method: 'POST',
 		credentials: 'include',
@@ -140,7 +141,10 @@ export async function updateOrderToPaid(orderNumber: string, token: string) {
 	return data
 }
 
-export async function updateOrderStatusAsFailed(orderNumber: string, token: string) {
+export async function updateOrderStatusAsFailed(
+	orderNumber: string,
+	token: string
+) {
 	const res = await fetch(`${API_URL}/Order/fail/${orderNumber}`, {
 		method: 'PUT',
 		credentials: 'include',
