@@ -1,9 +1,8 @@
 'use client'
-import { useCartTotal } from '@/hooks/useCartTotal'
 import { useCart } from '@/providers/CartProvider'
 import { IProduct } from '@/types/Interfaces'
-import CheckoutItem from './CheckoutItem'
 import { Card, CardContent, CardHeader, CardTitle } from '../UI/card'
+import CheckoutItem from './CheckoutItem'
 import './styles/scrollbar.css'
 
 export interface ICheckoutTotal {
@@ -13,8 +12,12 @@ export interface ICheckoutTotal {
 	deliveryPrice: number
 }
 
-export default function CheckoutTotal({ products, cartTotal, checkoutTotal, deliveryPrice }: ICheckoutTotal) {
-	
+export default function CheckoutTotal({
+	products,
+	cartTotal,
+	checkoutTotal,
+	deliveryPrice,
+}: ICheckoutTotal) {
 	const { cartProducts } = useCart()
 
 	return (
@@ -54,8 +57,12 @@ export default function CheckoutTotal({ products, cartTotal, checkoutTotal, deli
 				</div>
 				<hr className='my-5' />
 				<div className='flex justify-between'>
-					<span className='text-2xl font-semibold'>Загальна сума</span>
-					<span className='text-2xl font-semibold'>{checkoutTotal} грн</span>
+					<span className='text-xl md:text-xl font-semibold'>
+						Загальна сума
+					</span>
+					<span className='text-xl md:text-xl font-semibold'>
+						{checkoutTotal} грн
+					</span>
 				</div>
 			</CardContent>
 		</Card>
