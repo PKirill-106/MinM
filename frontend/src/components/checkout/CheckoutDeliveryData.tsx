@@ -16,12 +16,23 @@ import {
 	SelectValue,
 } from '../UI/select'
 import { CircleCheckBig } from 'lucide-react'
+import { useSession } from 'next-auth/react'
+import { useEffect } from 'react'
 
 export default function CheckoutDeliveryData({
 	formData,
 	setFormData,
 }: ICheckoutDataProps) {
+	const { status } = useSession()
 	const { saveAddress, setSaveAddress } = useOrderManagement()
+
+	useEffect(() => {
+		if (status === 'authenticated') {
+			setSaveAddress(true)
+		} else {
+			setSaveAddress(false)
+		}
+	}, [status])
 
 	const onChange = (field: string, value: string | boolean) => {
 		setFormData(prev => {
@@ -171,19 +182,21 @@ export default function CheckoutDeliveryData({
 								/>
 							</div>
 						</div>
-						<div className='flex items-center space-x-2 mt-4'>
-							<Checkbox
-								id='saveAddress'
-								checked={saveAddress}
-								onClick={() => setSaveAddress(p => !p)}
-							/>
-							<Label
-								htmlFor='saveAddress'
-								className='flex items-center gap-2 cursor-pointer'
-							>
-								Чи бажаєте зберегти адресу для наступних замовлень?
-							</Label>
-						</div>
+						{status === 'authenticated' && (
+							<div className='flex items-center space-x-2 mt-4'>
+								<Checkbox
+									id='saveAddress'
+									checked={saveAddress}
+									onClick={() => setSaveAddress(p => !p)}
+								/>
+								<Label
+									htmlFor='saveAddress'
+									className='flex items-center gap-2 cursor-pointer'
+								>
+									Чи бажаєте зберегти адресу для наступних замовлень?
+								</Label>
+							</div>
+						)}
 					</>
 				) : (
 					<div className='flex flex-col md:grid md: md:grid-cols-2 gap-4'>
