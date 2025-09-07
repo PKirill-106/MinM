@@ -14,6 +14,13 @@ export async function getAllOrders(token: string) {
 		},
 	})
 
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
+
 	if (!res.ok && res.status !== 404) {
 		throw new Error(`Failed to fetch orders: ${res.status}`)
 	}
@@ -33,6 +40,13 @@ export async function getMyOrders(token: string) {
 		},
 	})
 
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
+
 	if (!res.ok && res.status !== 404) {
 		throw new Error(`Failed to fetch my orders: ${res.status}`)
 	}
@@ -51,6 +65,13 @@ export async function getMyOrderById(orderId: string, token: string) {
 			Authorization: `Bearer ${token}`,
 		},
 	})
+
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
 
 	if (!res.ok && res.status !== 404) {
 		throw new Error(`Failed to fetch my order by id: ${res.status}`)
@@ -74,6 +95,13 @@ export async function createAuthOrder(
 		},
 		body: JSON.stringify(orderData),
 	})
+
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
 
 	if (!res.ok && res.status !== 404) {
 		throw new Error(`Failed to create auth order: ${res.status}`)
@@ -113,6 +141,13 @@ export async function cancelOrder(orderId: string, token: string) {
 		},
 	})
 
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
+
 	if (!res.ok && res.status !== 404) {
 		throw new Error(`Failed to cancel order: ${res.status}`)
 	}
@@ -131,6 +166,13 @@ export async function updateOrderToPaid(orderNumber: string, token: string) {
 			Authorization: `Bearer ${token}`,
 		},
 	})
+
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
 
 	if (!res.ok && res.status !== 404) {
 		throw new Error(`Failed to set order as paid: ${res.status}`)
@@ -154,6 +196,13 @@ export async function updateOrderStatusAsFailed(
 		},
 	})
 
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
+
 	if (!res.ok && res.status !== 404) {
 		throw new Error(`Failed to set order as paid: ${res.status}`)
 	}
@@ -169,6 +218,13 @@ export async function updateOrder(orderId: string, status: string) {
 		credentials: 'include',
 		body: status,
 	})
+
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
 
 	if (!res.ok && res.status !== 404) {
 		throw new Error(`Failed to change order status: ${res.status}`)
