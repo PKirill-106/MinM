@@ -36,9 +36,9 @@ export default function PaymentResultPage() {
 
 	useEffect(() => {
 		updateOrderStatus()
-
-		localStorage.removeItem('checkoutFormData')
-		clearCart()
+		if (status === 'authenticated') {
+			clearCart()
+		}
 	}, [isSuccess, clearCart])
 
 	return (

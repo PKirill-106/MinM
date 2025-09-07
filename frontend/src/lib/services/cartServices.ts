@@ -20,7 +20,8 @@ export async function getAllProductsFromCart(token: string) {
 		throw error
 	}
 
-	if (!res.ok && res.status !== 404 && res.status !== 401) throw new Error('Failed to fetch Cart')
+	if (!res.ok && res.status !== 404 && res.status !== 401)
+		throw new Error('Failed to fetch Cart')
 
 	const { data } = await res.json()
 
@@ -123,6 +124,35 @@ export async function removeProductFromCart(itemId: string, token: string) {
 			},
 		}
 	)
+
+	if (res.status === 401) {
+		const error = new Error('Unauthorized (401)')
+		;(error as any).status = 401
+		;(error as any).digest = 'UNAUTHORIZED_ERROR'
+		throw error
+	}
+
+	if (!res.ok && res.status !== 404 && res.status !== 401)
+		throw new Error(`Remove from Cart failed: ${res.status}`)
+
+	const { data } = await res.json()
+
+	return data
+}
+
+export async function removeManyProductFromCart(
+	itemIds: string[],
+	token: string
+) {
+	const res = await fetch(`${API_URL}/CartItem/DeleteMany`, {
+		method: 'DELETE',
+		credentials: 'include',
+		headers: {
+			Authorization: `Bearer ${token}`,
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(itemIds),
+	})
 
 	if (res.status === 401) {
 		const error = new Error('Unauthorized (401)')

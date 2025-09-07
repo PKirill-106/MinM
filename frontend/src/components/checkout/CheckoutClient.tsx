@@ -153,8 +153,6 @@ export default function CheckoutClient({ products }: ICheckoutClient) {
 		const orderNumber = await res.data
 
 		try {
-			localStorage.setItem('checkoutFormData', JSON.stringify(orderPayload))
-
 			const response = await fetch('/api/payments/portmone', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },

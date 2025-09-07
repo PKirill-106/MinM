@@ -6,6 +6,7 @@ import {
 	addProductToCart,
 	getAllProductsFromCart,
 	migrateProductToCart,
+	removeManyProductFromCart,
 	removeProductFromCart,
 	updateProductInCart,
 } from '@/lib/services/cartServices'
@@ -199,8 +200,25 @@ export default function CartProvider({
 	}
 
 	const clearCart = async () => {
-		for (const item of cartProducts) {
-			await removeFromCart(item.id, item.productId, item.productVariantId)
+		if (!isAuthenticated) {
+			setCartProducts([])
+			saveLocalCart([])
+			return
+		}
+
+		const cartIds = cartProducts
+			.map(item => item.id)
+			.filter((id): id is string => id !== undefined)
+
+		if (cartIds.length === 0) {
+			return
+		}
+
+		try {
+			await apiFetch(token => removeManyProductFromCart(cartIds, token))
+			setCartProducts([])
+		} catch (err) {
+			console.error('Failed to clear cart on server:', err)
 		}
 	}
 
