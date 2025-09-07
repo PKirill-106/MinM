@@ -35,7 +35,7 @@ export default function Description({ description }: IDescription) {
 			</div>
 			{html.length ? (
 				<div
-					className='px-3 description-content'
+					className='px-3 description-content description-block'
 					dangerouslySetInnerHTML={{ __html: html }}
 				/>
 			) : (

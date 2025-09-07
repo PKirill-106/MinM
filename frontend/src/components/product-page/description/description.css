@@ -1,3 +1,22 @@
+.description-content * {
+	background: transparent !important;
+	margin: 0.5rem 0;
+}
+
+@media (min-width: 768px) {
+	.description-content * {
+		background: transparent !important;
+		margin: 0.7rem 0;
+	}
+}
+
+@media (min-width: 1024px) {
+	.description-content * {
+		background: transparent !important;
+		margin: 0.8rem 0;
+	}
+}
+
 .description-content ul {
 	list-style: none;
 	padding-left: 0.5rem;
@@ -23,5 +42,44 @@
 }
 
 .description-content li {
-	margin-bottom: 0.75rem;
+	margin-bottom: 0.25rem;
+	font-size: 0.75rem;
+	line-height: 1rem;
+}
+
+@media (min-width: 768px) {
+	.description-content ul li,
+	.description-content li {
+		font-size: 0.8rem;
+		line-height: 1.25rem;
+	}
+}
+
+@media (min-width: 1024px) {
+	.description-content ul li,
+	.description-content li {
+		font-size: 0.9rem;
+		line-height: 1.5rem;
+	}
+}
+
+.description-block li {
+	font-size: 0.75rem; /* свой размер */
+	line-height: 1.3rem;
+}
+
+@media (min-width: 768px) {
+	.description-block ul li,
+	.description-block li {
+		font-size: 0.9rem;
+		line-height: 1.25rem;
+	}
+}
+
+@media (min-width: 1024px) {
+	.description-block ul li,
+	.description-block li {
+		font-size: 1.1rem;
+		line-height: 1.5rem;
+	}
 }

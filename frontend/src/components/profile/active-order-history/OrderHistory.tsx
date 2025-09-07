@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { IActiveOrderHistory } from '../interfaces'
 import OrderHistoryItem from './OrderHistoryItem'
 
