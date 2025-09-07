@@ -10,10 +10,14 @@ export default function Quantity({ quantity, amount, onChange }: IQuantity) {
 	const count = isControlled ? quantity! : internalCount
 
 	useEffect(() => {
-		if (!isControlled && typeof quantity === 'number') {
+		if (
+			!isControlled &&
+			typeof quantity === 'number' &&
+			quantity !== internalCount
+		) {
 			setInternalCount(quantity)
 		}
-	}, [quantity, isControlled])
+	}, [quantity, isControlled, internalCount])
 
 	const updateCount = (newCount: number) => {
 		if (isControlled) {
@@ -39,7 +43,9 @@ export default function Quantity({ quantity, amount, onChange }: IQuantity) {
 	return (
 		<div
 			className={`w-full flex gap-6 items-center justify-between md:justify-center ${
-				isControlled ? 'md:w-auto rounded-md ' : 'md:w-auto rounded-lg font-medium'
+				isControlled
+					? 'md:w-auto rounded-md '
+					: 'md:w-auto rounded-lg font-medium'
 			} p-0 md:py-2 md:px-4 lg:py-3 lg:px-5 border-transparent-text border-1 font-normal text:lg md:text-xl lg:text-2xl text-accent`}
 		>
 			<button
