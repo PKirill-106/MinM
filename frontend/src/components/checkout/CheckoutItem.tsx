@@ -3,6 +3,7 @@ import { IGetCartItem, IProduct, IProductVariant } from '@/types/Interfaces'
 import { Trash } from 'lucide-react'
 import Image from 'next/image'
 import { Button } from '../UI/button'
+import Link from 'next/link'
 
 export interface ICheckoutItem {
 	product: IProduct
@@ -41,13 +42,22 @@ export default function CheckoutItem({
 				</Button>
 			</div>
 			<div className='flex flex-2 flex-col justify-between w-full'>
-				<p className='line-clamp-1'>{product.name}</p>
+				<p>
+					<Link
+						href={`/product/${product.slug}`}
+						className='inline-block li-hover line-clamp-1'
+					>
+						{product.name}
+					</Link>
+				</p>
 				<div className='flex flex-col justify-between'>
 					<div className='flex items-center gap-2'>
 						<div className='border p-1 xl:p-2 rounded-lg'>
 							<span className='text-sm md:text-base'>{variant.name} мл</span>
 						</div>
-						<span className='text-gray-700/70 text-sm md:text-base'>x {cartItem.quantity}</span>
+						<span className='text-gray-700/70 text-sm md:text-base'>
+							x {cartItem.quantity}
+						</span>
 					</div>
 					<p className='text-xl font-bold'>{totalPrice} грн</p>
 				</div>

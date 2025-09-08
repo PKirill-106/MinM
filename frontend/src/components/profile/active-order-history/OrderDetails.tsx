@@ -1,17 +1,18 @@
 import { Button } from '@/components/UI/button'
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
 } from '@/components/UI/dialog'
 import { Textarea } from '@/components/UI/textarea'
 import Image from 'next/image'
 import { IOrderDetails } from '../interfaces'
 import DetailsInfoSection from './DetailsInfoSection'
 import { IAddress, INovaPost } from '@/types/Interfaces'
+import Link from 'next/link'
 
 export default function OrderDetails({
 	order,
@@ -72,7 +73,14 @@ export default function OrderDetails({
 										/>
 									</div>
 									<div className='w-full flex flex-col justify-between'>
-										<span className='text-sm md:text-base'>{p.name}</span>
+										<span className='text-sm md:text-base'>
+											<Link
+												href={`/product/${p.slug}`}
+												className='inline-block li-hover'
+											>
+												{p.name}
+											</Link>
+										</span>
 										<div className='flex items-center justify-between gap-3'>
 											<div className='space-x-1'>
 												<span className='text-sm md:text-base'>

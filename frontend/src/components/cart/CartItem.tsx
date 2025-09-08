@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Quantity from '../product-page/product-top/product-top-right/Quantity'
 import { Button } from '../UI/button'
 import SelectVariant from './SelectVariant'
+import Link from 'next/link'
 
 export default function CartItem({ product, cartItem }: ICartItemProps) {
 	const { removeFromCart, updateCartItem } = useCart()
@@ -47,7 +48,14 @@ export default function CartItem({ product, cartItem }: ICartItemProps) {
 					</div>
 					<div className='flex-3 md:flex-auto flex flex-col gap-2 md:gap-4 justify-between md:basis-auto w-full'>
 						<div className='w-full flex gap-4 justify-between items-start'>
-							<p>{product.name}</p>
+							<p>
+								<Link
+									href={`/product/${product.slug}`}
+									className='inline-block li-hover'
+								>
+									{product.name}
+								</Link>
+							</p>
 							<Button
 								onClick={() =>
 									removeFromCart(cartItem!.id!, product.id, variant.id)
