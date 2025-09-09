@@ -77,12 +77,16 @@ export default function ClientProfile({ products }: IClientProfileProps) {
 		}
 	}, [tabFromUrl, router, searchParams])
 
-
 	if (loading) return <h3 className='text-center'>Завантаження...</h3>
 
 	if (!user || !formData) return <div>Не вдалося завантажити дані</div>
 
-	const filteredOrders = myOrders.filter(o => o.status !== 'Failed')
+	const filteredOrders = myOrders.filter(o => {
+		if (o.status === 'Failed') return false
+		if (o.status === 'Created' && o.paymentMethod === 'paymentSystem')
+			return false
+		return true
+	})
 
 	return (
 		<div className='flex flex-col gap-6 mx-auto w-full max-w-2xl'>
