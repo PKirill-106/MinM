@@ -17,14 +17,13 @@ export default function CheckoutContactData({
 	setFormData,
 }: ICheckoutDataProps) {
 	const { status } = useSession()
-	const [changed, setChanged] = useState(false)
 	const [isAuth, setIsAuth] = useState(false)
 
 	useEffect(() => {
 		if (status === 'authenticated') {
 			setIsAuth(true)
 		}
-	},[status])
+	}, [status])
 
 	const handleChange = (field: string, value: string) => {
 		setFormData(prev => {
@@ -36,7 +35,6 @@ export default function CheckoutContactData({
 				[key]: value,
 			}
 		})
-		setChanged(true)
 	}
 
 	const [rawPhone, setRawPhone] = useState(formData.recipientPhone)
@@ -68,7 +66,7 @@ export default function CheckoutContactData({
 		setIsPhoneValid(rawPhone.length >= 10)
 	}
 
-	const isField =
+	const isFilled =
 		formData.recipientFirstName.length !== 0 &&
 		formData.recipientLastName.length !== 0 &&
 		formData.recipientEmail.length !== 0 &&
@@ -77,7 +75,7 @@ export default function CheckoutContactData({
 	return (
 		<Card className='w-full shadow-lg text-foreground'>
 			<CardHeader>
-				{isField ? (
+				{isFilled ? (
 					<div className='flex items-center gap-2'>
 						<CircleCheckBig className='text-green-600!' />
 						<CardTitle className='text-2xl'>Контактні дані</CardTitle>
