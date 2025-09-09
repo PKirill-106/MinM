@@ -190,6 +190,45 @@ export default function CheckoutClient({ products }: ICheckoutClient) {
 		}
 	}
 
+	// helper: безопасно проверяет, что значение непустое (работает для string | number | undefined | null)
+	const isNonEmpty = (v: unknown): boolean => {
+		return v !== undefined && v !== null && String(v).trim().length > 0
+	}
+
+	const isFormValid = (): boolean => {
+		if (!formData) return false
+
+		if (
+			!isNonEmpty(formData.recipientFirstName) ||
+			!isNonEmpty(formData.recipientLastName) ||
+			!isNonEmpty(formData.recipientEmail) ||
+			!isNonEmpty(formData.recipientPhone)
+		) {
+			return false
+		}
+
+		if (!formData.orderItems || formData.orderItems.length === 0) return false
+
+		if (formData.deliveryMethod === 'courier') {
+			const ua = formData.userAddress
+			return (
+				isNonEmpty(ua.country) &&
+				isNonEmpty(ua.region) &&
+				isNonEmpty(ua.city) &&
+				isNonEmpty(ua.street) &&
+				isNonEmpty(ua.homeNumber)
+			)
+		} else {
+			const pa = formData.postAddress
+			return (
+				isNonEmpty(pa.country) &&
+				isNonEmpty(pa.region) &&
+				isNonEmpty(pa.city) &&
+				isNonEmpty(pa.postDepartment)
+			)
+		}
+	}
+
 	if (loading) return <div>Завантаження...</div>
 
 	return (
@@ -202,7 +241,7 @@ export default function CheckoutClient({ products }: ICheckoutClient) {
 				<CheckoutMoreInfo formData={formData} setFormData={setFormData} />
 				<div className='w-full flex justify-end'>
 					<Button
-						disabled={isLoading}
+						disabled={isLoading || !isFormValid()}
 						onClick={() => handleSubmit(formData)}
 						className='p-6 md:p-7 text-md md:text-lg w-full md:w-auto'
 					>
