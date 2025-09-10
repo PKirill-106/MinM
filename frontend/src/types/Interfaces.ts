@@ -82,6 +82,12 @@ export interface ICreateOrder {
 	recipientPhone: string
 }
 
+export interface IResultContent {
+	description: string
+	orderNumber: string
+	orderStatus: 'Created' | 'Paid' | 'Failed'
+}
+
 export interface IApiError {
 	type?: string
 	title?: string

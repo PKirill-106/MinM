@@ -15,6 +15,7 @@ import { Button } from '../UI/button'
 import CheckoutPayment from './CheckoutPayment'
 import { useCartTotal } from '@/hooks/useCartTotal'
 import { buildOrderPayload } from '@/lib/utils/buildOrderPayload'
+import { redirect, RedirectType } from 'next/navigation'
 
 export default function CheckoutClient({ products }: ICheckoutClient) {
 	const { apiFetch } = useApi()
@@ -152,45 +153,51 @@ export default function CheckoutClient({ products }: ICheckoutClient) {
 		const res = await handleOrderCreate(orderPayload)
 		const orderNumber = await res.data
 
-		try {
-			const response = await fetch('/api/payments/portmone', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-					amount: checkoutTotal,
-					description: 'Оплата замовлення M-in-M',
-					shopOrderNumber: orderNumber,
-					successUrl: `${window.location.origin}/api/payments/portmone/callback`,
-					failureUrl: `${window.location.origin}/api/payments/portmone/callback`,
-				}),
-			})
+		if (formData.paymentMethod === 'onCard') {
+			redirect(
+				`/payment/result?RESULT=0&SHOPORDERNUMBER=${orderNumber}&DESCRIPTION=${'Оплата+замовлення+M-in-M'}&ONCARD=0`,
+				RedirectType.replace
+			)
+		} else if (formData.paymentMethod === 'paymentSystem') {
+			try {
+				const response = await fetch('/api/payments/portmone', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						amount: checkoutTotal,
+						description: 'Оплата замовлення M-in-M',
+						shopOrderNumber: orderNumber,
+						successUrl: `${window.location.origin}/api/payments/portmone/callback`,
+						failureUrl: `${window.location.origin}/api/payments/portmone/callback`,
+					}),
+				})
 
-			const payload = await response.json()
+				const payload = await response.json()
 
-			const form = document.createElement('form')
-			form.method = 'POST'
-			form.action = 'https://www.portmone.com.ua/gateway/'
+				const form = document.createElement('form')
+				form.method = 'POST'
+				form.action = 'https://www.portmone.com.ua/gateway/'
 
-			const bodyInput = document.createElement('input')
-			bodyInput.type = 'hidden'
-			bodyInput.name = 'bodyRequest'
-			bodyInput.value = JSON.stringify(payload)
+				const bodyInput = document.createElement('input')
+				bodyInput.type = 'hidden'
+				bodyInput.name = 'bodyRequest'
+				bodyInput.value = JSON.stringify(payload)
 
-			const typeInput = document.createElement('input')
-			typeInput.type = 'hidden'
-			typeInput.name = 'typeRequest'
-			typeInput.value = 'json'
+				const typeInput = document.createElement('input')
+				typeInput.type = 'hidden'
+				typeInput.name = 'typeRequest'
+				typeInput.value = 'json'
 
-			form.appendChild(bodyInput)
-			form.appendChild(typeInput)
-			document.body.appendChild(form)
-			form.submit()
-		} catch (err) {
-			console.error('handleSubmit error:', err)
+				form.appendChild(bodyInput)
+				form.appendChild(typeInput)
+				document.body.appendChild(form)
+				form.submit()
+			} catch (err) {
+				console.error('[Portmone] handleSubmit error:', err)
+			}
 		}
 	}
 
-	// helper: безопасно проверяет, что значение непустое (работает для string | number | undefined | null)
 	const isNonEmpty = (v: unknown): boolean => {
 		return v !== undefined && v !== null && String(v).trim().length > 0
 	}
