@@ -23,6 +23,9 @@ export default function MySidebar() {
 	return (
 		<Sidebar className='md:col-span-1'>
 			<SidebarGroup title='Admin Menu'>
+				<SidebarMenuButton asChild className={currentClass('/admin/orders')}>
+					<Link href='/admin/orders'>Замовлення</Link>
+				</SidebarMenuButton>
 				<SidebarMenuButton asChild className={currentClass('/admin/products')}>
 					<Link href='/admin/products'>Продукти</Link>
 				</SidebarMenuButton>

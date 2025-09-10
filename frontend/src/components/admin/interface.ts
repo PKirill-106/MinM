@@ -157,3 +157,9 @@ export interface IAddBannerButton {
 	items: BannerItem[]
 	setItems: Dispatch<SetStateAction<BannerItem[]>>
 }
+
+export interface IAdminPagesLink {
+	title: string
+	imgLink: string
+	pageLink: string
+}
