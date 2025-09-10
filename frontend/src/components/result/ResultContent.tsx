@@ -13,7 +13,7 @@ export default function ResultContent({
 	const { status } = useSession()
 
 	return (
-		<div className='flex flex-col items-center gap-12 md:gap-16 lg:gap-20 px-3 md:px-4 lg:px-5'>
+		<div className='flex flex-col items-center gap-12 md:gap-16 lg:gap-20 px-3 md:px-4 lg:px-5 w-full'>
 			{orderStatus === 'Created' ? (
 				<ClipboardCheck className='size-20 md:size-30 lg:size-40 text-gray-500' />
 			) : orderStatus === 'Paid' ? (
@@ -24,7 +24,7 @@ export default function ResultContent({
 				)
 			)}
 
-			<div className='space-y-12 md:space-y-16 lg:space-y-20'>
+			<div className='space-y-12 md:space-y-16 lg:space-y-20 w-full'>
 				<div className='flex flex-col items-center gap-4'>
 					{description && <h2 className='mb-2 text-gray-600'>{description}</h2>}
 					{orderStatus !== 'Failed' ? (
