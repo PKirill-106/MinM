@@ -4,6 +4,7 @@ import { CircleCheckBig, CircleX, ClipboardCheck } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '../UI/button'
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 
 export default function ResultContent({
 	description,
@@ -11,6 +12,7 @@ export default function ResultContent({
 	orderStatus,
 }: IResultContent) {
 	const { status } = useSession()
+	const router = useRouter()
 
 	return (
 		<div className='flex flex-col items-center gap-12 md:gap-16 lg:gap-20 px-3 md:px-4 lg:px-5 w-full'>
@@ -64,18 +66,28 @@ export default function ResultContent({
 					)}
 				</div>
 				<div className='flex flex-col w-full gap-4'>
-					<Link href='/'>
-						<Button variant='outline' className='w-full'>
-							На головну
-						</Button>
-					</Link>
+					<Button
+						variant='outline'
+						onClick={() => router.replace('/')}
+						className='w-full'
+					>
+						На головну
+					</Button>
 					{orderStatus !== 'Failed' && status === 'authenticated' ? (
-						<Link href='/profile?tab=orders'>
-							<Button className='w-full'>Історія замовлень</Button>
-						</Link>
+						<Button
+							onClick={() => router.replace('/profile?tab=orders')}
+							className='w-full'
+						>
+							Історія замовлень
+						</Button>
 					) : orderStatus === 'Failed' ? (
-						<Link href='/checkout'>
-							<Button className='w-full'>Оформлення замовлення</Button>
+						<Link href='/checkout' replace>
+							<Button
+								onClick={() => router.replace('/checkout')}
+								className='w-full'
+							>
+								Оформлення замовлення
+							</Button>
 						</Link>
 					) : (
 						''
