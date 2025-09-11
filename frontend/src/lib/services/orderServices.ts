@@ -212,11 +212,15 @@ export async function updateOrderStatusAsFailed(
 	return data
 }
 
-export async function updateOrder(orderId: string, status: string) {
+export async function updateOrder(orderId: string, status: string, token: string) {
 	const res = await fetch(`${API_URL}/Order/change/${orderId}`, {
 		method: 'PUT',
 		credentials: 'include',
-		body: status,
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${token}`,
+		},
+		body: JSON.stringify(status),
 	})
 
 	if (res.status === 401) {

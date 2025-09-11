@@ -108,10 +108,10 @@ export default function useOrderManagement() {
 		}
 	}
 
-	const changeOrderStatus = async (orderId: string) => {
+	const changeOrderStatus = async (orderId: string, status: string) => {
 		setIsLoading(true)
 		try {
-			await apiFetch(token => updateOrder(orderId, token))
+			await apiFetch(token => updateOrder(orderId, status, token))
 		} catch (err) {
 			toast.error('Сталася помилка')
 			console.error('[Checkout] failed to change Order status:', err)
