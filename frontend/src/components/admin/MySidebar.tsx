@@ -3,6 +3,13 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import LogoutButton from '../UI/LogoutButton'
 import { Sidebar, SidebarGroup, SidebarMenuButton } from '../UI/sidebar'
+import {
+	BetweenHorizontalStart,
+	Blocks,
+	ClipboardList,
+	SunSnow,
+	Tags,
+} from 'lucide-react'
 
 export default function MySidebar() {
 	const pathname = usePathname()
@@ -24,19 +31,34 @@ export default function MySidebar() {
 		<Sidebar className='md:col-span-1'>
 			<SidebarGroup title='Admin Menu'>
 				<SidebarMenuButton asChild className={currentClass('/admin/orders')}>
-					<Link href='/admin/orders'>Замовлення</Link>
+					<Link href='/admin/orders'>
+						<ClipboardList />
+						Замовлення
+					</Link>
 				</SidebarMenuButton>
 				<SidebarMenuButton asChild className={currentClass('/admin/products')}>
-					<Link href='/admin/products'>Продукти</Link>
+					<Link href='/admin/products'>
+						<Blocks />
+						Продукти
+					</Link>
 				</SidebarMenuButton>
 				<SidebarMenuButton asChild className={currentClass('/admin/banners')}>
-					<Link href='/admin/banners'>Банери</Link>
+					<Link href='/admin/banners'>
+						<BetweenHorizontalStart />
+						Банери
+					</Link>
 				</SidebarMenuButton>
 				<SidebarMenuButton asChild className={currentClass('/admin/seasons')}>
-					<Link href='/admin/seasons'>Сезони</Link>
+					<Link href='/admin/seasons'>
+						<SunSnow />
+						Сезони
+					</Link>
 				</SidebarMenuButton>
 				<SidebarMenuButton asChild className={currentClass('/admin/discounts')}>
-					<Link href='/admin/discounts'>Знижки</Link>
+					<Link href='/admin/discounts'>
+						<Tags />
+						Знижки
+					</Link>
 				</SidebarMenuButton>
 				<LogoutButton />
 			</SidebarGroup>

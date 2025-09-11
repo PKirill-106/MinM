@@ -4,8 +4,17 @@ import React from 'react'
 import { Button } from './button'
 import { logout } from '@/lib/services/userServices'
 import toast from 'react-hot-toast'
+import { LogOut } from 'lucide-react'
 
-export default function LogoutButton() {
+interface ILogoutButton {
+	className?: string
+	iconClassName?: string
+}
+
+export default function LogoutButton({
+	className,
+	iconClassName,
+}: ILogoutButton) {
 	const { data: session } = useSession()
 
 	const handleLogout = async () => {
@@ -26,7 +35,8 @@ export default function LogoutButton() {
 	}
 
 	return (
-		<Button variant='outline' onClick={handleLogout}>
+		<Button variant='secondary' onClick={handleLogout} className={className}>
+			<LogOut className={iconClassName} />
 			Вийти з акаунту
 		</Button>
 	)
