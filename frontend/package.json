@@ -32,7 +32,7 @@
 		"jwt-decode": "^4.0.0",
 		"lucide-react": "^0.477.0",
 		"m-in-m": "file:",
-		"next": "15.2.3",
+		"next": "^15.5.3",
 		"next-auth": "^4.24.11",
 		"quill": "^2.0.3",
 		"quill-delta-to-html": "^0.12.1",

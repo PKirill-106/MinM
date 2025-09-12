@@ -1,4 +1,5 @@
 'use client'
+import { Button } from '@/components/UI/button'
 import {
 	Table,
 	TableBody,
@@ -9,48 +10,35 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/UI/table'
-import { useApi } from '@/hooks/useApi'
-import { getAllOrders } from '@/lib/services/orderServices'
-import { IOrder, IProduct } from '@/types/Interfaces'
-import { useEffect, useState } from 'react'
-import TableBodyOrder from './TableBodyOrder'
 import useOrderManagement from '@/hooks/useOrderManagement'
-import toast from 'react-hot-toast'
-import { Button } from '@/components/UI/button'
-import { Save } from 'lucide-react'
+import { useOrders } from '@/hooks/useOrders'
 import { cn } from '@/lib/utils'
+import { IProduct } from '@/types/Interfaces'
+import { Save } from 'lucide-react'
+import { useState } from 'react'
+import toast from 'react-hot-toast'
+import OrdersFilters from './OrderFilters'
+import TableBodyOrder from './TableBodyOrder'
 
 export default function OrdersTable({ products }: { products: IProduct[] }) {
-	const { apiFetch } = useApi()
 	const { changeOrderStatus } = useOrderManagement()
+	const {
+		orders,
+		loading,
+		page,
+		totalPages,
+		setPage,
+		dateFilter,
+		setDateFilter,
+		statusFilter,
+		setStatusFilter,
+		refetchOrders,
+	} = useOrders()
 
-	const [orders, setOrders] = useState<IOrder[]>([])
-	const [loading, setLoading] = useState(true)
 	const [saving, setSaving] = useState(false)
 	const [editedStatuses, setEditedStatuses] = useState<Record<string, string>>(
 		{}
 	)
-
-	useEffect(() => {
-		const fetchOrders = async () => {
-			try {
-				const orders: IOrder[] = await apiFetch(token => getAllOrders(token))
-				const filteredOrders = orders.filter(o => {
-					if (o.status === 'Failed') return false
-					if (o.status === 'Created' && o.paymentMethod === 'paymentSystem')
-						return false
-					return true
-				})
-				setOrders(filteredOrders)
-			} catch (error) {
-				console.error('Failed to fetch orders:', error)
-			} finally {
-				setLoading(false)
-			}
-		}
-
-		fetchOrders()
-	}, [apiFetch])
 
 	const handleStatusChange = (orderId: string, newStatus: string) => {
 		setEditedStatuses(prev => ({
@@ -73,15 +61,7 @@ export default function OrdersTable({ products }: { products: IProduct[] }) {
 				)
 			)
 
-			// обновляем локальный список заказов
-			setOrders(prev =>
-				prev.map(order =>
-					editedStatuses[order.id]
-						? { ...order, status: editedStatuses[order.id] }
-						: order
-				)
-			)
-
+			await refetchOrders()
 			toast.success('Статуси оновлено')
 			setEditedStatuses({})
 		} catch (e) {
@@ -96,7 +76,13 @@ export default function OrdersTable({ products }: { products: IProduct[] }) {
 
 	return (
 		<div className=''>
-			<div className='flex justify-end'>
+			<div className='flex justify-between'>
+				<OrdersFilters
+					dateFilter={dateFilter}
+					setDateFilter={setDateFilter}
+					statusFilter={statusFilter}
+					setStatusFilter={setStatusFilter}
+				/>
 				<Button
 					variant='secondary'
 					size='sm'
@@ -128,7 +114,7 @@ export default function OrdersTable({ products }: { products: IProduct[] }) {
 						<TableHead>Ім'я та прізвище</TableHead>
 						<TableHead>Номер телефону</TableHead>
 						<TableHead>Email</TableHead>
-						<TableHead className='text-right'>Amount</TableHead>
+						<TableHead className='text-right'>Сума</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
@@ -149,6 +135,26 @@ export default function OrdersTable({ products }: { products: IProduct[] }) {
 					</TableRow>
 				</TableFooter>
 			</Table>
+
+			<div className='flex items-center justify-center gap-2 mt-4'>
+				<Button
+					onClick={() => setPage(page - 1)}
+					disabled={page === 1}
+					variant='outline'
+				>
+					Попередня
+				</Button>
+				<span>
+					{page} / {totalPages}
+				</span>
+				<Button
+					onClick={() => setPage(page + 1)}
+					disabled={page === totalPages}
+					variant='outline'
+				>
+					Наступна
+				</Button>
+			</div>
 		</div>
 	)
 }

@@ -1,5 +1,5 @@
 import { TableCell, TableRow } from '@/components/UI/table'
-import { IOrder, IProduct } from '@/types/Interfaces'
+import { IAddress, INovaPost, IOrder, IProduct } from '@/types/Interfaces'
 import AdminOrderItemList from './AdminOrderItemList'
 import StatusSelect from './StatusSelect'
 
@@ -44,7 +44,29 @@ export default function TableBodyOrder({
 				{order.deliveryMethod === 'courier' ? "Кур'єром" : 'На адресу'}
 			</TableCell>
 			<TableCell>
-				{order.address.region}, {order.address.city}
+				{order.deliveryMethod === 'courier' ? (
+					<span>
+						{[
+							order.address.region,
+							order.address.city,
+							(order.address as IAddress).postalCode,
+							(order.address as IAddress).street,
+							(order.address as IAddress).homeNumber,
+						]
+							.filter(value => value != null && value !== '')
+							.join(', ')}
+					</span>
+				) : (
+					<span>
+						{[
+							order.address.region,
+							order.address.city,
+							(order.address as INovaPost).postDepartment,
+						]
+							.filter(value => value != null && value !== '')
+							.join(', ')}
+					</span>
+				)}
 			</TableCell>
 			<TableCell>
 				<AdminOrderItemList
