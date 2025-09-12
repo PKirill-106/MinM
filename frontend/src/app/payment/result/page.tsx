@@ -37,13 +37,9 @@ export default function PaymentResultPage() {
 
 	useEffect(() => {
 		if (!orderNumber) return
-		if (sessionStorage.getItem(`orderProcessed_${orderNumber}`)) return
 
 		updateOrderStatus().then(() => {
-			if (status === 'authenticated') {
-				clearCart()
-				sessionStorage.setItem(`orderProcessed_${orderNumber}`, 'true')
-			}
+			clearCart()
 		})
 	}, [isSuccess, clearCart])
 
