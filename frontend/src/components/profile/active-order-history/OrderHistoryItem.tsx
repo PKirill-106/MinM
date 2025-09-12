@@ -76,7 +76,7 @@ export default function OrderHistoryItem({
 						</div>
 
 						<div className='absolute flex z-3 -right-4.5 md:-right-5.5 lg:-right-7 items-center justify-end w-full h-full'>
-							<h4 className='text-background'>+{orderProducts.length - 1}</h4>
+							<h4 className='font-semibold'>+{orderProducts.length - 1}</h4>
 						</div>
 					</div>
 				) : (
