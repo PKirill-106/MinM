@@ -11,15 +11,16 @@ import {
 } from '@/components/UI/table'
 import { useApi } from '@/hooks/useApi'
 import { getAllOrders } from '@/lib/services/orderServices'
-import { IOrder } from '@/types/Interfaces'
+import { IOrder, IProduct } from '@/types/Interfaces'
 import { useEffect, useState } from 'react'
 import TableBodyOrder from './TableBodyOrder'
 import useOrderManagement from '@/hooks/useOrderManagement'
 import toast from 'react-hot-toast'
 import { Button } from '@/components/UI/button'
 import { Save } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
-export default function OrdersTable() {
+export default function OrdersTable({ products }: { products: IProduct[] }) {
 	const { apiFetch } = useApi()
 	const { changeOrderStatus } = useOrderManagement()
 
@@ -91,7 +92,6 @@ export default function OrdersTable() {
 		}
 	}
 
-
 	if (loading) return <h3 className='text-center'>Завантаження...</h3>
 
 	return (
@@ -102,13 +102,14 @@ export default function OrdersTable() {
 					size='sm'
 					onClick={handleSaveAll}
 					disabled={saving || Object.keys(editedStatuses).length === 0}
-					className={
+					className={cn(
 						Object.keys(editedStatuses).length > 0
 							? 'bg-accent text-background'
-							: ''
-					}
+							: '',
+						'p-6! text-lg gap-2 items-center justify-center'
+					)}
 				>
-					<Save className='mr-2 h-4 w-4' />
+					<Save className='size-5' />
 					{saving ? 'Збереження...' : 'Зберегти'}
 				</Button>
 			</div>
@@ -137,6 +138,7 @@ export default function OrdersTable() {
 							order={order}
 							onStatusChange={handleStatusChange}
 							editedStatus={editedStatuses[order.id]}
+							products={products}
 						/>
 					))}
 				</TableBody>

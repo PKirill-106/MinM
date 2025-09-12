@@ -1,6 +1,5 @@
 import { TableCell, TableRow } from '@/components/UI/table'
-import { IOrder } from '@/types/Interfaces'
-import { useState } from 'react'
+import { IOrder, IProduct } from '@/types/Interfaces'
 import AdminOrderItemList from './AdminOrderItemList'
 import StatusSelect from './StatusSelect'
 
@@ -8,13 +7,21 @@ interface ITableBodyOrder {
 	order: IOrder
 	onStatusChange: (id: string, status: string) => void
 	editedStatus?: string
+	products: IProduct[]
 }
 
 export default function TableBodyOrder({
 	order,
 	onStatusChange,
 	editedStatus,
+	products,
 }: ITableBodyOrder) {
+	const orderItemIds = order.orderItems.map(item => item.itemId)
+
+	const orderProducts = products.filter(product =>
+		product.productVariants.some(variant => orderItemIds.includes(variant.id))
+	)
+
 	const totalPrice = order.orderItems.reduce((sum, orderItem) => {
 		return sum + orderItem.price * orderItem.quantity
 	}, 0)
@@ -29,12 +36,6 @@ export default function TableBodyOrder({
 		minute: '2-digit',
 	})
 
-	const [selectedStatus, setSelectedStatus] = useState(order.status)
-
-	const handleSave = () => {
-		onStatusChange(order.id, selectedStatus)
-	}
-
 	return (
 		<TableRow className='border-y border-transparent-text py-4'>
 			<TableCell>{formattedDate}</TableCell>
@@ -46,7 +47,11 @@ export default function TableBodyOrder({
 				{order.address.region}, {order.address.city}
 			</TableCell>
 			<TableCell>
-				<AdminOrderItemList />
+				<AdminOrderItemList
+					orderItems={order.orderItems}
+					orderProducts={orderProducts}
+					orderItemIds={orderItemIds}
+				/>
 			</TableCell>
 			<TableCell>
 				{order.paymentMethod === 'onCard' ? 'На рахунок' : 'Платіжна система'}
