@@ -41,7 +41,7 @@ export default function TableBodyOrder({
 			<TableCell>{formattedDate}</TableCell>
 			<TableCell>{order.orderNumber}</TableCell>
 			<TableCell>
-				{order.deliveryMethod === 'courier' ? "Кур'єром" : 'На адресу'}
+				{order.deliveryMethod === 'courier' ? 'На адресу' : 'Нова Пошта'}
 			</TableCell>
 			<TableCell>
 				{order.deliveryMethod === 'courier' ? (
