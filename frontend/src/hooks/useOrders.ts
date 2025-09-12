@@ -31,8 +31,16 @@ export function useOrders() {
 		setLoading(true)
 		try {
 			const data: IOrder[] = await apiFetch(token => getAllOrders(token))
+
+			const ordersWithoutFailed = data.filter(o => {
+				if (o.status === 'Failed') return false
+				if (o.status === 'Created' && o.paymentMethod === 'paymentSystem')
+					return false
+				return true
+			})
+
 			setOrders(
-				data.sort(
+				ordersWithoutFailed.sort(
 					(a, b) =>
 						new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime()
 				)
