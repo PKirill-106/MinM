@@ -22,8 +22,9 @@ export default function CheckoutClient({ products }: ICheckoutClient) {
 	const { status } = useSession()
 
 	const cartTotal = useCartTotal(products)
-	const deliveryPrice = 55
-	const checkoutTotal = cartTotal + deliveryPrice
+	const deliveryPrice = 80
+	const checkoutTotal =
+		cartTotal >= 1500 ? cartTotal : cartTotal + deliveryPrice
 
 	const { cartProducts } = useCart()
 
@@ -51,10 +52,14 @@ export default function CheckoutClient({ products }: ICheckoutClient) {
 				pV => pV.id === item.productVariantId
 			)
 
+			const totalPrice = product?.isDiscounted
+				? variant?.discountPrice
+				: variant?.price
+
 			return {
 				itemId: item.productVariantId,
 				quantity: item.quantity,
-				price: variant?.price ?? 0,
+				price: totalPrice ?? 0,
 			}
 		}),
 		paymentMethod: 'paymentSystem',
@@ -132,10 +137,15 @@ export default function CheckoutClient({ products }: ICheckoutClient) {
 				const variant = product?.productVariants.find(
 					pV => pV.id === item.productVariantId
 				)
+
+				const totalPrice = product?.isDiscounted
+					? variant?.discountPrice
+					: variant?.price
+
 				return {
 					itemId: item.productVariantId,
 					quantity: item.quantity,
-					price: variant?.price ?? 0,
+					price: totalPrice ?? 0,
 				}
 			}),
 		}))

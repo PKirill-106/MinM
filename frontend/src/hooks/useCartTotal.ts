@@ -15,7 +15,11 @@ export const useCartTotal = (products: IProduct[]) => {
 			)
 			if (!productVariant) return sum
 
-			return sum + (productVariant?.price * (cartItem?.quantity || 1) || 0)
+			const price = product.isDiscounted
+				? productVariant.discountPrice
+				: productVariant?.price
+
+			return sum + (price * (cartItem?.quantity || 1) || 0)
 		}, 0)
 	}, [cartProducts, products])
 }

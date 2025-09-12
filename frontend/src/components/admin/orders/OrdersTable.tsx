@@ -144,7 +144,7 @@ export default function OrdersTable({ products }: { products: IProduct[] }) {
 				</TableBody>
 				<TableFooter>
 					<TableRow>
-						<TableCell colSpan={11}>Total</TableCell>
+						<TableCell colSpan={11}>Загалом</TableCell>
 						<TableCell className='text-right'>$2,500.00</TableCell>
 					</TableRow>
 				</TableFooter>

@@ -29,6 +29,7 @@ export default function CheckoutItem({
 		: variant.price
 
 	const totalPrice = displayPrice * cartItem.quantity
+
 	return (
 		<div className='flex gap-2 border p-2 rounded-lg'>
 			<div className='flex-1 relative w-full max-w-30 h-full max-h-30 aspect-square'>
@@ -42,14 +43,12 @@ export default function CheckoutItem({
 				</Button>
 			</div>
 			<div className='flex flex-2 flex-col justify-between w-full'>
-				<p>
-					<Link
-						href={`/product/${product.slug}`}
-						className='inline-block li-hover line-clamp-1'
-					>
-						{product.name}
-					</Link>
-				</p>
+				<Link
+					href={`/product/${product.slug}`}
+					className='w-fit line-clamp-1 li-hover'
+				>
+					{product.name}
+				</Link>
 				<div className='flex flex-col justify-between'>
 					<div className='flex items-center gap-2'>
 						<div className='border p-1 xl:p-2 rounded-lg'>
@@ -59,7 +58,16 @@ export default function CheckoutItem({
 							x {cartItem.quantity}
 						</span>
 					</div>
-					<p className='text-xl font-bold'>{totalPrice} грн</p>
+					{product.isDiscounted ? (
+						<div className='space-x-2'>
+							<span className='line-through text-transparent-text '>
+								{variant.price * cartItem.quantity} грн
+							</span>
+							<span className='font-bold text-accent'>{totalPrice} грн</span>
+						</div>
+					) : (
+						<span className='text-xl font-bold'>{totalPrice} грн</span>
+					)}{' '}
 				</div>
 			</div>
 		</div>

@@ -52,7 +52,7 @@ export default function CheckoutTotal({
 					</div>
 					<div className='flex justify-between'>
 						<span>Вартість доставки:</span>
-						<span>{deliveryPrice} грн</span>
+						<span>{cartTotal >= 1500 ? 0 : deliveryPrice} грн</span>
 					</div>
 				</div>
 				<hr className='my-5' />

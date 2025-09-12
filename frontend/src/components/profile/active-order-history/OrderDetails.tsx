@@ -49,7 +49,11 @@ export default function OrderDetails({
 								item => item.itemId === currentVariant?.id
 							)?.quantity
 
-							const price = currentVariant!.price * quantity!
+							const price = order.orderItems.find(
+								item => item.itemId === currentVariant?.id
+							)?.price
+
+							const totalPrice = price! * quantity!
 							const variantName = currentVariant!.name
 
 							const imgSrc = p.productImages[0]?.filePath
@@ -90,7 +94,7 @@ export default function OrderDetails({
 												<span className='text-sm md:text-base'>{quantity}</span>
 											</div>
 											<span className='text-sm md:text-base font-bold'>
-												{price} грн
+												{totalPrice} грн
 											</span>
 										</div>
 									</div>

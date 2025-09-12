@@ -33,6 +33,7 @@ export default function AdminOrderItemList({
 				</DialogHeader>
 				{orderProducts.map(orderProduct => (
 					<AdminOrderItemCard
+						key={orderProduct.id}
 						orderProduct={orderProduct}
 						orderItems={orderItems}
 						orderItemIds={orderItemIds}

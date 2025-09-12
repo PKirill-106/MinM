@@ -36,9 +36,13 @@ export default function OrderHistoryItem({
 		minute: '2-digit',
 	})
 
-	const totalPrice = order.orderItems.reduce((sum, orderItem) => {
+	const orderPrice = order.orderItems.reduce((sum, orderItem) => {
 		return sum + orderItem.price * orderItem.quantity
 	}, 0)
+
+	const deliveryPrice = orderPrice >= 1500 ? 0 : 80
+
+	const totalPrice = orderPrice + deliveryPrice
 
 	const orderStatus = convertOrderStatus(order.status)
 
@@ -67,7 +71,7 @@ export default function OrderHistoryItem({
 								src={secondValidSrc}
 								alt=''
 								fill
-								className='blur-[1px] md:blur-[2px] lg:blur-[3px] object-cover rounded-md translate-x-5 md:translate-x-8 lg:translate-x-12 z-1'
+								className='blur-[1px] md:blur-[2px] object-cover rounded-md translate-x-5 md:translate-x-8 lg:translate-x-12 z-1'
 							/>
 						</div>
 

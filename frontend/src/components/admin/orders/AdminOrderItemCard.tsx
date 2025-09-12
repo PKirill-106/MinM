@@ -19,8 +19,12 @@ export default function AdminOrderItemCard({
 	const quantity = orderItems.find(
 		item => item.itemId === currentVariant?.id
 	)?.quantity
+	
+  const price = orderItems.find(
+		item => item.itemId === currentVariant?.id
+	)?.price
 
-	const price = currentVariant!.price * quantity!
+	const totalPrice = price! * quantity!
 	const variantName = currentVariant!.name
 
 	const imgSrc = orderProduct.productImages[0]?.filePath
@@ -29,7 +33,7 @@ export default function AdminOrderItemCard({
 			? imgSrc
 			: '/prod/product-image-unavailable.png'
 	return (
-		<div className='flex gap-2 border border-transparent-text p-2 rounded-md'>
+		<div className='flex gap-2 border border-transparent-text p-2 rounded-md min-2-md'>
 			<div className='relative aspect-square w-14 md:w-16 lg:w-18'>
 				<Image
 					src={imgValidSrc}
@@ -40,13 +44,15 @@ export default function AdminOrderItemCard({
 			</div>
 			<div className='flex flex-col justify-between w-full'>
 				<span className='text-sm'>{orderProduct.name}</span>
-				<span className='text-gray-500 text-xs'>{orderProduct.sku}</span>
+				<span className='text-transparent-text text-xs'>
+					{orderProduct.sku}
+				</span>
 				<div className='flex justify-between'>
 					<div>
 						<span className='text-sm'>{variantName} мл</span>
 						<span className='text-sm'> x {quantity}</span>
 					</div>
-					<span>{price} грн</span>
+					<span>{totalPrice} грн</span>
 				</div>
 			</div>
 		</div>
