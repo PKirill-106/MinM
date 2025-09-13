@@ -94,7 +94,9 @@ export default function CheckoutClient({ products }: ICheckoutClient) {
 				return
 			}
 			try {
-				const userData: IGetUserInfo = await apiFetch(getUserInfo)
+				const userData: IGetUserInfo = await apiFetch(token =>
+					getUserInfo(token)
+				)
 				setFormData(prev => ({
 					...prev,
 					userAddress: {

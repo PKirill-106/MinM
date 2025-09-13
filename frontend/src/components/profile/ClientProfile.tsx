@@ -41,8 +41,8 @@ export default function ClientProfile({ products }: IClientProfileProps) {
 		const fetchUser = async () => {
 			try {
 				const [userData, orders] = await Promise.all([
-					apiFetch(getUserInfo),
-					apiFetch(getMyOrders),
+					apiFetch(token => getUserInfo(token)),
+					apiFetch(token => getMyOrders(token)),
 				])
 				setUser(userData)
 				setMyOrders(orders)
