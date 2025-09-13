@@ -7,12 +7,9 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '@/components/UI/dialog'
-import { Textarea } from '@/components/UI/textarea'
-import Image from 'next/image'
 import { IOrderDetails } from '../interfaces'
+import OrderProductItem from './OrderProductItem'
 import DetailsInfoSection from './DetailsInfoSection'
-import { IAddress, INovaPost } from '@/types/Interfaces'
-import Link from 'next/link'
 
 export default function OrderDetails({
 	order,
@@ -40,151 +37,17 @@ export default function OrderDetails({
 				</span>
 				<div className='mx-2 border-l-1 border-transparent-text'>
 					<div className='space-y-2'>
-						{orderProducts.map(p => {
-							const currentVariant = p.productVariants.find(pV =>
-								orderItemIds.includes(pV.id)
-							)
-
-							const quantity = order.orderItems.find(
-								item => item.itemId === currentVariant?.id
-							)?.quantity
-
-							const price = order.orderItems.find(
-								item => item.itemId === currentVariant?.id
-							)?.price
-
-							const totalPrice = price! * quantity!
-							const variantName = currentVariant!.name
-
-							const imgSrc = p.productImages[0]?.filePath
-							const imgValidSrc =
-								imgSrc &&
-								(imgSrc.startsWith('http://') || imgSrc.startsWith('https://'))
-									? imgSrc
-									: '/prod/product-image-unavailable.png'
-
-							return (
-								<div
-									key={p.id}
-									className='bg-white rounded-xs md:rounded-sm flex gap-2 mx-2 p-2'
-								>
-									<div className='relative aspect-square w-14'>
-										<Image
-											src={imgValidSrc}
-											alt=''
-											fill
-											className='rounded-sm object-cover'
-										/>
-									</div>
-									<div className='w-full flex flex-col justify-between'>
-										<span className='text-sm md:text-base'>
-											<Link
-												href={`/product/${p.slug}`}
-												className='inline-block li-hover'
-											>
-												{p.name}
-											</Link>
-										</span>
-										<div className='flex items-center justify-between gap-3'>
-											<div className='space-x-1'>
-												<span className='text-sm md:text-base'>
-													{variantName} мл
-												</span>
-												{' x '}{' '}
-												<span className='text-sm md:text-base'>{quantity}</span>
-											</div>
-											<span className='text-sm md:text-base font-bold'>
-												{totalPrice} грн
-											</span>
-										</div>
-									</div>
-								</div>
-							)
-						})}
+						{orderProducts.map(p => (
+							<OrderProductItem
+								key={p.id}
+								order={order}
+								orderItemIds={orderItemIds}
+								orderProduct={p}
+							/>
+						))}
 					</div>
 				</div>
-				<div>
-					<DetailsInfoSection
-						title='Отримувач: '
-						info={`${order.recipientFirstName} ${order.recipientLastName}`}
-					/>
-					<DetailsInfoSection
-						title='email: '
-						info={`${order.recipientEmail}`}
-					/>
-					<DetailsInfoSection
-						title='Номер телефону: '
-						info={`+${order.recipientPhone.slice(
-							0,
-							2
-						)} ${order.recipientPhone.slice(2, 5)} ${order.recipientPhone.slice(
-							5,
-							8
-						)} ${order.recipientPhone.slice(
-							8,
-							10
-						)} ${order.recipientPhone.slice(10, 12)}`}
-					/>
-					<DetailsInfoSection
-						title='Оплата: '
-						info={`${
-							order.paymentMethod === 'paymentSystem'
-								? 'Платіжна система'
-								: 'На рахунок'
-						}`}
-					/>
-					<DetailsInfoSection
-						title='Доставка: '
-						info={`${
-							order.deliveryMethod === 'courier' ? 'За адресою' : 'Нова пошта'
-						}`}
-					/>
-					<span className='text-sm lg:text-base'>Адреса:</span>
-					<div className='mx-4 mt-1 mb-2'>
-						{order.deliveryMethod === 'courier' ? (
-							<>
-								<DetailsInfoSection
-									title='Область:'
-									info={order.address?.region || '-'}
-								/>
-								<DetailsInfoSection
-									title='Місто:'
-									info={order.address?.city || '-'}
-								/>
-								<DetailsInfoSection
-									title='Вулиця:'
-									info={(order.address as IAddress)?.street || '-'}
-								/>
-								<DetailsInfoSection
-									title='№ буд. / кв:'
-									info={(order.address as IAddress)?.homeNumber || '-'}
-								/>
-							</>
-						) : (
-							<>
-								<DetailsInfoSection
-									title='Область:'
-									info={order.address?.region || '-'}
-								/>
-								<DetailsInfoSection
-									title='Місто:'
-									info={order.address?.city || '-'}
-								/>
-								<DetailsInfoSection
-									title='Відділення:'
-									info={(order.address as INovaPost)?.postDepartment || '-'}
-								/>
-							</>
-						)}
-					</div>
-					<div className='mb-4'>
-						<span className='text-sm lg:text-base'>Коментар: </span>
-						<Textarea readOnly value={order.additionalInfo} />
-					</div>
-					<span className='text-sm lg:text-base text-gray-500'>
-						{orderDate}
-					</span>
-				</div>
+				<DetailsInfoSection order={order} orderDate={orderDate} />
 			</DialogContent>
 		</Dialog>
 	)

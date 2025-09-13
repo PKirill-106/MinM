@@ -34,7 +34,16 @@ export interface IOrderDetails {
 	orderItemIds: string[]
 	orderDate: string
 }
+export interface IOrderProductItem {
+	order: IOrder
+	orderProduct: IProduct
+	orderItemIds: string[]
+}
 export interface IDetailsInfoSection {
+	order: IOrder
+	orderDate: string
+}
+export interface IDetailsInfo {
 	title: string
 	info: string | ReactNode
 }
