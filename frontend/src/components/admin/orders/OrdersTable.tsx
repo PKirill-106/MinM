@@ -24,6 +24,8 @@ export default function OrdersTable({ products }: { products: IProduct[] }) {
 	const { changeOrderStatus } = useOrderManagement()
 	const {
 		orders,
+		filteredOrders,
+		totalFilteredEarnings,
 		loading,
 		page,
 		totalPages,
@@ -33,6 +35,7 @@ export default function OrdersTable({ products }: { products: IProduct[] }) {
 		statusFilter,
 		setStatusFilter,
 		refetchOrders,
+		getDateFilterLabel,
 	} = useOrders()
 
 	const [saving, setSaving] = useState(false)
@@ -72,6 +75,8 @@ export default function OrdersTable({ products }: { products: IProduct[] }) {
 		}
 	}
 
+	const formattedEarnings = totalFilteredEarnings.toLocaleString('uk-UA')
+
 	if (loading) return <h3 className='text-center'>Завантаження...</h3>
 
 	return (
@@ -100,7 +105,10 @@ export default function OrdersTable({ products }: { products: IProduct[] }) {
 				</Button>
 			</div>
 			<Table>
-				<TableCaption>Список замовлень</TableCaption>
+				<TableCaption>
+					Список замовлень{' '}
+					{dateFilter !== 'all' && `(за ${getDateFilterLabel(dateFilter)})`}
+				</TableCaption>
 				<TableHeader>
 					<TableRow>
 						<TableHead>Дата</TableHead>
@@ -130,8 +138,12 @@ export default function OrdersTable({ products }: { products: IProduct[] }) {
 				</TableBody>
 				<TableFooter>
 					<TableRow>
-						<TableCell colSpan={11}>Загалом</TableCell>
-						<TableCell className='text-right'>$2,500.00</TableCell>
+						<TableCell colSpan={11}>
+							Загалом {filteredOrders.length} замовлень на суму
+						</TableCell>
+						<TableCell className='text-right'>
+							{formattedEarnings} грн
+						</TableCell>
 					</TableRow>
 				</TableFooter>
 			</Table>

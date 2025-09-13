@@ -36,6 +36,8 @@ export default function TableBodyOrder({
 		minute: '2-digit',
 	})
 
+	const formattedEarnings = totalPrice.toLocaleString('uk-UA')
+
 	return (
 		<TableRow className='border-y border-transparent-text py-4'>
 			<TableCell>{formattedDate}</TableCell>
@@ -102,7 +104,7 @@ export default function TableBodyOrder({
 				12
 			)}`}</TableCell>
 			<TableCell>{order.recipientEmail}</TableCell>
-			<TableCell className='text-right'>{totalPrice}</TableCell>
+			<TableCell className='text-right'>{formattedEarnings} грн</TableCell>
 		</TableRow>
 	)
 }

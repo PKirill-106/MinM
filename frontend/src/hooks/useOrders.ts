@@ -21,7 +21,7 @@ export function useOrders() {
 	const [orders, setOrders] = useState<IOrder[]>([])
 	const [loading, setLoading] = useState(true)
 
-	const [dateFilter, setDateFilter] = useState<DateFilter>('all')
+	const [dateFilter, setDateFilter] = useState<DateFilter>('month')
 	const [statusFilter, setStatusFilter] = useState<SortStatus>('all')
 
 	const [page, setPage] = useState(1)
@@ -65,15 +65,32 @@ export function useOrders() {
 
 		if (dateFilter !== 'all') {
 			const now = new Date()
+			const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+
 			filtered = filtered.filter(order => {
 				const orderDate = new Date(order.orderDate)
+				const orderDay = new Date(
+					orderDate.getFullYear(),
+					orderDate.getMonth(),
+					orderDate.getDate()
+				)
+
 				switch (dateFilter) {
 					case 'week':
-						return orderDate >= new Date(now.setDate(now.getDate() - 7))
+						const weekAgo = new Date(today)
+						weekAgo.setDate(today.getDate() - 7)
+						return orderDay >= weekAgo
+
 					case 'month':
-						return orderDate >= new Date(now.setMonth(now.getMonth() - 1))
+						const monthAgo = new Date(today)
+						monthAgo.setMonth(today.getMonth() - 1)
+						return orderDay >= monthAgo
+
 					case 'year':
-						return orderDate >= new Date(now.setFullYear(now.getFullYear() - 1))
+						const yearAgo = new Date(today)
+						yearAgo.setFullYear(today.getFullYear() - 1)
+						return orderDay >= yearAgo
+
 					default:
 						return true
 				}
@@ -90,9 +107,34 @@ export function useOrders() {
 
 	const totalPages = Math.ceil(filteredOrders.length / limit)
 
+	const totalFilteredEarnings = useMemo(() => {
+		return filteredOrders.reduce((sum, order) => {
+			const orderTotal = order.orderItems.reduce(
+				(s, item) => s + item.price * item.quantity,
+				0
+			)
+			return sum + orderTotal
+		}, 0)
+	}, [filteredOrders])
+
+	const getDateFilterLabel = (filter: DateFilter) => {
+		switch (filter) {
+			case 'week':
+				return 'тиждень'
+			case 'month':
+				return 'місяць'
+			case 'year':
+				return 'рік'
+			default:
+				return ''
+		}
+	}
+
 	return {
 		loading,
 		orders: paginatedOrders,
+		filteredOrders,
+		totalFilteredEarnings,
 		page,
 		totalPages,
 		setPage,
@@ -101,5 +143,6 @@ export function useOrders() {
 		statusFilter,
 		setStatusFilter,
 		refetchOrders: fetchOrders,
+		getDateFilterLabel,
 	}
 }
