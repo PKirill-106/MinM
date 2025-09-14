@@ -4,8 +4,11 @@ import { useSession, signOut } from 'next-auth/react'
 import { refreshTokens } from '@/lib/services/userServices'
 import { useCallback } from 'react'
 
-let refreshPromise: Promise<any> | null = null
-let refreshInProgress = false
+let isRefreshing = false
+let refreshSubscribers: Array<{
+	resolve: (token: string) => void
+	reject: (error: any) => void
+}> = []
 
 export function useApi() {
 	const { data: session, update } = useSession()
@@ -32,43 +35,35 @@ export function useApi() {
 					(error.message.includes('Unauthorized') ||
 						(error as any).digest === 'UNAUTHORIZED_ERROR')
 				) {
+					if (isRefreshing) {
+						return new Promise((resolve, reject) => {
+							refreshSubscribers.push({ resolve, reject })
+						}).then(newToken => request(newToken as string))
+					}
+
+					isRefreshing = true
 					try {
-						if (!refreshInProgress) {
-							refreshInProgress = true
-							refreshPromise = refreshTokens(token, refreshToken)
-								.then(async refreshed => {
-									const updatedSession = await update({
-										accessToken: refreshed.accessToken,
-										refreshToken: refreshed.refreshToken,
-										expiresAt: refreshed.expiresAt,
-									})
-									const newToken = updatedSession?.user?.accessToken
-									if (!newToken || newToken === token) {
-										console.warn('[useApi] Token did not update after refresh')
-										throw new Error(
-											'Token refresh failed or did not update session'
-										)
-									}
-									return refreshed
-								})
-								.catch(refreshError => {
-									console.error('[useApi] Refresh failed:', refreshError)
-									throw refreshError
-								})
-								.finally(() => {
-									refreshPromise = null
-									refreshInProgress = false
-								})
-						}
+						const refreshed = await refreshTokens(token, refreshToken)
+						const updatedSession = await update({
+							accessToken: refreshed.accessToken,
+							refreshToken: refreshed.refreshToken,
+							expiresAt: refreshed.expiresAt,
+						})
+						const newToken =
+							updatedSession?.user?.accessToken || refreshed.accessToken
 
-						const refreshed = await refreshPromise
-						token = refreshed.accessToken
+						refreshSubscribers.forEach(({ resolve }) => resolve(newToken))
+						refreshSubscribers = []
 
-						return await request(token)
+						return await request(newToken)
 					} catch (refreshError) {
+						refreshSubscribers.forEach(({ reject }) => reject(refreshError))
+						refreshSubscribers = []
 						console.error('[useApi] Token refresh failed:', refreshError)
 						await signOut({ redirect: true })
 						throw refreshError
+					} finally {
+						isRefreshing = false
 					}
 				}
 				throw error
