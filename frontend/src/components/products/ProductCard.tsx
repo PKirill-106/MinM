@@ -34,11 +34,14 @@ export default function ProductCard({ product, categories }: IProductCard) {
 		)
 	}
 
+	const hasAnyAvailable = product.productVariants.some(v => v.isStock)
+
 	return (
 		<div
 			className={`relative flex flex-col bg-white max-w-90 overflow-hidden rounded-lg shadow-sm transition-all duration-300 ${
-				product.productVariants.length === 1 &&
-				product.productVariants[0].isStock === false
+				!hasAnyAvailable ||
+				(product.productVariants.length === 1 &&
+					product.productVariants[0].isStock === false)
 					? ''
 					: 'hover:scale-105 hover:shadow-lg'
 			}`}
