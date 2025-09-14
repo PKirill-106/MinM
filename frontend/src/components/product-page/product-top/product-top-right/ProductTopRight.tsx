@@ -1,7 +1,7 @@
 'use client'
 import FavoriteButton from '@/components/FavoriteButton'
 import { Check, X } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { IProductTopProps } from '../../interfaces'
 import ProductCart from './ProductCart'
 import ProductVariants from './ProductVariants'
@@ -13,10 +13,19 @@ export default function ProductTopRight({
 	category,
 }: IProductTopProps) {
 	const [variant, setVariant] = useState(0)
-
 	const currentVariant = product.productVariants[variant]
 
+	useEffect(() => {
+		if (!currentVariant?.isStock) {
+			const nearestAvailable = product.productVariants.find(v => v.isStock)
+			if (nearestAvailable) {
+				setVariant(product.productVariants.indexOf(nearestAvailable))
+			}
+		}
+	}, [currentVariant, product.productVariants])
+
 	const hasAnyInStock = product.productVariants.some(v => v.isStock)
+
 	return (
 		<div className='col-span-2 flex flex-col h-full'>
 			<div className='flex-grow'>
