@@ -16,6 +16,7 @@ export default function ProductTopRight({
 
 	const currentVariant = product.productVariants[variant]
 
+	const hasAnyInStock = product.productVariants.some(v => v.isStock)
 	return (
 		<div className='col-span-2 flex flex-col h-full'>
 			<div className='flex-grow'>
@@ -74,6 +75,7 @@ export default function ProductTopRight({
 						amount={currentVariant.unitsInStock}
 						productId={product.id}
 						variantId={currentVariant.id}
+						hasAnyInStock={hasAnyInStock}
 					/>
 				</div>
 

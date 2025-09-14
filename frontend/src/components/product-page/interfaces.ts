@@ -51,6 +51,7 @@ export interface IProductCart {
 	amount: number
 	productId: string
 	variantId: string
+	hasAnyInStock: boolean
 }
 export interface IProductVariants {
 	product: IProduct

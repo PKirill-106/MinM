@@ -10,6 +10,7 @@ export default function ProductCart({
 	amount,
 	productId,
 	variantId,
+	hasAnyInStock,
 }: IProductCart) {
 	const { cartProducts, addToCart } = useCart()
 	const [quantity, setQuantity] = useState(1)
@@ -29,7 +30,9 @@ export default function ProductCart({
 		<div className='flex flex-col md:flex-row items-center gap-2 lg:gap-4 w-full md:w-auto'>
 			<Quantity quantity={quantity} amount={amount} onChange={setQuantity} />
 
-			<Button text='В КОШИК' variant='cart' onClick={handleAddToCart} />
+			{hasAnyInStock && (
+				<Button text='В КОШИК' variant='cart' onClick={handleAddToCart} />
+			)}
 
 			<div className='relative hidden md:flex'>
 				<FavoriteButton
