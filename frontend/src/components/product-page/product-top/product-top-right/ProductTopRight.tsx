@@ -2,17 +2,13 @@
 import FavoriteButton from '@/components/FavoriteButton'
 import { Check, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { IProductTopProps } from '../../interfaces'
+import { IProductTopRight } from '../../interfaces'
 import ProductCart from './ProductCart'
 import ProductVariants from './ProductVariants'
 import Rating from './Rating'
 import ShippingPayment from './ShippingPayment'
 
-export default function ProductTopRight({
-	product,
-	category,
-	reviews,
-}: IProductTopProps) {
+export default function ProductTopRight({ product, category, reviews }: IProductTopRight) {
 	const [variant, setVariant] = useState(0)
 	const currentVariant = product.productVariants[variant]
 

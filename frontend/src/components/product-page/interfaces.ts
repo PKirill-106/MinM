@@ -5,6 +5,10 @@ import { Swiper as SwiperType } from 'swiper/types'
 export interface IProductTopProps {
 	product: IProduct
 	category: ICategory
+}
+export interface IProductTopRight {
+	product: IProduct
+	category: ICategory
 	reviews: IReview[]
 }
 export interface IProductTopLeftProps {
