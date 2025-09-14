@@ -60,3 +60,6 @@ export interface IProfileButtonsProps {
 	changed: boolean
 	onSave: () => void
 }
+export interface IAddReview {
+	productId: string
+}

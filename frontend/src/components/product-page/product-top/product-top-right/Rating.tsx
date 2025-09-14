@@ -2,15 +2,23 @@ import React from 'react'
 import { IRating } from '../../interfaces'
 import { Star } from 'lucide-react'
 
-export default function GetRating({ rating }: IRating) {
+export default function Rating({ reviews }: IRating) {
 	const max = 5
 	const size = 20
 
+	let avarageRating
+
+	if (reviews) {
+		const ratings = reviews.map(review => review.rating)
+		avarageRating = ratings.reduce((a, b) => a + b) / ratings.length
+	} else {
+		avarageRating = 0
+	}
 	return (
 		<div className='flex items-center gap-1'>
 			{[...Array(max)].map((_, i) => {
-				const isFull = i < Math.floor(rating)
-				const isHalf = !isFull && rating > i && rating < i + 1
+				const isFull = i < Math.floor(avarageRating)
+				const isHalf = !isFull && avarageRating > i && avarageRating < i + 1
 
 				if (isFull) {
 					return (
@@ -55,7 +63,7 @@ export default function GetRating({ rating }: IRating) {
 					/>
 				)
 			})}
-			<span className='underline'>0 відгуків</span>
+			<span className='underline'>{reviews?.length || 0} відгуків</span>
 		</div>
 	)
 }

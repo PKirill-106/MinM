@@ -88,6 +88,19 @@ export interface IResultContent {
 	orderStatus: 'Created' | 'Paid' | 'Failed'
 }
 
+// reviews
+export interface IReview {
+	id: string
+	rating: number
+	comment: string
+}
+
+export interface ICreateReview {
+	productId: string
+	rating: number
+	comment: string
+}
+
 export interface IApiError {
 	type?: string
 	title?: string

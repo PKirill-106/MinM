@@ -1,10 +1,11 @@
-import { ICategory, IProduct, IProductImage, IProductVariant } from '@/types/Interfaces'
+import { ICategory, IProduct, IProductImage, IProductVariant, IReview } from '@/types/Interfaces'
 import { Swiper as SwiperType } from 'swiper/types'
 
 // Top
 export interface IProductTopProps {
 	product: IProduct
 	category: ICategory
+	reviews: IReview[]
 }
 export interface IProductTopLeftProps {
 	product: IProduct
@@ -45,7 +46,7 @@ export interface IImageModal {
 
 // Top Right / Product Info Panel
 export interface IRating {
-	rating: number
+	reviews: IReview[]
 }
 export interface IProductCart {
 	amount: number

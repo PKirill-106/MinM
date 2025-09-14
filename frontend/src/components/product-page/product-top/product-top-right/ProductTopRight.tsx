@@ -5,12 +5,13 @@ import { useEffect, useState } from 'react'
 import { IProductTopProps } from '../../interfaces'
 import ProductCart from './ProductCart'
 import ProductVariants from './ProductVariants'
-import GetRating from './Rating'
+import Rating from './Rating'
 import ShippingPayment from './ShippingPayment'
 
 export default function ProductTopRight({
 	product,
 	category,
+	reviews,
 }: IProductTopProps) {
 	const [variant, setVariant] = useState(0)
 	const currentVariant = product.productVariants[variant]
@@ -57,7 +58,7 @@ export default function ProductTopRight({
 						</div>
 					)}
 					<span className='text-transparent-text'>art. {product.sku}</span>
-					<GetRating rating={0} />
+					<Rating reviews={reviews} />
 				</div>
 				<div className='flex items-center gap-3 lg:gap-5 flex-wrap mt-4'>
 					<div className='flex items-center justify-between w-full md:w-auto'>

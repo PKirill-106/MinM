@@ -1,9 +1,10 @@
 import Image from 'next/image'
 import { IOrderProductItem } from '../interfaces'
 import Link from 'next/link'
+import AddReview from './AddReview'
 
 export default function OrderProductItem({
-  order,
+	order,
 	orderProduct,
 	orderItemIds,
 }: IOrderProductItem) {
@@ -30,7 +31,6 @@ export default function OrderProductItem({
 
 	return (
 		<div
-			key={orderProduct.id}
 			className='bg-white rounded-xs md:rounded-sm flex gap-2 mx-2 p-2'
 		>
 			<div className='relative aspect-square w-14'>
@@ -42,11 +42,14 @@ export default function OrderProductItem({
 				/>
 			</div>
 			<div className='w-full flex flex-col justify-between'>
-				<span className='text-sm md:text-base'>
-					<Link href={`/product/${orderProduct.slug}`} className='inline-block li-hover'>
-						{orderProduct.name}
-					</Link>
-				</span>
+				<div className='flex items-center justify-between'>
+					<span className='text-sm md:text-base line-clamp-1'>
+						<Link href={`/product/${orderProduct.slug}`} className='li-hover'>
+							{orderProduct.name}
+						</Link>
+					</span>
+					<AddReview productId={orderProduct.id} />
+				</div>
 				<div className='flex items-center justify-between gap-3'>
 					<div className='space-x-1'>
 						<span className='text-sm md:text-base'>{variantName} мл</span>
