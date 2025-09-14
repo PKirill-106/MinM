@@ -25,9 +25,9 @@ export default function CategorySection({
 					>
 						<Link
 							href={`/catalog/${category.slug}`}
-							className='relative flex flex-col max-w-90 overflow-hidden rounded-lg shadow-sm mb-2 md:mb-3 lg:mb-4'
+							className='w-full aspect-3/4 relative flex flex-col overflow-hidden rounded-lg shadow-sm mb-2 md:mb-3 lg:mb-4'
 						>
-							<div className='relative w-full h-100'>
+							<div className='relative w-full h-full'>
 								<Image
 									src={
 										category.imageURL ||
@@ -52,7 +52,7 @@ export default function CategorySection({
 
 				<Link
 					href={linkHref}
-					className='bg-foreground text-white rounded-lg flex items-center justify-center text-center font-semibold hover:bg-accent hover:scale-105 hover:shadow-lg transition-all duration-300 px-4 py-6 text-sm'
+					className='bg-foreground text-white rounded-lg flex items-center justify-center text-center font-semibold hover:bg-accent hover:scale-105 hover:shadow-lg transition-all duration-300 px-4 py-6 text-sm w-full aspect-3/4'
 				>
 					<h3 className='ml-2 flex flex-col items-center'>
 						{linkLabel} <div className='my-4' /> <ChevronRight />
