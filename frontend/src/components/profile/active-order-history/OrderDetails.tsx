@@ -37,7 +37,7 @@ export default function OrderDetails({
 					Товари<span className='caption'>({orderProducts.length})</span>:
 				</span>
 				<div className='mx-2 border-l-1 border-transparent-text'>
-					<div className='space-y-2 max-h-120 custom-scrollbar overflow-y-scroll scrollbar-y-hide'>
+					<div className='space-y-2 max-h-70 custom-scrollbar overflow-y-scroll scrollbar-y-hide'>
 						{orderProducts.map(p => (
 							<OrderProductItem
 								key={p.id}

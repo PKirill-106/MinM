@@ -32,7 +32,7 @@ export default function AdminOrderItemList({
 				<DialogHeader>
 					<DialogTitle>Список продуктів</DialogTitle>
 				</DialogHeader>
-				<div className='max-h-180 custom-scrollbar overflow-y-scroll scrollbar-y-hide'>
+				<div className='max-h-100 space-y-2 custom-scrollbar overflow-y-scroll scrollbar-y-hide'>
 					{orderProducts.map(orderProduct => (
 						<AdminOrderItemCard
 							key={orderProduct.id}
