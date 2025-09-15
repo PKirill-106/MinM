@@ -25,7 +25,7 @@ export default function OrderDetails({
 					Деталі
 				</Button>
 			</DialogTrigger>
-			<DialogContent className='max-h-160 custom-scrollbar overflow-y-scroll scrollbar-y-hide sm:max-w-md'>
+			<DialogContent className='max-h-160 md:max-h-none custom-scrollbar overflow-y-scroll scrollbar-y-hide sm:max-w-md'>
 				<DialogHeader>
 					<DialogTitle>Деталі замовлення</DialogTitle>
 					<DialogDescription>
@@ -37,7 +37,7 @@ export default function OrderDetails({
 					Товари<span className='caption'>({orderProducts.length})</span>:
 				</span>
 				<div className='mx-2 border-l-1 border-transparent-text'>
-					<div className='space-y-2 max-h-40 custom-scrollbar overflow-y-scroll scrollbar-y-hide'>
+					<div className='space-y-2 max-h-40 md:max-h-60 custom-scrollbar overflow-y-scroll scrollbar-y-hide'>
 						{orderProducts.map(p => (
 							<OrderProductItem
 								key={p.id}
