@@ -8,6 +8,7 @@ import {
 } from '@/components/UI/dialog'
 import { IOrderItem, IProduct } from '@/types/Interfaces'
 import AdminOrderItemCard from './AdminOrderItemCard'
+import '@/components/checkout/styles/scrollbar.css'
 
 interface IAdminOrderItemList {
 	orderItems: IOrderItem[]
@@ -31,14 +32,16 @@ export default function AdminOrderItemList({
 				<DialogHeader>
 					<DialogTitle>Список продуктів</DialogTitle>
 				</DialogHeader>
-				{orderProducts.map(orderProduct => (
-					<AdminOrderItemCard
-						key={orderProduct.id}
-						orderProduct={orderProduct}
-						orderItems={orderItems}
-						orderItemIds={orderItemIds}
-					/>
-				))}
+				<div className='max-h-180 custom-scrollbar overflow-y-scroll scrollbar-y-hide'>
+					{orderProducts.map(orderProduct => (
+						<AdminOrderItemCard
+							key={orderProduct.id}
+							orderProduct={orderProduct}
+							orderItems={orderItems}
+							orderItemIds={orderItemIds}
+						/>
+					))}
+				</div>
 			</DialogContent>
 		</Dialog>
 	)
