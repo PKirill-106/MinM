@@ -49,8 +49,11 @@ export interface IImageModal {
 }
 
 // Top Right / Product Info Panel
-export interface IRating {
+export interface IRatings {
 	reviews: IReview[]
+}
+export interface IRating {
+	rating: number
 }
 export interface IProductCart {
 	amount: number
@@ -90,4 +93,12 @@ export interface QuillOp {
 
 export interface IDescription {
 	description: string
+}
+
+// Reviews
+export interface IProductReviews {
+	reviews: IReview[]
+}
+export interface IReviewItem {
+	review: IReview
 }

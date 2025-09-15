@@ -5,10 +5,15 @@ import { useEffect, useState } from 'react'
 import { IProductTopRight } from '../../interfaces'
 import ProductCart from './ProductCart'
 import ProductVariants from './ProductVariants'
-import Rating from './Rating'
+import Ratings from './Ratings'
 import ShippingPayment from './ShippingPayment'
+import Link from 'next/link'
 
-export default function ProductTopRight({ product, category, reviews }: IProductTopRight) {
+export default function ProductTopRight({
+	product,
+	category,
+	reviews,
+}: IProductTopRight) {
 	const [variant, setVariant] = useState(0)
 	const currentVariant = product.productVariants[variant]
 
@@ -22,6 +27,17 @@ export default function ProductTopRight({ product, category, reviews }: IProduct
 	}, [currentVariant, product.productVariants])
 
 	const hasAnyInStock = product.productVariants.some(v => v.isStock)
+
+	const scrollToReviews = (e: React.MouseEvent) => {
+		e.preventDefault()
+		const element = document.getElementById('reviews-section')
+		if (element) {
+			element.scrollIntoView({
+				behavior: 'smooth',
+				block: 'start',
+			})
+		}
+	}
 
 	return (
 		<div className='col-span-2 flex flex-col h-full'>
@@ -54,7 +70,20 @@ export default function ProductTopRight({ product, category, reviews }: IProduct
 						</div>
 					)}
 					<span className='text-transparent-text'>art. {product.sku}</span>
-					<Rating reviews={reviews} />
+					<div className='flex items-center gap-2'>
+						<Ratings reviews={reviews} />
+						{reviews ? (
+							<Link
+								href='#reviews-section'
+								onClick={scrollToReviews}
+								className='li-hover underline'
+							>
+								{reviews?.length || 0} відгуків
+							</Link>
+						) : (
+							<span className='underline'>0 відгуків</span>
+						)}
+					</div>
 				</div>
 				<div className='flex items-center gap-3 lg:gap-5 flex-wrap mt-4'>
 					<div className='flex items-center justify-between w-full md:w-auto'>

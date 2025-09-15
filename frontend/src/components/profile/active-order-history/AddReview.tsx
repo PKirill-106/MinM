@@ -43,7 +43,6 @@ export default function AddReview({ productId }: IAddReview) {
 
 		try {
 			await handleReviewCreate(reviewData)
-			toast.success('Відгук надіслано')
 			reviewRef.current!.value = ''
 			setRating(0)
       setOpen(false)

@@ -2,25 +2,14 @@ import React from 'react'
 import { IRating } from '../../interfaces'
 import { Star } from 'lucide-react'
 
-export default function Rating({ reviews }: IRating) {
+export default function Rating({ rating }: IRating) {
 	const max = 5
-	const size = 20
+	const size = 24
 
-	let avarageRating
-
-	if (reviews) {
-		const ratings = reviews.map(review => review.rating)
-		avarageRating = ratings.reduce((a, b) => a + b) / ratings.length
-	} else {
-		avarageRating = 0
-	}
 	return (
-		<div className='flex items-center gap-1'>
+		<div className='flex gap-1'>
 			{[...Array(max)].map((_, i) => {
-				const isFull = i < Math.floor(avarageRating)
-				const isHalf = !isFull && avarageRating > i && avarageRating < i + 1
-
-				if (isFull) {
+				if (i < rating) {
 					return (
 						<Star
 							key={i}
@@ -30,40 +19,18 @@ export default function Rating({ reviews }: IRating) {
 							fill='currentColor'
 						/>
 					)
-				} else if (isHalf) {
-					return (
-						<div key={i} className='relative w-5 h-5'>
-							{/* Background gray star */}
-							<Star
-								size={size}
-								strokeWidth={1}
-								className='text-transparent-text absolute top-0 left-0'
-								fill='none'
-							/>
-							{/* Foreground orange half star */}
-							<Star
-								size={size}
-								strokeWidth={1}
-								className='text-stars absolute top-0 left-0'
-								fill='currentColor'
-								style={{ clipPath: 'inset(0 50% 0 0)' }}
-							/>
-						</div>
+				} else {
+          return (
+						<Star
+							key={i}
+							size={size}
+							strokeWidth={1}
+							className='text-transparent-text'
+							fill='none'
+						/>
 					)
-				}
-
-				// Empty star
-				return (
-					<Star
-						key={i}
-						size={size}
-						strokeWidth={1}
-						className='text-transparent-text'
-						fill='none'
-					/>
-				)
+        }
 			})}
-			<span className='underline'>{reviews?.length || 0} відгуків</span>
 		</div>
 	)
 }

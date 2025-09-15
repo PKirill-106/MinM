@@ -1,9 +1,11 @@
 import Description from '@/components/product-page/description/Description'
 import ProductTop from '@/components/product-page/product-top/ProductTop'
+import ProductReviews from '@/components/product-page/ProductReviews'
 import { getAllCategories } from '@/lib/services/categoryServices'
 import { getProductBySlug } from '@/lib/services/productServices'
+import { getAllReviews } from '@/lib/services/reviewServices'
 import { deltaToText } from '@/lib/utils/deltaToText'
-import { ICategory, IProduct } from '@/types/Interfaces'
+import { ICategory, IProduct, IReview } from '@/types/Interfaces'
 import { Metadata } from 'next'
 
 type PropsType = {
@@ -13,7 +15,7 @@ type PropsType = {
 export async function generateMetadata({
 	params,
 }: PropsType): Promise<Metadata> {
-	const { slug } = await params 
+	const { slug } = await params
 	const product: IProduct = await getProductBySlug(slug)
 
 	if (!product) {
@@ -43,11 +45,11 @@ export async function generateMetadata({
 	}
 }
 
-
 export default async function ProductPage({ params }: PropsType) {
 	const { slug } = await params
 
 	const product: IProduct = await getProductBySlug(slug)
+	const reviews: IReview[] = await getAllReviews(product.id)
 	const categories: ICategory[] = await getAllCategories()
 
 	const subcategory = categories.find(cat => cat.id === product?.categoryId)
@@ -64,6 +66,7 @@ export default async function ProductPage({ params }: PropsType) {
 		<div className='container'>
 			<ProductTop product={product} category={category} />
 			<Description description={product.description} />
+			{reviews && <ProductReviews reviews={reviews} />}
 		</div>
 	)
 }
