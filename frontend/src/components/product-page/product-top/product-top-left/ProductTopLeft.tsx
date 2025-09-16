@@ -3,11 +3,16 @@
 import { CircleArrowLeft, CircleArrowRight } from 'lucide-react'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { Swiper as SwiperType } from 'swiper/types'
-import ImageModal from './ImageModal'
 import MainImage from './MainImage'
 import ThumbnailScroller from './ThumbnailScroller'
 import { IProductTopLeftProps } from '../../interfaces'
 import Image from 'next/image'
+import dynamic from 'next/dynamic'
+
+const DynamicImageModal = dynamic(() => import('./ImageModal'),{
+	ssr: false,
+	loading: () => <h3>Завантаження...</h3>
+})
 
 export default function ProductTopLeft({ product }: IProductTopLeftProps) {
 	const [selectedImageIndex, setSelectedImageIndex] = useState(0)
@@ -61,6 +66,7 @@ export default function ProductTopLeft({ product }: IProductTopLeftProps) {
 							fill
 							priority
 							className='object-cover'
+							placeholder='blur'
 						/>
 					</div>
 				)}
@@ -102,7 +108,7 @@ export default function ProductTopLeft({ product }: IProductTopLeftProps) {
 				)}
 			</div>
 
-			<ImageModal
+			<DynamicImageModal
 				isOpen={isModalOpen}
 				onClose={() => setIsModalOpen(false)}
 				images={product.productImages}
