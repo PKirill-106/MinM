@@ -1,8 +1,15 @@
 'use client'
 
-import ProductGrid from '@/components/products/ProductGrid'
 import { useFavorites } from '@/providers/FavoritesProvider'
 import { IProductGrid } from '@/types/Interfaces'
+import dynamic from 'next/dynamic'
+import { Suspense } from 'react'
+import Loader from './UI/Loader'
+
+const ProductGrid = dynamic(() => import('@/components/products/ProductGrid'), {
+	ssr: false,
+	loading: () => <Loader />,
+})
 
 export default function FilteredFavoriteGrid({
 	products,
@@ -15,10 +22,12 @@ export default function FilteredFavoriteGrid({
 	)
 
 	return (
-		<ProductGrid
-			products={favoriteProducts}
-			categories={categories}
-			type='favorites'
-		/>
+		<Suspense fallback={<Loader />}>
+			<ProductGrid
+				products={favoriteProducts}
+				categories={categories}
+				type='favorites'
+			/>
+		</Suspense>
 	)
 }

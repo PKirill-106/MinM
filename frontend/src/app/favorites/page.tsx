@@ -30,6 +30,7 @@ export default async function FavoritePage() {
 	return (
 		<div className='container'>
 			<h2 className='mb-2 md:mb-3 lg:mb-4'>Обране</h2>
+
 			<FilteredFavoriteGrid products={products} categories={categories} />
 		</div>
 	)

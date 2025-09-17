@@ -42,7 +42,7 @@ export default function NavCounterWrapper({
 				{products.length > 0 && (
 					<motion.div
 						key='count'
-						className='absolute -bottom-2 -right-2 bg-accent text-white text-xs rounded-full w-5 h-5 flex items-center justify-center'
+						className='absolute -bottom-3 left-3 md:left-auto md:-bottom-2 md:-right-2 bg-accent text-white text-[10px] md:text-xs rounded-full w-4 md:w-5 h-4 md:h-5 flex items-center justify-center'
 						initial={{ scale: 0 }}
 						animate={{ scale: 1 }}
 						exit={{ scale: 0 }}

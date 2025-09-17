@@ -154,14 +154,12 @@ export default function Navbar({ categories, products }: INavbarProps) {
 							<User className='h-6 w-6' />
 							<span>Мій профіль</span>
 						</Link>
-
-						<Link
-							href='/favorites'
-							className='flex items-center gap-3 active:underline hover-active-text group'
-						>
-							<Heart className='h-6 w-6' />
-							<span>Збережене</span>
-						</Link>
+						<NavCounterWrapper type='favorites'>
+							<div className='flex items-center gap-3 active:underline hover-active-text group'>
+								<Heart className='h-6 w-6' />
+								<span>Збережене</span>
+							</div>
+						</NavCounterWrapper>
 					</div>
 				</div>
 			</div>
