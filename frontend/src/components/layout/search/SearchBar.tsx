@@ -37,6 +37,9 @@ export default function SearchBar({
 		}
 
 		if (isOpen) {
+			if (inputRef.current) {
+				inputRef.current.focus()
+			}
 			document.addEventListener('mousedown', handleClickOutside)
 		}
 
