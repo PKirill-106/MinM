@@ -1,6 +1,4 @@
 import CartClient from '@/components/cart/CartClient'
-import CartCTA from '@/components/cart/CartCTA'
-import CartList from '@/components/cart/CartList'
 import { getAllProducts } from '@/lib/services/productServices'
 import { IProduct } from '@/types/Interfaces'
 import { Metadata } from 'next'
