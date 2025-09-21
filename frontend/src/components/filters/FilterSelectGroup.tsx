@@ -44,7 +44,7 @@ export default function FilterSelectGroup({
 	const activeCategoryObj = useMemo(
 		() =>
 			categories.find(
-				c => c.parentCategoryId === null && slugify(c.name) === activeCategory
+				c => c.parentCategoryId === null && c.slug === activeCategory
 			),
 		[categories, activeCategory]
 	)

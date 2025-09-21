@@ -162,7 +162,7 @@ export default function Select({
 						style={{ backgroundColor: selectedOption.colorHex }}
 					/>
 				)}
-				<span>{selected || defaultValue}</span>
+				<span className='truncate'>{selected || defaultValue}</span>
 				<ChevronRight
 					className={`h-4 w-4 md:h-5 md:w-5 lg:h-6 lg:w-6 xl:h-7 xl:w-7 transform transition-transform duration-300 ease-out ${
 						isOpen ? 'rotate-90' : 'rotate-0'
