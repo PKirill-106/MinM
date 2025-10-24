@@ -79,8 +79,8 @@ services:
       - '${NGINX_SSL_PORT}:${NGINX_SSL_PORT}'
     volumes:
       - ./nginx:/etc/nginx/conf.d
-      - /etc/letsencrypt/live/new.m-in-m.com.ua/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
-      - /etc/letsencrypt/live/new.m-in-m.com.ua/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
+      - /etc/letsencrypt/live/m-in-m.com.ua/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
+      - /etc/letsencrypt/live/m-in-m.com.ua/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
     depends_on:
       backend:
         condition: service_healthy
