@@ -161,7 +161,31 @@ export default function CheckoutClient({ products }: ICheckoutClient) {
 	}
 
 	const handleSubmit = async (formData: ICreateOrder) => {
-		const orderPayload = buildOrderPayload(formData)
+		const cleanedFormData = {
+			...formData,
+			userAddress:
+				formData.deliveryMethod === 'courier'
+					? formData.userAddress
+					: {
+							country: '',
+							city: '',
+							region: '',
+							street: '',
+							homeNumber: '',
+							postalCode: '',
+					  },
+			postAddress:
+				formData.deliveryMethod === 'novaPost'
+					? formData.postAddress
+					: {
+							country: '',
+							city: '',
+							region: '',
+							postDepartment: '',
+					  },
+		}
+
+		const orderPayload = buildOrderPayload(cleanedFormData)
 
 		const res = await handleOrderCreate(orderPayload)
 		const orderNumber = await res.data

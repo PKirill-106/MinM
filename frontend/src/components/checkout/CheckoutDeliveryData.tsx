@@ -46,35 +46,10 @@ export default function CheckoutDeliveryData({
 	}
 
 	const handleDeliveryMethodChange = (value: 'courier' | 'novaPost') => {
-		setFormData(prev => {
-			if (value === 'courier') {
-				return {
-					...prev,
-					deliveryMethod: value,
-					postAddress: {
-						country: '',
-						city: '',
-						region: '',
-						postDepartment: '',
-					},
-				}
-			}
-			if (value === 'novaPost') {
-				return {
-					...prev,
-					deliveryMethod: value,
-					userAddress: {
-						country: '',
-						city: '',
-						region: '',
-						street: '',
-						homeNumber: '',
-						postalCode: '',
-					},
-				}
-			}
-			return prev
-		})
+		setFormData(prev => ({
+			...prev,
+			deliveryMethod: value,
+		}))
 	}
 
 	const isFilled =
