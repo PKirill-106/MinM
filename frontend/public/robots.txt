@@ -20,4 +20,4 @@ Allow: /returns
 Allow: /shipping-payment
 Allow: /
 
-Sitemap: https://new.m-in-m.com.ua/sitemap.xml
+Sitemap: https://m-in-m.com.ua/sitemap.xml
